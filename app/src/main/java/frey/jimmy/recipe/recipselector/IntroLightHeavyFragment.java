@@ -67,7 +67,7 @@ public class IntroLightHeavyFragment extends Fragment {
 
     private void nextActivity(boolean isLightSelected) {
         Intent i = new Intent(getActivity(),RecipeList.class);
-        i.putExtra(EXTRA_RECIPES,RecipeBook.get().getFilteredRecipes(mIsSweetSelected,isLightSelected));
+        i.putExtra(EXTRA_RECIPES,RecipeBook.get(getActivity()).getFilteredRecipes(mIsSweetSelected,isLightSelected));
         startActivity(i);
     }
 

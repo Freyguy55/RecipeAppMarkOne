@@ -10,4 +10,7 @@
     <string name="title_activity_intro_light_heavy">IntroLightHeavyActivity</string>
     <string name="advanced_search_button_text">Advanced Search</string>
     <string name="title_activity_advanced_search">AdvancedSearchActivity</string>
+    <string name="advanced_search_button_text_go">Search</string>
+    <string name="advanced_search_flavor_category">Flavor</string>
+
 </resources>
