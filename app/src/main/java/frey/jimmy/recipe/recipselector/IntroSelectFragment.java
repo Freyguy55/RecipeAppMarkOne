@@ -32,7 +32,7 @@ public class IntroSelectFragment extends android.support.v4.app.Fragment {
 
     private void initialize(View v) {
         buttonSweet = (Button) v.findViewById(R.id.buttonSweet);
-        buttonSweet.setText(getString(R.string.button_sweet_text));
+        buttonSweet.setText(getString(R.string.button_text_sweet));
         buttonSweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

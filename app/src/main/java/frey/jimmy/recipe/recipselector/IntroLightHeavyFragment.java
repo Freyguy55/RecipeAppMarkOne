@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * Created by James on 5/17/2015.
@@ -17,6 +18,7 @@ public class IntroLightHeavyFragment  extends Fragment{
     private static final String KEY_IS_SWEET_SELECTED = "keyIsSweetSelected";
     private Button buttonLight;
     private Button buttonHeavy;
+    private TextView mSweetTextView;
     private boolean mIsSweetSelected;
 
     public static IntroLightHeavyFragment createInstance(boolean isSweetSelected) {
@@ -37,7 +39,13 @@ public class IntroLightHeavyFragment  extends Fragment{
 
 
     private void initialize(View v) {
+        mSweetTextView = (TextView) v.findViewById(R.id.selectionTextView);
         mIsSweetSelected = getArguments().getBoolean(KEY_IS_SWEET_SELECTED);
+        if(mIsSweetSelected) {
+            mSweetTextView.setText(getString(R.string.button_text_sweet));
+        } else{
+            mSweetTextView.setText(getString(R.string.button_text_savory));
+        }
         buttonLight = (Button) v.findViewById(R.id.buttonSweet);
         buttonLight.setText(getString(R.string.button_text_light));
         buttonLight.setOnClickListener(new View.OnClickListener() {

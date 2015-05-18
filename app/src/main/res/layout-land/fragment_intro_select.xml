@@ -3,24 +3,38 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:gravity="center"
-              android:orientation="horizontal"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
               tools:context="frey.jimmy.recipe.recipselector.IntroSelectActivity">
 
-    <Button
-        android:layout_margin="32dp"
+    <TextView
+        android:id="@+id/selectionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sweet"
-        android:padding="48dp"
-        android:id="@+id/buttonSweet"/>
+        android:textSize="48sp"/>
 
-    <Button
-        android:layout_margin="32dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Savory"
-        android:padding="48dp"
-        android:id="@+id/buttonSavory"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/buttonSweet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+            android:padding="48dp"
+            android:text="Sweet"/>
+
+        <Button
+            android:id="@+id/buttonSavory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+            android:padding="48dp"
+            android:text="Savory"/>
+
+    </LinearLayout>
 
 </LinearLayout>
