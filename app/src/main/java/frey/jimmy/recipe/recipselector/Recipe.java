@@ -12,6 +12,7 @@ public class Recipe implements Serializable{
     private boolean mIsSweet;
     private boolean mIsLight;
     private int mTotalMinutes;
+    private boolean mIsGood;
 
     public Recipe(String recipeName, int recipeImageId) {
         mRecipeName = recipeName;
@@ -20,6 +21,7 @@ public class Recipe implements Serializable{
         mIsSweet = false;
         mTotalMinutes = 60;
         mRecipeDescription = "This is a brief description";
+        mIsGood = false;
     }
 
     public Recipe(String recipeName, int recipeImageId, boolean isSweet, boolean isLight) {
@@ -29,6 +31,7 @@ public class Recipe implements Serializable{
         mIsSweet = isSweet;
         mTotalMinutes = 30;
         mRecipeDescription = "This is also a description that is brief";
+        mIsGood = true;
     }
 
     public String getRecipeName() {
@@ -77,5 +80,21 @@ public class Recipe implements Serializable{
 
     public void setTotalMinutes(int totalMinutes) {
         mTotalMinutes = totalMinutes;
+    }
+
+    public boolean isGood() {
+        return mIsGood;
+    }
+
+    public void setIsGood(boolean isGood) {
+        mIsGood = isGood;
+    }
+
+    public int getLikeDislikeImage(){
+        if(mIsGood){
+            return (R.drawable.recipe_image_01);
+        } else{
+            return (R.drawable.kirby_hurt);
+        }
     }
 }
