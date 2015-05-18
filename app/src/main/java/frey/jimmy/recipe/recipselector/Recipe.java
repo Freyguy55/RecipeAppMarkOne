@@ -7,15 +7,19 @@ import java.io.Serializable;
  */
 public class Recipe implements Serializable{
     private String mRecipeName;
+    private String mRecipeDescription;
     private int mRecipeImageId;
     private boolean mIsSweet;
     private boolean mIsLight;
+    private int mTotalMinutes;
 
     public Recipe(String recipeName, int recipeImageId) {
         mRecipeName = recipeName;
         mRecipeImageId = recipeImageId;
         mIsLight = false;
         mIsSweet = false;
+        mTotalMinutes = 60;
+        mRecipeDescription = "This is a brief description";
     }
 
     public Recipe(String recipeName, int recipeImageId, boolean isSweet, boolean isLight) {
@@ -23,6 +27,8 @@ public class Recipe implements Serializable{
         mRecipeImageId = recipeImageId;
         mIsLight = isLight;
         mIsSweet = isSweet;
+        mTotalMinutes = 30;
+        mRecipeDescription = "This is also a description that is brief";
     }
 
     public String getRecipeName() {
@@ -55,5 +61,21 @@ public class Recipe implements Serializable{
 
     public void setIsLight(boolean isLight) {
         mIsLight = isLight;
+    }
+
+    public String getRecipeDescription() {
+        return mRecipeDescription;
+    }
+
+    public void setRecipeDescription(String recipeDescription) {
+        mRecipeDescription = recipeDescription;
+    }
+
+    public int getTotalMinutes() {
+        return mTotalMinutes;
+    }
+
+    public void setTotalMinutes(int totalMinutes) {
+        mTotalMinutes = totalMinutes;
     }
 }
