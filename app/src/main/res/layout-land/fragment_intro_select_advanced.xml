@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_height="match_parent"
+             android:layout_width="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        tools:context="frey.jimmy.recipe.recipselector.IntroSelectActivity">
+
+        <Button
+            android:id="@+id/buttonSweet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+            android:padding="48dp"
+            android:text="@string/button_text_sweet"/>
+
+        <Button
+            android:id="@+id/buttonSavory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+            android:padding="48dp"
+            android:text="@string/button_text_savory"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonAdvanced"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:text="@string/advanced_search_button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        />
+
+</FrameLayout>
