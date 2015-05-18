@@ -12,5 +12,8 @@
     <string name="title_activity_advanced_search">AdvancedSearchActivity</string>
     <string name="advanced_search_button_text_go">Search</string>
     <string name="advanced_search_flavor_category">Flavor</string>
+    <string name="spinner_all_text">All</string>
+    <string name="light_heavy_category_text">Lightness</string>
+    <string name="region_category_text">Region</string>
 
 </resources>

@@ -39,24 +39,27 @@ public class AdvancedSearchFragment extends Fragment {
         TextView flavorTextView = (TextView) flavorRow.getChildAt(0);
         flavorTextView.setText(getString(R.string.advanced_search_flavor_category));
         Spinner flavorSpinner = (Spinner) flavorRow.getChildAt(1);
-        ArrayList<String> flavorSpinnerOptions = new ArrayList<>();
-        flavorSpinnerOptions.add("All");
-        flavorSpinnerOptions.add("Sweet");
-        flavorSpinnerOptions.add("Savory");
+        ArrayList<String> flavorSpinnerOptions = RecipeBook.get(getActivity()).getSpinnerList(0);
         ArrayAdapter<String> flavorAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,flavorSpinnerOptions);
         flavorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         flavorSpinner.setAdapter(flavorAdapter);
 
-        TableRow heavinessRow = (TableRow) v.findViewById(R.id.flavorRow);
-        TextView heavinessTextView = (TextView) flavorRow.getChildAt(0);
-        heavinessTextView.setText(getString(R.string.advanced_search_flavor_category));
-        Spinner heavinessSpinner = (Spinner) flavorRow.getChildAt(1);
-        ArrayList<String> heavySpinnerOptions = new ArrayList<>();
-        heavySpinnerOptions.add("All");
-        heavySpinnerOptions.add("Light");
-        heavySpinnerOptions.add("Heavy");
+        TableRow heavinessRow = (TableRow) v.findViewById(R.id.fillingRow);
+        TextView heavinessTextView = (TextView) heavinessRow.getChildAt(0);
+        heavinessTextView.setText(getString(R.string.light_heavy_category_text));
+        Spinner heavinessSpinner = (Spinner) heavinessRow.getChildAt(1);
+        ArrayList<String> heavySpinnerOptions = RecipeBook.get(getActivity()).getSpinnerList(1);
         ArrayAdapter<String> heavinessAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,heavySpinnerOptions);
         heavinessAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         heavinessSpinner.setAdapter(heavinessAdapter);
+
+        TableRow regionRow = (TableRow) v.findViewById(R.id.categoryRow);
+        TextView regionTextView = (TextView) regionRow.getChildAt(0);
+        regionTextView.setText(getString(R.string.region_category_text));
+        Spinner regionSpinner = (Spinner) regionRow.getChildAt(1);
+        ArrayList<String> regionSpinnerOptions = RecipeBook.get(getActivity()).getSpinnerList(2);
+        ArrayAdapter<String> regionAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,regionSpinnerOptions);
+        regionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        regionSpinner.setAdapter(regionAdapter);
     }
 }

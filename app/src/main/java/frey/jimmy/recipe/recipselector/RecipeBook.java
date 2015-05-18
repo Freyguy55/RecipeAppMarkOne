@@ -3,6 +3,7 @@ package frey.jimmy.recipe.recipselector;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -67,19 +68,24 @@ public class RecipeBook {
         Set<String> spinnerSet = new HashSet<>();
         switch (category) {
             case CATEGORY_SWEET_SAVORY:
+                spinnerSet.add(mAppContext.getString(R.string.spinner_all_text));
                 spinnerSet.add(mAppContext.getString(R.string.button_text_sweet));
                 spinnerSet.add(mAppContext.getString(R.string.button_text_savory));
                 break;
             case CATEGORY_LIGHT_HEAVY:
+                spinnerSet.add(mAppContext.getString(R.string.spinner_all_text));
                 spinnerSet.add(mAppContext.getString(R.string.button_text_light));
                 spinnerSet.add(mAppContext.getString(R.string.button_text_heavy));
                 break;
             case CATEGORY_REGION:
+                spinnerSet.add(mAppContext.getString(R.string.spinner_all_text));
                 for (Recipe r : mRecipes) {
                     spinnerSet.add(r.getRegion());
                 }
                 break;
         }
-        return new ArrayList<String>(spinnerSet);
+        ArrayList<String> list = new ArrayList<>(spinnerSet);
+        Collections.sort(list);
+        return list;
     }
 }
