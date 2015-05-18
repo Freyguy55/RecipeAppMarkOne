@@ -3,7 +3,6 @@ package frey.jimmy.recipe.recipselector;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 /**
  * Created by James on 5/17/2015.
  */
-public class IntroLightHeavyFragment  extends Fragment{
+public class IntroLightHeavyFragment extends Fragment {
 
     private static final String KEY_IS_SWEET_SELECTED = "keyIsSweetSelected";
     private Button buttonLight;
@@ -41,9 +40,9 @@ public class IntroLightHeavyFragment  extends Fragment{
     private void initialize(View v) {
         mSweetTextView = (TextView) v.findViewById(R.id.selectionTextView);
         mIsSweetSelected = getArguments().getBoolean(KEY_IS_SWEET_SELECTED);
-        if(mIsSweetSelected) {
+        if (mIsSweetSelected) {
             mSweetTextView.setText(getString(R.string.button_text_sweet));
-        } else{
+        } else {
             mSweetTextView.setText(getString(R.string.button_text_savory));
         }
         buttonLight = (Button) v.findViewById(R.id.buttonSweet);
@@ -51,8 +50,7 @@ public class IntroLightHeavyFragment  extends Fragment{
         buttonLight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-          //      fm.beginTransaction().add(R.id.fragment_intro_select_container, ).commit();
+                nextActivity(true);
             }
         });
         buttonHeavy = (Button) v.findViewById(R.id.buttonSavory);
@@ -60,10 +58,13 @@ public class IntroLightHeavyFragment  extends Fragment{
         buttonHeavy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-          //      fm.beginTransaction().add(R.id.fragment_intro_select_container, ).commit();
+                nextActivity(false);
             }
         });
+    }
+
+    private void nextActivity(boolean isLightSelected) {
+
     }
 
 

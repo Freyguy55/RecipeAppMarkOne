@@ -38,4 +38,20 @@ public class Recipe {
     public void setRecipeImageId(int recipeImageId) {
         mRecipeImageId = recipeImageId;
     }
+
+    public boolean isSweet() {
+        return mIsSweet;
+    }
+
+    public void setIsSweet(boolean isSweet) {
+        mIsSweet = isSweet;
+    }
+
+    public boolean isLight() {
+        return mIsLight;
+    }
+
+    public void setIsLight(boolean isLight) {
+        mIsLight = isLight;
+    }
 }
