@@ -15,6 +15,7 @@ public class IntroSelectFragment extends android.support.v4.app.Fragment {
     public static final String EXTRA_SWEET_SELECTED = "EXTRA_SWEET_SELECTED";
     private Button buttonSweet;
     private Button buttonSavory;
+    private Button buttonAdvancedSearch;
 
     public static IntroSelectFragment createInstance() {
         IntroSelectFragment fragment = new IntroSelectFragment();
@@ -32,21 +33,29 @@ public class IntroSelectFragment extends android.support.v4.app.Fragment {
 
     private void initialize(View v) {
         buttonSweet = (Button) v.findViewById(R.id.buttonSweet);
-        buttonSweet.setText(getString(R.string.button_text_sweet));
         buttonSweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 nextActivity(true);
             }
         });
+
         buttonSavory = (Button) v.findViewById(R.id.buttonSavory);
-        buttonSavory.setText(getString(R.string.button_text_savory));
         buttonSavory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 nextActivity(false);
             }
         });
+
+        buttonAdvancedSearch = (Button) v.findViewById(R.id.buttonAdvanced);
+        buttonAdvancedSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), AdvancedSearchActivity.class));
+            }
+        });
+
     }
 
     private void nextActivity(boolean sweetSelected) {

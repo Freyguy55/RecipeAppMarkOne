@@ -22,7 +22,6 @@ public class AdvancedSearchFragment extends Fragment {
 
     public static AdvancedSearchFragment createInstance() {
         AdvancedSearchFragment fragment = new AdvancedSearchFragment();
-
         return fragment;
     }
 
@@ -32,7 +31,7 @@ public class AdvancedSearchFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_advanced_search, container, false);
         initializeTableLayout(v);
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return v;
     }
 
     private void initializeTableLayout(View v) {
