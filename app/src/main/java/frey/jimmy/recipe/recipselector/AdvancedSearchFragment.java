@@ -36,15 +36,27 @@ public class AdvancedSearchFragment extends Fragment {
 
     private void initializeTableLayout(View v) {
         TableRow flavorRow = (TableRow) v.findViewById(R.id.flavorRow);
-        TextView textView = (TextView) flavorRow.getChildAt(0);
-        textView.setText(getString(R.string.advanced_search_flavor_category));
+        TextView flavorTextView = (TextView) flavorRow.getChildAt(0);
+        flavorTextView.setText(getString(R.string.advanced_search_flavor_category));
         Spinner flavorSpinner = (Spinner) flavorRow.getChildAt(1);
-        ArrayList<String> spinnerOptions = new ArrayList<>();
-        spinnerOptions.add("All");
-        spinnerOptions.add("Sweet");
-        spinnerOptions.add("Savory");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,spinnerOptions);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        flavorSpinner.setAdapter(adapter);
+        ArrayList<String> flavorSpinnerOptions = new ArrayList<>();
+        flavorSpinnerOptions.add("All");
+        flavorSpinnerOptions.add("Sweet");
+        flavorSpinnerOptions.add("Savory");
+        ArrayAdapter<String> flavorAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,flavorSpinnerOptions);
+        flavorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        flavorSpinner.setAdapter(flavorAdapter);
+
+        TableRow heavinessRow = (TableRow) v.findViewById(R.id.flavorRow);
+        TextView heavinessTextView = (TextView) flavorRow.getChildAt(0);
+        heavinessTextView.setText(getString(R.string.advanced_search_flavor_category));
+        Spinner heavinessSpinner = (Spinner) flavorRow.getChildAt(1);
+        ArrayList<String> heavySpinnerOptions = new ArrayList<>();
+        heavySpinnerOptions.add("All");
+        heavySpinnerOptions.add("Light");
+        heavySpinnerOptions.add("Heavy");
+        ArrayAdapter<String> heavinessAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,heavySpinnerOptions);
+        heavinessAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        heavinessSpinner.setAdapter(heavinessAdapter);
     }
 }
