@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">RecipeSelector</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_intro_select">IntroSelectActivity</string>
+    <string name="button_sweet_text">Sweet</string>
+    <string name="button_text_savory">Savory</string>
+    <string name="button_text_light">Light</string>
+    <string name="button_text_heavy">Heavy</string>
+    <string name="title_activity_intro_light_heavy">IntroLightHeavyActivity</string>
+</resources>
