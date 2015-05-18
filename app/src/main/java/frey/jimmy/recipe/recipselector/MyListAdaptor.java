@@ -46,7 +46,7 @@ public class MyListAdaptor extends ArrayAdapter<Recipe> {
         description.setText(recipe.getRecipeDescription());
         //Set time
         TextView time = (TextView) v.findViewById(R.id.timeTextView);
-        time.setText(String.valueOf(recipe.getTotalMinutes()));
+        time.setText(String.valueOf(recipe.getTotalMinutes()) + " minutes");
         //Set like/dislike image
         ImageView likeDislikeImageView = (ImageView) v.findViewById(R.id.likeDislikeImageView);
         likeDislikeImageView.setImageResource(recipe.getLikeDislikeImage());

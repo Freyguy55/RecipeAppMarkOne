@@ -34,6 +34,16 @@ public class Recipe implements Serializable{
         mIsGood = true;
     }
 
+    public Recipe(String recipeName, int recipeImageId, boolean isSweet, boolean isLight, int totalMinutes, String recipeDescription, boolean isGood) {
+        mRecipeName = recipeName;
+        mRecipeImageId = recipeImageId;
+        mIsLight = isLight;
+        mIsSweet = isSweet;
+        mTotalMinutes = totalMinutes;
+        mRecipeDescription = recipeDescription;
+        mIsGood = isGood;
+    }
+
     public String getRecipeName() {
         return mRecipeName;
     }
@@ -94,7 +104,7 @@ public class Recipe implements Serializable{
         if(mIsGood){
             return (R.drawable.recipe_image_01);
         } else{
-            return (R.drawable.kirby_hurt);
+            return (R.drawable.kirby_sad);
         }
     }
 }

@@ -11,20 +11,20 @@ public class RecipeBook {
 
     private RecipeBook(){
         mRecipes = new ArrayList<>();
-        mRecipes.add(new Recipe("Pie", R.drawable.recipe_image_01));
-        mRecipes.add(new Recipe("Steak", R.drawable.recipe_image_01));
-        mRecipes.add(new Recipe("Chicken", R.drawable.recipe_image_01));
-        mRecipes.add(new Recipe("Cheekahn", R.drawable.recipe_image_01));
-        mRecipes.add(new Recipe("Tacos", R.drawable.recipe_image_01));
-        mRecipes.add(new Recipe("Salami", R.drawable.recipe_image_01));
-        mRecipes.add(new Recipe("Ribs", R.drawable.recipe_image_01));
-        mRecipes.add(new Recipe("Pizza", R.drawable.recipe_image_01, true, true));
-        mRecipes.add(new Recipe("Cheetos", R.drawable.recipe_image_01, true, false));
-        mRecipes.add(new Recipe("Cookies", R.drawable.recipe_image_01));
-        mRecipes.add(new Recipe("Sushi", R.drawable.recipe_image_01, true, true));
-        mRecipes.add(new Recipe("Sashimi", R.drawable.recipe_image_01, false, true));
-        mRecipes.add(new Recipe("Lamb", R.drawable.recipe_image_01, true, false));
-        mRecipes.add(new Recipe("Naan", R.drawable.recipe_image_01, false, true));
+        mRecipes.add(new Recipe("Pie", R.drawable.meat, false,false,25,"It's so tasty!",true));
+        mRecipes.add(new Recipe("Steak", R.drawable.meat,false,false,15,"Ooey gooey inside.", false));
+        mRecipes.add(new Recipe("Chicken", R.drawable.meat,true,false,20,"Yummy tummy.", false));
+        mRecipes.add(new Recipe("Cheekahn", R.drawable.meat));
+        mRecipes.add(new Recipe("Tacos", R.drawable.meat));
+        mRecipes.add(new Recipe("Salami", R.drawable.meat,false,false,2,"Salami goes with everything!", true));
+        mRecipes.add(new Recipe("Ribs", R.drawable.meat));
+        mRecipes.add(new Recipe("Pizza", R.drawable.meat, true, true,10,"How does it taste?", false));
+        mRecipes.add(new Recipe("Cheetos", R.drawable.meat, true, false,5,"It's so easy!", false));
+        mRecipes.add(new Recipe("Cookies", R.drawable.meat));
+        mRecipes.add(new Recipe("Sushi", R.drawable.meat, true, true));
+        mRecipes.add(new Recipe("Sashimi", R.drawable.meat, false, true,35,"Laaadiiidaaa! Yuppers.",false));
+        mRecipes.add(new Recipe("Lamb", R.drawable.meat, true, false));
+        mRecipes.add(new Recipe("Naan", R.drawable.meat, false, true));
 
     }
 
