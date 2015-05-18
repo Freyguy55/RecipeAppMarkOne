@@ -15,10 +15,19 @@ import java.util.ArrayList;
  */
 public class RecipeListFragment extends Fragment {
 
+    private static final String KEY_RECIPES_LIST = "keyRecipesList";
     ListView mRecipeListView;
-    ArrayList<Recipe> mRecipeNameList;
+    ArrayList<Recipe> mRecipes;
 
     public RecipeListFragment() {
+    }
+
+    public static RecipeListFragment createInstance(ArrayList<Recipe> recipes){
+        RecipeListFragment fragment = new RecipeListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(KEY_RECIPES_LIST, recipes);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -30,13 +39,13 @@ public class RecipeListFragment extends Fragment {
         initializeRecipes();
 
         mRecipeListView = (ListView) v.findViewById(R.id.recipeListView);
-        mRecipeListView.setAdapter(new MyListAdaptor(getActivity(), R.layout.my_list_view, mRecipeNameList));
+        mRecipeListView.setAdapter(new MyListAdaptor(getActivity(), R.layout.my_list_view, mRecipes));
 
 
         return v;
     }
 
     private void initializeRecipes() {
-
+        mRecipes = (ArrayList<Recipe>) getArguments().getSerializable(KEY_RECIPES_LIST);
     }
 }

@@ -1,9 +1,11 @@
 package frey.jimmy.recipe.recipselector;
 
+import java.io.Serializable;
+
 /**
  * Created by James on 5/14/2015.
  */
-public class Recipe {
+public class Recipe implements Serializable{
     private String mRecipeName;
     private int mRecipeImageId;
     private boolean mIsSweet;

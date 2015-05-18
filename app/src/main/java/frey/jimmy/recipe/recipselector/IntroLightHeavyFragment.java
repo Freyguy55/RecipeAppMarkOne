@@ -1,5 +1,6 @@
 package frey.jimmy.recipe.recipselector;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 public class IntroLightHeavyFragment extends Fragment {
 
     private static final String KEY_IS_SWEET_SELECTED = "keyIsSweetSelected";
+    public static final String EXTRA_RECIPES = "ExtraRecipes";
     private Button buttonLight;
     private Button buttonHeavy;
     private TextView mSweetTextView;
@@ -64,7 +66,9 @@ public class IntroLightHeavyFragment extends Fragment {
     }
 
     private void nextActivity(boolean isLightSelected) {
-
+        Intent i = new Intent(getActivity(),RecipeList.class);
+        i.putExtra(EXTRA_RECIPES,RecipeBook.get().getFilteredRecipes(mIsSweetSelected,isLightSelected));
+        startActivity(i);
     }
 
 
