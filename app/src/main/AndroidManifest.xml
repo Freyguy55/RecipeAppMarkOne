@@ -24,6 +24,10 @@
             android:name=".IntroLightHeavyActivity"
             android:label="@string/title_activity_intro_light_heavy" >
         </activity>
+        <activity
+            android:name=".AdvancedSearchActivity"
+            android:label="@string/title_activity_advanced_search" >
+        </activity>
     </application>
 
 </manifest>

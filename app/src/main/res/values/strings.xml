@@ -9,4 +9,5 @@
     <string name="button_text_heavy">Heavy</string>
     <string name="title_activity_intro_light_heavy">IntroLightHeavyActivity</string>
     <string name="advanced_search_button_text">Advanced Search</string>
+    <string name="title_activity_advanced_search">AdvancedSearchActivity</string>
 </resources>
