@@ -13,6 +13,7 @@ public class Recipe implements Serializable{
     private boolean mIsLight;
     private int mTotalMinutes;
     private boolean mIsGood;
+    private String mRegion;
 
     public Recipe(String recipeName, int recipeImageId) {
         mRecipeName = recipeName;
@@ -22,6 +23,7 @@ public class Recipe implements Serializable{
         mTotalMinutes = 60;
         mRecipeDescription = "This is a brief description";
         mIsGood = false;
+        mRegion = "American";
     }
 
     public Recipe(String recipeName, int recipeImageId, boolean isSweet, boolean isLight) {
@@ -32,6 +34,7 @@ public class Recipe implements Serializable{
         mTotalMinutes = 30;
         mRecipeDescription = "This is also a description that is brief";
         mIsGood = true;
+        mRegion = "Korean";
     }
 
     public Recipe(String recipeName, int recipeImageId, boolean isSweet, boolean isLight, int totalMinutes, String recipeDescription, boolean isGood) {
@@ -42,6 +45,7 @@ public class Recipe implements Serializable{
         mTotalMinutes = totalMinutes;
         mRecipeDescription = recipeDescription;
         mIsGood = isGood;
+        mRegion = "Italian";
     }
 
     public String getRecipeName() {
@@ -98,6 +102,14 @@ public class Recipe implements Serializable{
 
     public void setIsGood(boolean isGood) {
         mIsGood = isGood;
+    }
+
+    public String getRegion() {
+        return mRegion;
+    }
+
+    public void setRegion(String region) {
+        mRegion = region;
     }
 
     public int getLikeDislikeImage(){
