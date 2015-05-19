@@ -1,12 +1,104 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="frey.jimmy.recipe.recipselector.RecipeDisplayFragment">
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_gravity="right"
+            android:src="@drawable/kirby_sad"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/textView2"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/textView3"
+            android:layout_below="@+id/textView2"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/textView4"
+            android:layout_below="@+id/textView3"
+            android:layout_alignLeft="@+id/textView3"
+            android:layout_alignStart="@+id/textView3"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/textView5"
+            android:layout_alignBottom="@+id/textView4"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+    </RelativeLayout>
+
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/gridView2"
+        android:numColumns="2"
+        android:layout_weight=".25"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button"/>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/textView6"/>
 
-</RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/scrollView3"
+        android:layout_weight=".75">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Lots and lots of text will be here cause it&apos;s instructions and stuff. Yup lots and lots of text.Lots and lots of text will be here cause it&apos;s instructions and stuff. Yup lots and lots of text.Lots and lots of text will be here cause it&apos;s instructions and stuff. Yup lots and lots of text.Lots and lots of text will be here cause it&apos;s instructions and stuff. Yup lots and lots of text.Lots and lots of text will be here cause it&apos;s instructions and stuff. Yup lots and lots of text.Lots and lots of text will be here cause it&apos;s instructions and stuff. Yup lots and lots of text.Lots and lots of text will be here cause it&apos;s instructions and stuff. Yup lots and lots of text.Lots and lots of text will be here cause it&apos;s instructions and stuff. Yup lots and lots of text.Lots and lots of text will be here cause it&apos;s instructions and stuff. Yup lots and lots of text.Lots and lots of text will be here cause it&apos;s instructions and stuff. Yup lots and lots of text.Lots and lots of text will be here cause it&apos;s instructions and stuff. Yup lots and lots of text.Lots and lots of text will be here cause it&apos;s instructions and stuff. Yup lots and lots of text.Lots and lots of text will be here cause it&apos;s instructions and stuff. Yup lots and lots of text."
+            android:id="@+id/textView7"/>
+    </ScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textView8"/>
+
+</LinearLayout>

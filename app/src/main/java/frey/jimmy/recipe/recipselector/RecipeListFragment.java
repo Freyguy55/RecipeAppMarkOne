@@ -1,10 +1,12 @@
 package frey.jimmy.recipe.recipselector;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 public class RecipeListFragment extends Fragment {
 
     private static final String KEY_RECIPES_LIST = "keyRecipesList";
+    public static final String EXTRA_RECIPE = "ExtraRecipe";
     ListView mRecipeListView;
     ArrayList<Recipe> mRecipes;
 
@@ -39,6 +42,15 @@ public class RecipeListFragment extends Fragment {
         initializeRecipes();
 
         mRecipeListView = (ListView) v.findViewById(R.id.recipeListView);
+        mRecipeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Recipe r = mRecipes.get(i);
+                Intent intent = new Intent(getActivity(),RecipeDisplayActivity.class);
+                intent.putExtra(EXTRA_RECIPE,r);
+                startActivity(intent);
+            }
+        });
         mRecipeListView.setAdapter(new MyListAdaptor(getActivity(), R.layout.my_list_view, mRecipes));
 
 
