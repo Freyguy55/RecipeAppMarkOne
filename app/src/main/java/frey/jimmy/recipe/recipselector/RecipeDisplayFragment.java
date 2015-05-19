@@ -42,6 +42,9 @@ public class RecipeDisplayFragment extends Fragment {
 
     private void initializeView(View v, Bundle savedInstanceState) {
         mIngredientsExpandCollapseImageView = (ImageView) v.findViewById(R.id.ingredientExpandCollapseImageView);
+        mInstructionsExpandCollapseImageView = (ImageView) v.findViewById(R.id.instructionsExpandCollapseImageView);
+        mIngredientsGridview = (GridView) v.findViewById(R.id.ingredientsGridView);
+        mInstructionsScrollView = (ScrollView) v.findViewById(R.id.instructionsScrollView);
         //Initialize bundledStates
         if(savedInstanceState!=null){
             if(!savedInstanceState.getBoolean(KEY_INGREDIENTS_EXPANDED)){ //If ingredients should be collapsed
@@ -69,10 +72,13 @@ public class RecipeDisplayFragment extends Fragment {
         if(mIsIngredientExpanded) { //It is currently expanded and should collapse
             mIngredientsExpandCollapseImageView.setImageResource(R.drawable.expander_open_holo_light);
             mIsIngredientExpanded = false;
+            mIngredientsGridview.setVisibility(View.GONE);
         } else{  //It is currently collapsed and should expand
             mIngredientsExpandCollapseImageView.setImageResource(R.drawable.expander_close_holo_light);
             mIsIngredientExpanded = true;
+            mIngredientsGridview.setVisibility(View.VISIBLE);
         }
+
     }
 
     private void toggleInstructionOpenClose() {
