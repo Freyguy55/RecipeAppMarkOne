@@ -19,7 +19,8 @@ public class RecipeDisplayActivity extends FragmentActivity {
         FragmentManager fm = getSupportFragmentManager();
         Fragment recipeDisplayFragment = fm.findFragmentById(R.id.fragment_intro_select_container);
         if(recipeDisplayFragment == null){
-            recipeDisplayFragment = RecipeDisplayFragment.createInstance();
+            Recipe r = (Recipe) getIntent().getSerializableExtra(RecipeListFragment.EXTRA_RECIPE);
+            recipeDisplayFragment = RecipeDisplayFragment.createInstance(r);
             fm.beginTransaction().add(R.id.fragment_intro_select_container,recipeDisplayFragment).commit();
         }
     }

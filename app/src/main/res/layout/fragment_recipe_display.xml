@@ -82,7 +82,8 @@
         android:layout_weight=".25"
         android:numColumns="2"
         android:stretchMode="columnWidth"
-        android:background="@drawable/background_color2"/>
+        android:background="@drawable/background_color2"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
