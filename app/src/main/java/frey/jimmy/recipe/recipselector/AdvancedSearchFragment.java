@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -30,11 +31,18 @@ public class AdvancedSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_advanced_search, container, false);
         initializeTableLayout(v);
+        Button buttonGo = (Button)v.findViewById(R.id.buttonAdvancedSearchGo);
+        buttonGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
         return v;
     }
 
     private void initializeTableLayout(View v) {
+        //Flavor selection
         TableRow flavorRow = (TableRow) v.findViewById(R.id.flavorRow);
         TextView flavorTextView = (TextView) flavorRow.getChildAt(0);
         flavorTextView.setText(getString(R.string.advanced_search_flavor_category));
@@ -44,6 +52,7 @@ public class AdvancedSearchFragment extends Fragment {
         flavorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         flavorSpinner.setAdapter(flavorAdapter);
 
+        //Lightness selection
         TableRow heavinessRow = (TableRow) v.findViewById(R.id.fillingRow);
         TextView heavinessTextView = (TextView) heavinessRow.getChildAt(0);
         heavinessTextView.setText(getString(R.string.light_heavy_category_text));
@@ -53,6 +62,7 @@ public class AdvancedSearchFragment extends Fragment {
         heavinessAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         heavinessSpinner.setAdapter(heavinessAdapter);
 
+        //Region selection
         TableRow regionRow = (TableRow) v.findViewById(R.id.categoryRow);
         TextView regionTextView = (TextView) regionRow.getChildAt(0);
         regionTextView.setText(getString(R.string.region_category_text));
