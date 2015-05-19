@@ -102,11 +102,11 @@ public class RecipeDisplayFragment extends Fragment {
 
     private void toggleIngredientOpenClose() {
         if(mIsIngredientExpanded) { //It is currently expanded and should collapse
-            mIngredientsExpandCollapseImageView.setImageResource(R.drawable.expander_open_holo_light);
+            mIngredientsExpandCollapseImageView.setImageResource(R.drawable.expander_close_holo_light);
             mIsIngredientExpanded = false;
             mIngredientsGridview.setVisibility(View.GONE);
         } else{  //It is currently collapsed and should expand
-            mIngredientsExpandCollapseImageView.setImageResource(R.drawable.expander_close_holo_light);
+            mIngredientsExpandCollapseImageView.setImageResource(R.drawable.expander_open_holo_light);
             mIsIngredientExpanded = true;
             mIngredientsGridview.setVisibility(View.VISIBLE);
         }
@@ -115,11 +115,11 @@ public class RecipeDisplayFragment extends Fragment {
 
     private void toggleInstructionOpenClose() {
         if(mIsInstructionExpanded) { //It is currently expanded and should collapse
-            mInstructionsExpandCollapseImageView.setImageResource(R.drawable.expander_open_holo_light);
+            mInstructionsExpandCollapseImageView.setImageResource(R.drawable.expander_close_holo_light);
             mIsInstructionExpanded = false;
             mInstructionsScrollView.setVisibility(View.GONE);
         } else{  //It is currently collapsed and should expand
-            mInstructionsExpandCollapseImageView.setImageResource(R.drawable.expander_close_holo_light);
+            mInstructionsExpandCollapseImageView.setImageResource(R.drawable.expander_open_holo_light);
             mIsInstructionExpanded = true;
             mInstructionsScrollView.setVisibility(View.VISIBLE);
         }

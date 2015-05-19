@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ingredientExpandCollapseImageView"
-            android:src="@drawable/expander_close_holo_light"
+            android:src="@drawable/expander_open_holo_light"
             android:layout_toRightOf="@+id/textView2"
             android:layout_alignParentBottom="false"
             android:layout_alignParentLeft="false"
@@ -115,7 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/instructionsExpandCollapseImageView"
-            android:src="@drawable/expander_close_holo_light"
+            android:src="@drawable/expander_open_holo_light"
             android:layout_alignParentTop="false"
             android:layout_toRightOf="@+id/textView"
             android:layout_toEndOf="@+id/textView"/>
