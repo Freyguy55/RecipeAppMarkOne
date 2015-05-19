@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/recipeDisplayLikeImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -21,41 +21,40 @@
             android:src="@drawable/kirby_sad"/>
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/recipeDisplayNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:text="Large Text"
+            android:text="&lt;Name>"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/servingSizeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView2"
+            android:layout_below="@+id/recipeDisplayNameTextView"
             android:layout_centerHorizontal="true"
-            android:text="Small Text"
+            android:text="&lt;Servings>"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/prepTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView3"
-            android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/textView3"
-            android:text="Small Text"
+            android:layout_alignLeft="@+id/servingSizeTextView"
+            android:layout_alignStart="@+id/servingSizeTextView"
+            android:layout_below="@+id/servingSizeTextView"
+            android:text="&lt;Prep time>"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
         <TextView
-            android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView4"
+            android:layout_alignBottom="@+id/prepTimeTextView"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:text="Small Text"
+            android:text="@string/ingredients_text_view_text"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     </RelativeLayout>
@@ -65,27 +64,29 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight=".25"
-        android:numColumns="2"/>
+        android:numColumns="2"
+        android:background="@drawable/background_color2"/>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonAddToShopList"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"/>
+        android:text="Add to list"/>
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Small Text"
+        android:text="@string/instructions_text_view_text"
         android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".75">
+        android:layout_weight=".75"
+        android:background="@drawable/background_color2">
 
         <TextView
             android:id="@+id/textView7"
@@ -96,10 +97,10 @@
     </ScrollView>
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/textViewTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Large Text"
+        android:text="60:00"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 </LinearLayout>

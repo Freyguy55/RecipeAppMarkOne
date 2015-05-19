@@ -16,5 +16,7 @@
     <string name="light_heavy_category_text">Lightness</string>
     <string name="region_category_text">Region</string>
     <string name="title_activity_recipe_display">RecipeDisplayActivity</string>
+    <string name="ingredients_text_view_text">Ingredients</string>
+    <string name="instructions_text_view_text">Instructions</string>
 
 </resources>
