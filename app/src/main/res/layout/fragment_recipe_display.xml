@@ -72,7 +72,8 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add to list"/>
+        android:text="Add to list"
+        android:layout_gravity="right"/>
 
     <TextView
         android:id="@+id/textView6"
