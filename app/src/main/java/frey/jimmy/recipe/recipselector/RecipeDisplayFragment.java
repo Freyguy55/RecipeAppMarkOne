@@ -41,10 +41,12 @@ public class RecipeDisplayFragment extends Fragment {
     }
 
     private void initializeView(View v, Bundle savedInstanceState) {
+        //Set view fields
         mIngredientsExpandCollapseImageView = (ImageView) v.findViewById(R.id.ingredientExpandCollapseImageView);
         mInstructionsExpandCollapseImageView = (ImageView) v.findViewById(R.id.instructionsExpandCollapseImageView);
         mIngredientsGridview = (GridView) v.findViewById(R.id.ingredientsGridView);
         mInstructionsScrollView = (ScrollView) v.findViewById(R.id.instructionsScrollView);
+
         //Initialize bundledStates
         if(savedInstanceState!=null){
             if(!savedInstanceState.getBoolean(KEY_INGREDIENTS_EXPANDED)){ //If ingredients should be collapsed
@@ -55,12 +57,18 @@ public class RecipeDisplayFragment extends Fragment {
             }
         }
 
-        //Initialize Ingredients
-
+        //Wire buttons
         mIngredientsExpandCollapseImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 toggleIngredientOpenClose();
+            }
+        });
+
+        mInstructionsExpandCollapseImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleInstructionOpenClose();
             }
         });
 
@@ -82,6 +90,15 @@ public class RecipeDisplayFragment extends Fragment {
     }
 
     private void toggleInstructionOpenClose() {
+        if(mIsInstructionExpanded) { //It is currently expanded and should collapse
+            mInstructionsExpandCollapseImageView.setImageResource(R.drawable.expander_open_holo_light);
+            mIsInstructionExpanded = false;
+            mInstructionsScrollView.setVisibility(View.GONE);
+        } else{  //It is currently collapsed and should expand
+            mInstructionsExpandCollapseImageView.setImageResource(R.drawable.expander_close_holo_light);
+            mIsInstructionExpanded = true;
+            mInstructionsScrollView.setVisibility(View.VISIBLE);
+        }
     }
 
     //Save expanded or collapsed states
