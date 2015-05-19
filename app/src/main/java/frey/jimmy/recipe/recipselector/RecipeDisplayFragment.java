@@ -25,6 +25,7 @@ public class RecipeDisplayFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_recipe_display, container, false);
 
+
         return v;
     }
 
