@@ -5,7 +5,8 @@
               android:layout_height="match_parent"
               android:gravity="center_horizontal"
               android:orientation="vertical"
-              tools:context="frey.jimmy.recipe.recipselector.IntroSelectActivity">
+              tools:context="frey.jimmy.recipe.recipselector.IntroSelectActivity"
+              android:background="@drawable/background_color">
 
     <TextView
         android:id="@+id/selectionTextView"
@@ -17,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        >
 
         <Button
             android:id="@+id/buttonSweet"
