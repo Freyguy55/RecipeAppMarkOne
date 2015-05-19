@@ -15,5 +15,6 @@
     <string name="spinner_all_text">All</string>
     <string name="light_heavy_category_text">Lightness</string>
     <string name="region_category_text">Region</string>
+    <string name="title_activity_recipe_display">RecipeDisplayActivity</string>
 
 </resources>

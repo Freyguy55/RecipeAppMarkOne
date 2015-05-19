@@ -28,6 +28,10 @@
             android:name=".AdvancedSearchActivity"
             android:label="@string/title_activity_advanced_search" >
         </activity>
+        <activity
+            android:name=".RecipeDisplayActivity"
+            android:label="@string/title_activity_recipe_display" >
+        </activity>
     </application>
 
 </manifest>
