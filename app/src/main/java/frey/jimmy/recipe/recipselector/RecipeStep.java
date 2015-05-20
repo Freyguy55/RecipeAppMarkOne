@@ -14,11 +14,13 @@ public class RecipeStep implements Serializable{
 
     public RecipeStep(){
         mInstructions = "Test step instructions";
+        mImageId = 9;
     }
 
-    public RecipeStep(String[] ingredientsArray, String instructions, BitmapDrawable stepImage) {
+    public RecipeStep(String[] ingredientsArray, String instructions, int imageId) {
         mIngredientsArray = ingredientsArray;
         mInstructions = instructions;
+        mImageId = imageId;
     }
 
     public String[] getIngredientsArray() {

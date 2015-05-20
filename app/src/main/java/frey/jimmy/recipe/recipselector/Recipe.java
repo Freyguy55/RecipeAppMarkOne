@@ -53,6 +53,11 @@ public class Recipe implements Serializable{
         mIsGood = isGood;
         mRegion = "Italian";
         mServesNumber = 6;
+
+        mRecipeStepList = new ArrayList<>();
+        mRecipeStepList.add(new RecipeStep());
+        mRecipeStepList.add(new RecipeStep());
+        mRecipeStepList.add(new RecipeStep());
     }
 
     public String getRecipeName() {
