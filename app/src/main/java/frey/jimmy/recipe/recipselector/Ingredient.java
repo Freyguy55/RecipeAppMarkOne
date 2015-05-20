@@ -4,51 +4,45 @@ import java.io.Serializable;
 
 /**
  * Ingredient class for use in Recipe class.  The recipe class contains an array of ingredients.
- * Igredients consist of a quantity, a unit of measurement, and a name.
+ * Ingredients consist of a mQuantity, a unit of measurement, and a name.
  */
 public class Ingredient implements Serializable{
-    private double quantity;
-    private String unit;
-    private String name;
+    private double mQuantity;
+    private String mUnit;
+    private String mName;
 
     public Ingredient() {
         this(0.0,"NoIngredient");
     }
 
     public Ingredient(double quantity, String name) {
-        this.quantity = quantity;
-        this.name = name;
+        mQuantity = quantity;
+        mName = name;
     }
 
     public Ingredient(double quantity, String unit, String name) {
-        this.quantity = quantity;
-        this.unit = unit;
-        this.name = name;
+        mQuantity = quantity;
+        mUnit = unit;
+        mName = name;
     }
 
-    /* Getters and setters */
     public double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(double quantity) {
-        this.quantity = quantity;
+        return mQuantity;
     }
 
     public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
+        return mUnit;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String toString(){
+        if(null == mUnit){
+            return mQuantity + " " + mName;
+        }
+        return mQuantity + " " + mUnit + " " + mName;
     }
 
 }

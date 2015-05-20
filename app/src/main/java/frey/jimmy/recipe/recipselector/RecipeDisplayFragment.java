@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 
 public class RecipeDisplayFragment extends Fragment {
     private static final String KEY_INGREDIENTS_EXPANDED = "KeyIngredientsExpanded";
@@ -24,7 +26,7 @@ public class RecipeDisplayFragment extends Fragment {
     private ImageView mInstructionsExpandCollapseImageView;
     private ScrollView mInstructionsScrollView;
     private GridView mIngredientsGridview;
-    private String[] mIngredientsArray = {"1 cup stuff", "3 carrots", "1/4 cup onions", "15 cream puffs", "5 golden rings","2 turtle doves", "1 pear tree"};
+    private ArrayList<String> mIngredientStringList;
 
     public RecipeDisplayFragment() {
     }
@@ -51,14 +53,26 @@ public class RecipeDisplayFragment extends Fragment {
     }
 
     private void setRecipeData(View v) {
+        //Load data into appropriate fields
+        //Name
         TextView nameTextView = (TextView) v.findViewById(R.id.recipeDisplayNameTextView);
         nameTextView.setText(mRecipe.getRecipeName());
+        //Prep time
         TextView prepTimeTextView = (TextView) v.findViewById(R.id.prepTimeTextView);
         prepTimeTextView.setText(mRecipe.getTotalMinutes() + " minutes");
+        //Timer
         TextView timerTextView = (TextView) v.findViewById(R.id.textViewTimer);
         timerTextView.setText(mRecipe.getTotalMinutes()+":00");
+        //Serving size
         TextView servingSizeTextView = (TextView) v.findViewById(R.id.servingSizeTextView);
         servingSizeTextView.setText("Serves "+ mRecipe.getServesNumber());
+        //Instructions
+        TextView instructionsTextView = (TextView) v.findViewById(R.id.instructionsTextView);
+        instructionsTextView.setText(mRecipe.getInstructions());
+        //Ingredients
+        mIngredientStringList = mRecipe.getRecipeIngredientStringList();
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(getActivity(),R.layout.my_simple_list_view_1, mIngredientStringList);
+        mIngredientsGridview.setAdapter(myAdapter);
     }
 
     private void initializeView(View v, Bundle savedInstanceState) {
@@ -77,10 +91,6 @@ public class RecipeDisplayFragment extends Fragment {
                 toggleInstructionOpenClose(); //Collapse instructions (initial state is always expanded)
             }
         }
-
-        //Initialize gridview
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(getActivity(),R.layout.my_simple_list_view_1,mIngredientsArray);
-        mIngredientsGridview.setAdapter(myAdapter);
 
         //Wire Ingredients open/close button
         mIngredientsExpandCollapseImageView.setOnClickListener(new View.OnClickListener() {

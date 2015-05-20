@@ -1,15 +1,12 @@
 package frey.jimmy.recipe.recipselector;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -49,7 +46,22 @@ public class MyListAdaptor extends ArrayAdapter<Recipe> {
         time.setText(String.valueOf(recipe.getTotalMinutes()) + " minutes");
         //Set like/dislike image
         ImageView likeDislikeImageView = (ImageView) v.findViewById(R.id.likeDislikeImageView);
-        likeDislikeImageView.setImageResource(recipe.getLikeDislikeImage());
+        int imageResourceId;
+        switch (recipe.isGood()) {
+            case Recipe.RECIPE_IS_BAD: {
+                imageResourceId = R.drawable.kirby_sad;
+                break;
+            }
+            case Recipe.RECIPE_IS_GOOD: {
+                imageResourceId = R.drawable.recipe_image_01;
+                break;
+            }
+            default: {
+                imageResourceId = R.drawable.kirby_hurt;
+                break;
+            }
+        }
+        likeDislikeImageView.setImageResource(imageResourceId);
         return v;
     }
 }

@@ -75,17 +75,6 @@ public class Recipe implements Serializable {
         return mRegion;
     }
 
-    public int getLikeDislikeImage() {
-        switch (mIsGood) {
-            case 0:
-                return 0;
-            case 1:
-                return 1;
-            default:
-                return 2;
-
-        }
-    }
 
     public int getServesNumber() {
         return mServesNumber;
@@ -100,5 +89,16 @@ public class Recipe implements Serializable {
         return mRecipeIngredientList;
     }
 
+    public ArrayList<String> getRecipeIngredientStringList(){
+        ArrayList<String> ingredientStringList = new ArrayList<>();
+        for(Ingredient i : mRecipeIngredientList){
+            ingredientStringList.add(i.toString());
+        }
+        return ingredientStringList;
+    }
+
+    public String getInstructions() {
+        return mInstructions;
+    }
 }
 
