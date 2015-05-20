@@ -46,7 +46,7 @@ public class RecipeListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Recipe r = mRecipes.get(i);
-                Intent intent = new Intent(getActivity(),RecipeDisplayActivity.class);
+                Intent intent = new Intent(getActivity(),RecipePagerActivity.class);
                 intent.putExtra(EXTRA_RECIPE,r);
                 startActivity(intent);
             }

@@ -32,6 +32,14 @@
             android:name=".RecipeDisplayActivity"
             android:label="@string/title_activity_recipe_display" >
         </activity>
+        <activity
+            android:name=".RecipePagerActivity"
+            android:label="@string/title_activity_recipe_pager"
+            android:parentActivityName=".RecipeList" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="frey.jimmy.recipe.recipselector.RecipeList" />
+        </activity>
     </application>
 
 </manifest>

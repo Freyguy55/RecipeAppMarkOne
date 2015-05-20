@@ -57,6 +57,8 @@ public class RecipeDisplayFragment extends Fragment {
         prepTimeTextView.setText(mRecipe.getTotalMinutes() + " minutes");
         TextView timerTextView = (TextView) v.findViewById(R.id.textViewTimer);
         timerTextView.setText(mRecipe.getTotalMinutes()+":00");
+        TextView servingSizeTextView = (TextView) v.findViewById(R.id.servingSizeTextView);
+        servingSizeTextView.setText("Serves "+ mRecipe.getServesNumber());
     }
 
     private void initializeView(View v, Bundle savedInstanceState) {

@@ -1,6 +1,7 @@
 package frey.jimmy.recipe.recipselector;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by James on 5/14/2015.
@@ -8,12 +9,15 @@ import java.io.Serializable;
 public class Recipe implements Serializable{
     private String mRecipeName;
     private String mRecipeDescription;
+    private int mServesNumber;
     private int mRecipeImageId;
     private boolean mIsSweet;
     private boolean mIsLight;
     private int mTotalMinutes;
     private boolean mIsGood;
     private String mRegion;
+    private ArrayList<RecipeStep> mRecipeStepList;
+
 
     public Recipe(String recipeName, int recipeImageId) {
         mRecipeName = recipeName;
@@ -24,6 +28,7 @@ public class Recipe implements Serializable{
         mRecipeDescription = "This is a brief description";
         mIsGood = false;
         mRegion = "American";
+        mServesNumber = 2;
     }
 
     public Recipe(String recipeName, int recipeImageId, boolean isSweet, boolean isLight) {
@@ -35,6 +40,7 @@ public class Recipe implements Serializable{
         mRecipeDescription = "This is also a description that is brief";
         mIsGood = true;
         mRegion = "Korean";
+        mServesNumber = 4;
     }
 
     public Recipe(String recipeName, int recipeImageId, boolean isSweet, boolean isLight, int totalMinutes, String recipeDescription, boolean isGood) {
@@ -46,6 +52,7 @@ public class Recipe implements Serializable{
         mRecipeDescription = recipeDescription;
         mIsGood = isGood;
         mRegion = "Italian";
+        mServesNumber = 6;
     }
 
     public String getRecipeName() {
@@ -118,5 +125,21 @@ public class Recipe implements Serializable{
         } else{
             return (R.drawable.kirby_sad);
         }
+    }
+
+    public int getServesNumber() {
+        return mServesNumber;
+    }
+
+    public void setServesNumber(int servesNumber) {
+        mServesNumber = servesNumber;
+    }
+
+    public ArrayList<RecipeStep> getRecipeStepList() {
+        return mRecipeStepList;
+    }
+
+    public void setRecipeStepList(ArrayList<RecipeStep> recipeStepList) {
+        mRecipeStepList = recipeStepList;
     }
 }
