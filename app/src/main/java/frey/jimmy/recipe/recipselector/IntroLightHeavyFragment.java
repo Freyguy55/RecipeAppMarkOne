@@ -9,14 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Created by James on 5/17/2015.
  */
 public class IntroLightHeavyFragment extends Fragment {
 
-    private static final String KEY_IS_SWEET_SELECTED = "keyIsSweetSelected";
     public static final String EXTRA_RECIPES = "ExtraRecipes";
+    private static final String KEY_IS_SWEET_SELECTED = "keyIsSweetSelected";
     private Button buttonLight;
     private Button buttonHeavy;
     private TextView mSweetTextView;
@@ -66,8 +69,13 @@ public class IntroLightHeavyFragment extends Fragment {
     }
 
     private void nextActivity(boolean isLightSelected) {
-        Intent i = new Intent(getActivity(),RecipeList.class);
-        i.putExtra(EXTRA_RECIPES,RecipeBook.get(getActivity()).getFilteredRecipes(mIsSweetSelected,isLightSelected));
+        ArrayList<Recipe> filteredList = RecipeBook.get(getActivity()).getFilteredRecipes(mIsSweetSelected, isLightSelected);
+        if (filteredList == null) {
+            Toast.makeText(getActivity(),"No recipes match your query.",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent i = new Intent(getActivity(), RecipeList.class);
+        i.putExtra(EXTRA_RECIPES, filteredList);
         startActivity(i);
     }
 
