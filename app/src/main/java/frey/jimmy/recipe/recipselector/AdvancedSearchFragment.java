@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -35,7 +36,11 @@ public class AdvancedSearchFragment extends Fragment {
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                ArrayList<Recipe> filteredList = RecipeBook.get(getActivity()).getFilteredRecipes(true, true);
+                if (filteredList == null) {
+                    Toast.makeText(getActivity(), "No recipes match your query.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
         });
         return v;
