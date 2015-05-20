@@ -1,6 +1,5 @@
 package frey.jimmy.recipe.recipselector;
 
-import android.graphics.drawable.BitmapDrawable;
 
 import java.io.Serializable;
 

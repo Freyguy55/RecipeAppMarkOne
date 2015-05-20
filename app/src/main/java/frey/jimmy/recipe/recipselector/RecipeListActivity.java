@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 
-public class RecipeList extends FragmentActivity {
+public class RecipeListActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

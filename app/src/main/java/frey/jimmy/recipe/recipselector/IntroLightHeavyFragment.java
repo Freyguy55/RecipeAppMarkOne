@@ -70,11 +70,11 @@ public class IntroLightHeavyFragment extends Fragment {
 
     private void nextActivity(boolean isLightSelected) {
         ArrayList<Recipe> filteredList = RecipeBook.get(getActivity()).getFilteredRecipes(mIsSweetSelected, isLightSelected);
-        if (filteredList == null) {
+        if (filteredList == null || filteredList.size() == 0) {
             Toast.makeText(getActivity(),"No recipes match your query.",Toast.LENGTH_SHORT).show();
             return;
         }
-        Intent i = new Intent(getActivity(), RecipeList.class);
+        Intent i = new Intent(getActivity(), RecipeListActivity.class);
         i.putExtra(EXTRA_RECIPES, filteredList);
         startActivity(i);
     }
