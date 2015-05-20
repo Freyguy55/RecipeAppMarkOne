@@ -70,6 +70,9 @@ public class Recipe implements Serializable {
         return mIsGood;
     }
 
+    public void setIsGood(int isGood) {
+        mIsGood = isGood;
+    }
 
     public String getRegion() {
         return mRegion;

@@ -24,6 +24,7 @@ public class RecipeDisplayFragment extends Fragment {
     boolean mIsInstructionExpanded = true;
     private ImageView mIngredientsExpandCollapseImageView;
     private ImageView mInstructionsExpandCollapseImageView;
+    private ImageView mLikeDislikeImageView;
     private ScrollView mInstructionsScrollView;
     private GridView mIngredientsGridview;
     private ArrayList<String> mIngredientStringList;
@@ -34,7 +35,7 @@ public class RecipeDisplayFragment extends Fragment {
     public static RecipeDisplayFragment createInstance(Recipe r) {
         RecipeDisplayFragment fragment = new RecipeDisplayFragment();
         Bundle args = new Bundle();
-        args.putSerializable(KEY_RECIPE,r);
+        args.putSerializable(KEY_RECIPE, r);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,6 +74,44 @@ public class RecipeDisplayFragment extends Fragment {
         mIngredientStringList = mRecipe.getRecipeIngredientStringList();
         ArrayAdapter<String> myAdapter = new ArrayAdapter<>(getActivity(),R.layout.my_simple_list_view_1, mIngredientStringList);
         mIngredientsGridview.setAdapter(myAdapter);
+        //Like or dislike image
+        mLikeDislikeImageView = (ImageView) v.findViewById(R.id.recipeDisplayLikeImageView);
+        switch (mRecipe.isGood()){
+            case Recipe.RECIPE_IS_BAD:{
+                mLikeDislikeImageView.setImageResource(R.drawable.kirby_sad);
+                break;
+            }
+            case Recipe.RECIPE_IS_GOOD:{
+                mLikeDislikeImageView.setImageResource(R.drawable.recipe_image_01);
+                break;
+            }
+            default:
+                mLikeDislikeImageView.setImageResource(R.drawable.kirby_hurt);
+                break;
+        }
+        mLikeDislikeImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (mRecipe.isGood()){
+                    case Recipe.RECIPE_IS_BAD:{
+                        mRecipe.setIsGood(Recipe.RECIPE_IS_UNKNOWN);
+                        mLikeDislikeImageView.setImageResource(R.drawable.kirby_hurt);
+                        break;
+                    }
+                    case Recipe.RECIPE_IS_GOOD:{
+                        mRecipe.setIsGood(Recipe.RECIPE_IS_BAD);
+                        mLikeDislikeImageView.setImageResource(R.drawable.kirby_sad);
+                        break;
+                    }
+                    default:
+                        mRecipe.setIsGood(Recipe.RECIPE_IS_GOOD);
+                        mLikeDislikeImageView.setImageResource(R.drawable.recipe_image_01);
+                        break;
+                }
+                //TODO Save Recipe to File?
+            }
+        });
+
     }
 
     private void initializeView(View v, Bundle savedInstanceState) {
