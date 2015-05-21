@@ -19,9 +19,9 @@ public class RecipeDisplayFragment extends Fragment {
     private static final String KEY_INGREDIENTS_EXPANDED = "KeyIngredientsExpanded";
     private static final String KEY_INSTRUCTIONS_EXPANDED = "KeyInstructionsExpanded";
     private static final String KEY_RECIPE = "keyRecipe";
-    private Recipe mRecipe;
     boolean mIsIngredientExpanded = true;
     boolean mIsInstructionExpanded = true;
+    private Recipe mRecipe;
     private ImageView mIngredientsExpandCollapseImageView;
     private ImageView mInstructionsExpandCollapseImageView;
     private ImageView mLikeDislikeImageView;
@@ -63,25 +63,25 @@ public class RecipeDisplayFragment extends Fragment {
         prepTimeTextView.setText(mRecipe.getTotalMinutes() + " minutes");
         //Timer
         TextView timerTextView = (TextView) v.findViewById(R.id.textViewTimer);
-        timerTextView.setText(mRecipe.getTotalMinutes()+":00");
+        timerTextView.setText(mRecipe.getTotalMinutes() + ":00");
         //Serving size
         TextView servingSizeTextView = (TextView) v.findViewById(R.id.servingSizeTextView);
-        servingSizeTextView.setText("Serves "+ mRecipe.getServesNumber());
+        servingSizeTextView.setText("Serves " + mRecipe.getServesNumber());
         //Instructions
         TextView instructionsTextView = (TextView) v.findViewById(R.id.instructionsTextView);
         instructionsTextView.setText(mRecipe.getInstructions());
         //Ingredients
         mIngredientStringList = mRecipe.getRecipeIngredientStringList();
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(getActivity(),R.layout.my_simple_list_view_1, mIngredientStringList);
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(getActivity(), R.layout.my_simple_list_view_1, mIngredientStringList);
         mIngredientsGridview.setAdapter(myAdapter);
         //Like or dislike image
         mLikeDislikeImageView = (ImageView) v.findViewById(R.id.recipeDisplayLikeImageView);
-        switch (mRecipe.isGood()){
-            case Recipe.RECIPE_IS_BAD:{
+        switch (mRecipe.isGood()) {
+            case Recipe.RECIPE_IS_BAD: {
                 mLikeDislikeImageView.setImageResource(R.drawable.kirby_sad);
                 break;
             }
-            case Recipe.RECIPE_IS_GOOD:{
+            case Recipe.RECIPE_IS_GOOD: {
                 mLikeDislikeImageView.setImageResource(R.drawable.recipe_image_01);
                 break;
             }
@@ -92,26 +92,26 @@ public class RecipeDisplayFragment extends Fragment {
         mLikeDislikeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (mRecipe.isGood()){
-                    case Recipe.RECIPE_IS_BAD:{
+                switch (mRecipe.isGood()) {
+                    case Recipe.RECIPE_IS_BAD: {
                         mRecipe.setIsGood(Recipe.RECIPE_IS_UNKNOWN);
                         mLikeDislikeImageView.setImageResource(R.drawable.kirby_hurt);
                         break;
                     }
-                    case Recipe.RECIPE_IS_GOOD:{
+                    case Recipe.RECIPE_IS_GOOD: {
                         mRecipe.setIsGood(Recipe.RECIPE_IS_BAD);
                         mLikeDislikeImageView.setImageResource(R.drawable.kirby_sad);
                         break;
                     }
-                    default:
+                    default: {
                         mRecipe.setIsGood(Recipe.RECIPE_IS_GOOD);
                         mLikeDislikeImageView.setImageResource(R.drawable.recipe_image_01);
                         break;
+                    }
                 }
-                //TODO Save Recipe to File?
+                RecipeBook.get(getActivity()).saveRecipes();
             }
         });
-
     }
 
     private void initializeView(View v, Bundle savedInstanceState) {
@@ -122,11 +122,11 @@ public class RecipeDisplayFragment extends Fragment {
         mInstructionsScrollView = (ScrollView) v.findViewById(R.id.instructionsScrollView);
 
         //Initialize bundledStates
-        if(savedInstanceState!=null){
-            if(!savedInstanceState.getBoolean(KEY_INGREDIENTS_EXPANDED)){ //If ingredients should be collapsed
+        if (savedInstanceState != null) {
+            if (!savedInstanceState.getBoolean(KEY_INGREDIENTS_EXPANDED)) { //If ingredients should be collapsed
                 toggleIngredientOpenClose(); //Collapse ingredients (initial state is always expanded)
             }
-            if(!savedInstanceState.getBoolean(KEY_INSTRUCTIONS_EXPANDED)){
+            if (!savedInstanceState.getBoolean(KEY_INSTRUCTIONS_EXPANDED)) {
                 toggleInstructionOpenClose(); //Collapse instructions (initial state is always expanded)
             }
         }
@@ -150,13 +150,12 @@ public class RecipeDisplayFragment extends Fragment {
     }
 
 
-
     private void toggleIngredientOpenClose() {
-        if(mIsIngredientExpanded) { //It is currently expanded and should collapse
+        if (mIsIngredientExpanded) { //It is currently expanded and should collapse
             mIngredientsExpandCollapseImageView.setImageResource(R.drawable.expander_close_holo_light);
             mIsIngredientExpanded = false;
             mIngredientsGridview.setVisibility(View.GONE);
-        } else{  //It is currently collapsed and should expand
+        } else {  //It is currently collapsed and should expand
             mIngredientsExpandCollapseImageView.setImageResource(R.drawable.expander_open_holo_light);
             mIsIngredientExpanded = true;
             mIngredientsGridview.setVisibility(View.VISIBLE);
@@ -165,11 +164,11 @@ public class RecipeDisplayFragment extends Fragment {
     }
 
     private void toggleInstructionOpenClose() {
-        if(mIsInstructionExpanded) { //It is currently expanded and should collapse
+        if (mIsInstructionExpanded) { //It is currently expanded and should collapse
             mInstructionsExpandCollapseImageView.setImageResource(R.drawable.expander_close_holo_light);
             mIsInstructionExpanded = false;
             mInstructionsScrollView.setVisibility(View.GONE);
-        } else{  //It is currently collapsed and should expand
+        } else {  //It is currently collapsed and should expand
             mInstructionsExpandCollapseImageView.setImageResource(R.drawable.expander_open_holo_light);
             mIsInstructionExpanded = true;
             mInstructionsScrollView.setVisibility(View.VISIBLE);
