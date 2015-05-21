@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.UUID;
 
 
@@ -49,12 +48,13 @@ public class RecipeListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 UUID id = mRecipes.get(i).getUuid();
-                Intent intent = new Intent(getActivity(),RecipePagerActivity.class);
-                intent.putExtra(EXTRA_RECIPE_ID,id);
+                Intent intent = new Intent(getActivity(), RecipePagerActivity.class);
+                intent.putExtra(EXTRA_RECIPE_ID, id);
                 startActivity(intent);
             }
         });
-        mRecipeListView.setAdapter(new MyListAdaptor(getActivity(), R.layout.my_list_view, mRecipes));
+        MyListAdapter myAdapter = new MyListAdapter(getActivity(), R.layout.my_list_view, mRecipes);
+        mRecipeListView.setAdapter(myAdapter);
 
 
         return v;
@@ -63,5 +63,13 @@ public class RecipeListFragment extends Fragment {
     private void initializeRecipes() {
         ArrayList<UUID> recipeIds = (ArrayList<UUID>) getArguments().getSerializable(KEY_RECIPE_IDS);
         mRecipes = RecipeBook.get(getActivity()).getFilteredRecipeList(recipeIds);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MyListAdapter adapter = (MyListAdapter) mRecipeListView.getAdapter();
+        adapter.notifyDataSetChanged();
+
     }
 }

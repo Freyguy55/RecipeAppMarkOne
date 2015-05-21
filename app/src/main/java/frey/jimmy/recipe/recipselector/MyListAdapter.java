@@ -13,11 +13,11 @@ import java.util.ArrayList;
 /**
  * Created by James on 5/14/2015.
  */
-public class MyListAdaptor extends ArrayAdapter<Recipe> {
+public class MyListAdapter extends ArrayAdapter<Recipe> {
 
     private ArrayList<Recipe> mRecipeBook;
 
-    public MyListAdaptor(Context context, int resource, ArrayList<Recipe> recipeBook) {
+    public MyListAdapter(Context context, int resource, ArrayList<Recipe> recipeBook) {
         super(context, resource, recipeBook);
         mRecipeBook = recipeBook;
     }
