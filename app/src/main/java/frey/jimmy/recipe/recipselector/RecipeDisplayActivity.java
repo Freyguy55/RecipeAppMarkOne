@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.UUID;
+
 
 public class RecipeDisplayActivity extends FragmentActivity {
 
@@ -19,8 +21,8 @@ public class RecipeDisplayActivity extends FragmentActivity {
         FragmentManager fm = getSupportFragmentManager();
         Fragment recipeDisplayFragment = fm.findFragmentById(R.id.fragment_intro_select_container);
         if(recipeDisplayFragment == null){
-            Recipe r = (Recipe) getIntent().getSerializableExtra(RecipeListFragment.EXTRA_RECIPE);
-            recipeDisplayFragment = RecipeDisplayFragment.createInstance(r);
+            UUID id = (UUID) getIntent().getSerializableExtra(RecipeListFragment.EXTRA_RECIPE_ID);
+            recipeDisplayFragment = RecipeDisplayFragment.createInstance(id);
             fm.beginTransaction().add(R.id.fragment_intro_select_container,recipeDisplayFragment).commit();
         }
     }

@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.UUID;
+
 
 /**
  * Displays recipe steps
@@ -21,7 +23,7 @@ public class RecipeDisplayStepFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static RecipeDisplayStepFragment createInstance(Recipe r, int position){
+    public static RecipeDisplayStepFragment createInstance(UUID uuid, int position){
         RecipeDisplayStepFragment fragment = new RecipeDisplayStepFragment();
         Bundle args = new Bundle();
         args.putInt(KEY_POSITION, position);

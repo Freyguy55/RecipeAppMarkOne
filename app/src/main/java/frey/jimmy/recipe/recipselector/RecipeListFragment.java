@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.UUID;
 
 
 /**
@@ -17,21 +19,22 @@ import java.util.ArrayList;
  */
 public class RecipeListFragment extends Fragment {
 
-    private static final String KEY_RECIPES_LIST = "keyRecipesList";
-    public static final String EXTRA_RECIPE = "ExtraRecipe";
+    public static final String KEY_RECIPE_IDS = "keyRecipeIds";
+    public static final String EXTRA_RECIPE_ID = "extraRecipeId";
     ListView mRecipeListView;
     ArrayList<Recipe> mRecipes;
 
     public RecipeListFragment() {
     }
 
-    public static RecipeListFragment createInstance(ArrayList<Recipe> recipes){
+    public static RecipeListFragment createInstance(ArrayList<UUID> recipeIds){
         RecipeListFragment fragment = new RecipeListFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(KEY_RECIPES_LIST, recipes);
+        bundle.putSerializable(KEY_RECIPE_IDS, recipeIds);
         fragment.setArguments(bundle);
         return fragment;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,9 +48,9 @@ public class RecipeListFragment extends Fragment {
         mRecipeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Recipe r = mRecipes.get(i);
+                UUID id = mRecipes.get(i).getUuid();
                 Intent intent = new Intent(getActivity(),RecipePagerActivity.class);
-                intent.putExtra(EXTRA_RECIPE,r);
+                intent.putExtra(EXTRA_RECIPE_ID,id);
                 startActivity(intent);
             }
         });
@@ -58,6 +61,7 @@ public class RecipeListFragment extends Fragment {
     }
 
     private void initializeRecipes() {
-        mRecipes = (ArrayList<Recipe>) getArguments().getSerializable(KEY_RECIPES_LIST);
+        ArrayList<UUID> recipeIds = (ArrayList<UUID>) getArguments().getSerializable(KEY_RECIPE_IDS);
+        mRecipes = RecipeBook.get(getActivity()).getFilteredRecipeList(recipeIds);
     }
 }

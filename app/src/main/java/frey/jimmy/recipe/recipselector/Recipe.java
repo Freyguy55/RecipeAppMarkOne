@@ -107,6 +107,10 @@ public class Recipe implements Serializable {
         return mInstructions;
     }
 
+    public UUID getUuid() {
+        return mUuid;
+    }
+
     @Override
     public boolean equals(Object recipe) {
         Recipe r = (Recipe) recipe;

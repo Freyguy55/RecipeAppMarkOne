@@ -13,12 +13,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 public class RecipeDisplayFragment extends Fragment {
     private static final String KEY_INGREDIENTS_EXPANDED = "KeyIngredientsExpanded";
     private static final String KEY_INSTRUCTIONS_EXPANDED = "KeyInstructionsExpanded";
-    private static final String KEY_RECIPE = "keyRecipe";
+    private static final String KEY_RECIPE_ID = "keyRecipeId";
     boolean mIsIngredientExpanded = true;
     boolean mIsInstructionExpanded = true;
     private Recipe mRecipe;
@@ -32,10 +33,10 @@ public class RecipeDisplayFragment extends Fragment {
     public RecipeDisplayFragment() {
     }
 
-    public static RecipeDisplayFragment createInstance(Recipe r) {
+    public static RecipeDisplayFragment createInstance(UUID id) {
         RecipeDisplayFragment fragment = new RecipeDisplayFragment();
         Bundle args = new Bundle();
-        args.putSerializable(KEY_RECIPE, r);
+        args.putSerializable(KEY_RECIPE_ID, id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,7 +46,8 @@ public class RecipeDisplayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_recipe_display, container, false);
-        mRecipe = (Recipe) getArguments().getSerializable(KEY_RECIPE);
+        UUID id = (UUID) getArguments().getSerializable(KEY_RECIPE_ID);
+        mRecipe = RecipeBook.get(getActivity()).getRecipe(id);
         initializeView(v, savedInstanceState);
         setRecipeData(v);
 
@@ -68,7 +70,7 @@ public class RecipeDisplayFragment extends Fragment {
         TextView servingSizeTextView = (TextView) v.findViewById(R.id.servingSizeTextView);
         servingSizeTextView.setText("Serves " + mRecipe.getServesNumber());
         //Instructions
-        TextView instructionsTextView = (TextView) v.findViewById(R.id.instructionsTextView);
+        final TextView instructionsTextView = (TextView) v.findViewById(R.id.instructionsTextView);
         instructionsTextView.setText(mRecipe.getInstructions());
         //Ingredients
         mIngredientStringList = mRecipe.getRecipeIngredientStringList();
@@ -105,6 +107,10 @@ public class RecipeDisplayFragment extends Fragment {
                     }
                     default: {
                         mRecipe.setIsGood(Recipe.RECIPE_IS_GOOD);
+                        instructionsTextView.setText(instructionsTextView.getText() + " local copy:" + mRecipe.isGood());
+                        Recipe test = RecipeBook.get(getActivity()).getRecipes().get(0);
+                        instructionsTextView.setText(instructionsTextView.getText() + " pulled from Recipe Book: " + test.isGood());
+                        instructionsTextView.setText(instructionsTextView.getText() + " Do their ids match: " + test.equals(mRecipe));
                         mLikeDislikeImageView.setImageResource(R.drawable.recipe_image_01);
                         break;
                     }

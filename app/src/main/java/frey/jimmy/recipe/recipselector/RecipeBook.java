@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by James on 5/17/2015.
@@ -52,11 +53,32 @@ public class RecipeBook {
         mRecipes = recipes;
     }
 
-    public ArrayList<Recipe> getFilteredRecipes(boolean isSweet, boolean isLight) {
-        ArrayList<Recipe> filteredList = new ArrayList<>();
+    public Recipe getRecipe(UUID id) {
+        for (Recipe r : mRecipes) {
+            if (r.getUuid().equals(id)) {
+                return r;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<UUID> getFilteredRecipeIds(boolean isSweet, boolean isLight) {
+        ArrayList<UUID> filteredList = new ArrayList<>();
         for (Recipe r : mRecipes) {
             if (r.isSweet() == isSweet && r.isLight() == isLight) {
-                filteredList.add(r);
+                filteredList.add(r.getUuid());
+            }
+        }
+        return filteredList;
+    }
+
+    public ArrayList<Recipe> getFilteredRecipeList(ArrayList<UUID> ids) {
+        ArrayList<Recipe> filteredList = new ArrayList<>();
+        for (UUID id : ids) {
+            for (Recipe r : mRecipes) {
+                if (r.getUuid().equals(id)) {
+                    filteredList.add(r);
+                }
             }
         }
         return filteredList;
@@ -124,7 +146,6 @@ public class RecipeBook {
             objectOutputStream.writeObject(mRecipes);
             objectOutputStream.flush();
             objectOutputStream.close();
-          //  Toast.makeText(mAppContext,"Saved " + mRecipes.get(0).isGood(),Toast.LENGTH_LONG);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -143,11 +164,10 @@ public class RecipeBook {
     private void loadRecipes() {
         // Check if the save file exists.
         File saveFile = mAppContext.getFileStreamPath(SAVE_FILE);
-        Toast.makeText(mAppContext,"Save file exists?" + saveFile.exists(),Toast.LENGTH_LONG).show();
-        if (!saveFile.exists()) {
+    //    if (!saveFile.exists()) {
             mRecipes = new ArrayList<>();  //If the file does not exist this is the first time
             saveRecipes();                 //loading and a blank arraylist needs to be saved.
-        }
+    //    }
         ObjectInputStream objectInputStream = null;
         try {
             InputStream inputStream = mAppContext.openFileInput(SAVE_FILE);

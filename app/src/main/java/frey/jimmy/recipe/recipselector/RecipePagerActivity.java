@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public class RecipePagerActivity extends FragmentActivity {
@@ -17,15 +18,16 @@ public class RecipePagerActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_pager);
-        mRecipe = (Recipe) getIntent().getSerializableExtra(RecipeListFragment.EXTRA_RECIPE);
+        UUID uuid = (UUID)  getIntent().getSerializableExtra(RecipeListFragment.EXTRA_RECIPE_ID);
+        mRecipe = RecipeBook.get(this).getRecipe(uuid);
         mViewPager = (ViewPager) findViewById(R.id.recipeViewPager);
         mViewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 if (position == 0) {
-                    return RecipeDisplayFragment.createInstance(mRecipe);
+                    return RecipeDisplayFragment.createInstance(mRecipe.getUuid());
                 } else {
-                    return RecipeDisplayStepFragment.createInstance(mRecipe, position + 1);
+                    return RecipeDisplayStepFragment.createInstance(mRecipe.getUuid(), position + 1);
                 }
             }
 
