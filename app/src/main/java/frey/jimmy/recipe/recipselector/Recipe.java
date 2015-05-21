@@ -2,6 +2,7 @@ package frey.jimmy.recipe.recipselector;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by James on 5/14/2015.
@@ -22,6 +23,7 @@ public class Recipe implements Serializable {
     private int mRecipeImageId;
     private int mIsGood;
     private String mInstructions;
+    private UUID mUuid;
 
     public Recipe(String recipeName, String recipeDescription, int servesNumber, boolean isSweet, boolean isLight, int totalMinutes, String region, ArrayList<RecipeStep> recipeStepList, ArrayList<Ingredient> recipeIngredientList, int recipeImageId, int isGood, String instructions) {
         mRecipeName = recipeName;
@@ -36,6 +38,7 @@ public class Recipe implements Serializable {
         mRecipeImageId = recipeImageId;
         mIsGood = isGood;
         mInstructions = instructions;
+        mUuid = UUID.randomUUID();
     }
 
     public String getRecipeName() {
@@ -102,6 +105,12 @@ public class Recipe implements Serializable {
 
     public String getInstructions() {
         return mInstructions;
+    }
+
+    @Override
+    public boolean equals(Object recipe) {
+        Recipe r = (Recipe) recipe;
+        return this.mUuid.equals(r.mUuid);
     }
 }
 
