@@ -107,10 +107,6 @@ public class RecipeDisplayFragment extends Fragment {
                     }
                     default: {
                         mRecipe.setIsGood(Recipe.RECIPE_IS_GOOD);
-                        instructionsTextView.setText(instructionsTextView.getText() + " local copy:" + mRecipe.isGood());
-                        Recipe test = RecipeBook.get(getActivity()).getRecipes().get(0);
-                        instructionsTextView.setText(instructionsTextView.getText() + " pulled from Recipe Book: " + test.isGood());
-                        instructionsTextView.setText(instructionsTextView.getText() + " Do their ids match: " + test.equals(mRecipe));
                         mLikeDislikeImageView.setImageResource(R.drawable.recipe_image_01);
                         break;
                     }

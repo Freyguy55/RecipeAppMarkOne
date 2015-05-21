@@ -164,10 +164,10 @@ public class RecipeBook {
     private void loadRecipes() {
         // Check if the save file exists.
         File saveFile = mAppContext.getFileStreamPath(SAVE_FILE);
-    //    if (!saveFile.exists()) {
+        if (!saveFile.exists()) {
             mRecipes = new ArrayList<>();  //If the file does not exist this is the first time
             saveRecipes();                 //loading and a blank arraylist needs to be saved.
-    //    }
+        }
         ObjectInputStream objectInputStream = null;
         try {
             InputStream inputStream = mAppContext.openFileInput(SAVE_FILE);
