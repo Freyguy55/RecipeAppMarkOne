@@ -161,7 +161,7 @@ public class RecipeBook {
         }
     }
 
-    private void loadRecipes() {
+    public void loadRecipes() {
         // Check if the save file exists.
         File saveFile = mAppContext.getFileStreamPath(SAVE_FILE);
         if (!saveFile.exists()) {
@@ -185,6 +185,30 @@ public class RecipeBook {
             if (objectInputStream != null) {
                 try {
                     objectInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static void deleteLocalFile(Context context){
+        ArrayList<Recipe> emptyRecipeList = new ArrayList<>();
+        ObjectOutputStream objectOutputStream = null;
+        try {
+            OutputStream outputStream = context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE);
+            objectOutputStream = new ObjectOutputStream(outputStream);
+            objectOutputStream.writeObject(emptyRecipeList);
+            objectOutputStream.flush();
+            objectOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (objectOutputStream != null) {
+                try {
+                    objectOutputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

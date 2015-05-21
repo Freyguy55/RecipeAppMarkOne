@@ -31,17 +31,6 @@ public class AdvancedSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_advanced_search, container, false);
         initializeTableLayout(v);
-        Button buttonGo = (Button)v.findViewById(R.id.buttonAdvancedSearchGo);
-        buttonGo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ArrayList<UUID> filteredList = RecipeBook.get(getActivity()).getFilteredRecipeIds(true, true);
-                if (filteredList == null) {
-                    Toast.makeText(getActivity(), "No recipes match your query.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-        });
         return v;
     }
 
@@ -75,5 +64,29 @@ public class AdvancedSearchFragment extends Fragment {
         ArrayAdapter<String> regionAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,regionSpinnerOptions);
         regionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         regionSpinner.setAdapter(regionAdapter);
+
+        //Search button
+        Button buttonGo = (Button)v.findViewById(R.id.buttonAdvancedSearchGo);
+        buttonGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<UUID> filteredList = RecipeBook.get(getActivity()).getFilteredRecipeIds(true, true);
+                if (filteredList == null) {
+                    Toast.makeText(getActivity(), "No recipes match your query.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+        });
+
+        //Delete button
+        Button buttonDelete = (Button)v.findViewById(R.id.buttonClearLocalData);
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RecipeBook.deleteLocalFile(getActivity().getApplicationContext());
+                RecipeBook.get(getActivity()).loadRecipes();
+                RecipeBook.get(getActivity()).checkForNewRecipes();
+            }
+        });
     }
 }

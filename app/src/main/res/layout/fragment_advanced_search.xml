@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout android:id="@+id/advancedSearchTableLayout"
-             xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:gravity="center"
-    >
+<TableLayout
+    android:id="@+id/advancedSearchTableLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
 
-    <include layout="@layout/my_table_row"
-        android:id="@+id/flavorRow"/>
+    <include
+        android:id="@+id/flavorRow"
+        layout="@layout/my_table_row"/>
 
-    <include layout="@layout/my_table_row"
-        android:id="@+id/fillingRow"/>
+    <include
+        android:id="@+id/fillingRow"
+        layout="@layout/my_table_row"/>
 
-    <include layout="@layout/my_table_row"
-        android:id="@+id/categoryRow"/>
+    <include
+        android:id="@+id/categoryRow"
+        layout="@layout/my_table_row"/>
 
     <Button
         android:id="@+id/buttonAdvancedSearchGo"
-        android:text="@string/advanced_search_button_text_go"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/advanced_search_button_text_go"/>
+
+    <Button
+        android:id="@+id/buttonClearLocalData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_local_file_button_text"/>
 
 </TableLayout>
