@@ -55,7 +55,6 @@ public class RecipeBook {
     public ArrayList<Recipe> getFilteredRecipes(boolean isSweet, boolean isLight) {
         ArrayList<Recipe> filteredList = new ArrayList<>();
         for (Recipe r : mRecipes) {
-            Toast.makeText(mAppContext, "Recipe " + r.getRecipeName(), Toast.LENGTH_LONG);
             if (r.isSweet() == isSweet && r.isLight() == isLight) {
                 filteredList.add(r);
             }
@@ -102,7 +101,6 @@ public class RecipeBook {
             }
             inputStream.close();
             saveRecipes();
-            Toast.makeText(mAppContext, "Loaded " + mRecipes.size() + " recipe(s)", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -126,6 +124,7 @@ public class RecipeBook {
             objectOutputStream.writeObject(mRecipes);
             objectOutputStream.flush();
             objectOutputStream.close();
+          //  Toast.makeText(mAppContext,"Saved " + mRecipes.get(0).isGood(),Toast.LENGTH_LONG);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -143,7 +142,8 @@ public class RecipeBook {
 
     private void loadRecipes() {
         // Check if the save file exists.
-        File saveFile = new File(SAVE_FILE);
+        File saveFile = mAppContext.getFileStreamPath(SAVE_FILE);
+        Toast.makeText(mAppContext,"Save file exists?" + saveFile.exists(),Toast.LENGTH_LONG).show();
         if (!saveFile.exists()) {
             mRecipes = new ArrayList<>();  //If the file does not exist this is the first time
             saveRecipes();                 //loading and a blank arraylist needs to be saved.
