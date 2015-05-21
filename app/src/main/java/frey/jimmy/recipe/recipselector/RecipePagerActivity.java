@@ -18,30 +18,32 @@ public class RecipePagerActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_pager);
-        UUID uuid = (UUID)  getIntent().getSerializableExtra(RecipeListFragment.EXTRA_RECIPE_ID);
+        UUID uuid = (UUID) getIntent().getSerializableExtra(RecipeListFragment.EXTRA_RECIPE_ID);
         mRecipe = RecipeBook.get(this).getRecipe(uuid);
         mViewPager = (ViewPager) findViewById(R.id.recipeViewPager);
         mViewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 if (position == 0) {
+                    return RecipeImageFragment.createInstance(mRecipe.getUuid());
+                } else if (position == 1) {
                     return RecipeDisplayFragment.createInstance(mRecipe.getUuid());
                 } else {
-                    return RecipeDisplayStepFragment.createInstance(mRecipe.getUuid(), position + 1);
+                    return RecipeDisplayStepFragment.createInstance(mRecipe.getUuid(), position + 2);
                 }
             }
 
             @Override
             public int getCount() {
                 List stepList = mRecipe.getRecipeStepList();
-                if(stepList == null){
-                    return 1;
+                if (stepList == null) {
+                    return 2;
                 }
-                return mRecipe.getRecipeStepList().size() + 1; //Add one because initial page is always the main recipe page and always exists.
+                return mRecipe.getRecipeStepList().size() + 2; //Add two because initial page is always the main recipe page and picture page always exists.
             }
         });
 
-        mViewPager.setCurrentItem(0);
+        mViewPager.setCurrentItem(1);
     }
 
 
