@@ -19,7 +19,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="right"
-            android:src="@drawable/kirby_sad"/>
+            android:src="@drawable/dislike"/>
 
         <TextView
             android:id="@+id/recipeStepDisplayNameTextView"

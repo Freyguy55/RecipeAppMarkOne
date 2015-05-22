@@ -80,15 +80,15 @@ public class RecipeDisplayFragment extends Fragment {
         mLikeDislikeImageView = (ImageView) v.findViewById(R.id.recipeDisplayLikeImageView);
         switch (mRecipe.isGood()) {
             case Recipe.RECIPE_IS_BAD: {
-                mLikeDislikeImageView.setImageResource(R.drawable.kirby_sad);
+                mLikeDislikeImageView.setImageResource(R.drawable.dislike);
                 break;
             }
             case Recipe.RECIPE_IS_GOOD: {
-                mLikeDislikeImageView.setImageResource(R.drawable.recipe_image_01);
+                mLikeDislikeImageView.setImageResource(R.drawable.like);
                 break;
             }
             default:
-                mLikeDislikeImageView.setImageResource(R.drawable.kirby_hurt);
+                mLikeDislikeImageView.setImageResource(R.drawable.like_dislike);
                 break;
         }
         mLikeDislikeImageView.setOnClickListener(new View.OnClickListener() {
@@ -97,17 +97,17 @@ public class RecipeDisplayFragment extends Fragment {
                 switch (mRecipe.isGood()) {
                     case Recipe.RECIPE_IS_BAD: {
                         mRecipe.setIsGood(Recipe.RECIPE_IS_UNKNOWN);
-                        mLikeDislikeImageView.setImageResource(R.drawable.kirby_hurt);
+                        mLikeDislikeImageView.setImageResource(R.drawable.like_dislike);
                         break;
                     }
                     case Recipe.RECIPE_IS_GOOD: {
                         mRecipe.setIsGood(Recipe.RECIPE_IS_BAD);
-                        mLikeDislikeImageView.setImageResource(R.drawable.kirby_sad);
+                        mLikeDislikeImageView.setImageResource(R.drawable.dislike);
                         break;
                     }
                     default: {
                         mRecipe.setIsGood(Recipe.RECIPE_IS_GOOD);
-                        mLikeDislikeImageView.setImageResource(R.drawable.recipe_image_01);
+                        mLikeDislikeImageView.setImageResource(R.drawable.like);
                         break;
                     }
                 }

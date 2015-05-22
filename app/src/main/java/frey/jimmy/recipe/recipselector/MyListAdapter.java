@@ -49,15 +49,15 @@ public class MyListAdapter extends ArrayAdapter<Recipe> {
         int imageResourceId;
         switch (recipe.isGood()) {
             case Recipe.RECIPE_IS_BAD: {
-                imageResourceId = R.drawable.kirby_sad;
+                imageResourceId = R.drawable.dislike;
                 break;
             }
             case Recipe.RECIPE_IS_GOOD: {
-                imageResourceId = R.drawable.recipe_image_01;
+                imageResourceId = R.drawable.like;
                 break;
             }
             default: {
-                imageResourceId = R.drawable.kirby_hurt;
+                imageResourceId = R.drawable.like_dislike;
                 break;
             }
         }
