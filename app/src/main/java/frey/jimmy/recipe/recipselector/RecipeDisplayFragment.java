@@ -58,7 +58,7 @@ public class RecipeDisplayFragment extends Fragment {
     private void setRecipeData(View v) {
         //Load data into appropriate fields
         //Name
-        TextView nameTextView = (TextView) v.findViewById(R.id.recipeDisplayNameTextView);
+        TextView nameTextView = (TextView) v.findViewById(R.id.recipeStepDisplayNameTextView);
         nameTextView.setText(mRecipe.getRecipeName());
         //Prep time
         TextView prepTimeTextView = (TextView) v.findViewById(R.id.prepTimeTextView);
@@ -70,7 +70,7 @@ public class RecipeDisplayFragment extends Fragment {
         TextView servingSizeTextView = (TextView) v.findViewById(R.id.servingSizeTextView);
         servingSizeTextView.setText("Serves " + mRecipe.getServesNumber());
         //Instructions
-        final TextView instructionsTextView = (TextView) v.findViewById(R.id.instructionsTextView);
+        TextView instructionsTextView = (TextView) v.findViewById(R.id.instructionsTextView);
         instructionsTextView.setText(mRecipe.getInstructions());
         //Ingredients
         mIngredientStringList = mRecipe.getRecipeIngredientStringList();

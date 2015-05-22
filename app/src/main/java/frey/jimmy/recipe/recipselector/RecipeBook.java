@@ -37,7 +37,6 @@ public class RecipeBook {
 
     }
 
-
     public static RecipeBook get(Context context) {
         if (sRecipeBook == null) {
             sRecipeBook = new RecipeBook(context.getApplicationContext());

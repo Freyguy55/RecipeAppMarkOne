@@ -22,7 +22,7 @@
             android:src="@drawable/kirby_sad"/>
 
         <TextView
-            android:id="@+id/recipeDisplayNameTextView"
+            android:id="@+id/recipeStepDisplayNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -34,7 +34,7 @@
             android:id="@+id/servingSizeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/recipeDisplayNameTextView"
+            android:layout_below="@+id/recipeStepDisplayNameTextView"
             android:layout_centerHorizontal="true"
             android:text="&lt;Servings>"
             android:textAppearance="?android:attr/textAppearanceSmall"/>

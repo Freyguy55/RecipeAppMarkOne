@@ -2,32 +2,31 @@ package frey.jimmy.recipe.recipselector;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by James on 5/19/2015.
  */
 public class RecipeStep implements Serializable{
-    private String[] mIngredientsArray= {"1 cup stuff", "3 carrots", "1/4 cup onions", "15 cream puffs", "5 golden rings","2 turtle doves", "1 pear tree"};
+    private ArrayList<Ingredient> mRecipeStepIngredientList;
     private String mInstructions;
     private int mImageId;
 
     public RecipeStep(){
-        mInstructions = "Test step instructions";
-        mImageId = 9;
     }
 
-    public RecipeStep(String[] ingredientsArray, String instructions, int imageId) {
-        mIngredientsArray = ingredientsArray;
+    public RecipeStep(ArrayList<Ingredient> recipeStepIngredientList, String instructions, int imageId) {
+        mRecipeStepIngredientList = recipeStepIngredientList;
         mInstructions = instructions;
         mImageId = imageId;
     }
 
-    public String[] getIngredientsArray() {
-        return mIngredientsArray;
+    public ArrayList<Ingredient> getRecipeStepIngredientList() {
+        return mRecipeStepIngredientList;
     }
 
-    public void setIngredientsArray(String[] ingredientsArray) {
-        mIngredientsArray = ingredientsArray;
+    public void setRecipeStepIngredientList(ArrayList<Ingredient> recipeStepIngredientList) {
+        mRecipeStepIngredientList = recipeStepIngredientList;
     }
 
     public String getInstructions() {
@@ -44,5 +43,13 @@ public class RecipeStep implements Serializable{
 
     public void setImageId(int imageId) {
         mImageId = imageId;
+    }
+
+    public ArrayList<String> getRecipeStepIngredientStringList(){
+        ArrayList<String> ingredientStringList = new ArrayList<>();
+        for(Ingredient i : mRecipeStepIngredientList){
+            ingredientStringList.add(i.toString());
+        }
+        return ingredientStringList;
     }
 }

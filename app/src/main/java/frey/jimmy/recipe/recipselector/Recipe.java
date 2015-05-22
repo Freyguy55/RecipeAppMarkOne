@@ -90,6 +90,9 @@ public class Recipe implements Serializable {
         return mRecipeStepList;
     }
 
+    public void setRecipeStepList(ArrayList<RecipeStep> recipeStepList) {
+        mRecipeStepList = recipeStepList;
+    }
 
     public ArrayList<Ingredient> getRecipeIngredientList() {
         return mRecipeIngredientList;

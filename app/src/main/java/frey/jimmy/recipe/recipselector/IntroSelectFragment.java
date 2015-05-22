@@ -52,7 +52,11 @@ public class IntroSelectFragment extends android.support.v4.app.Fragment {
         buttonAdvancedSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), AdvancedSearchActivity.class));
+                RecipeBook.deleteLocalFile(getActivity().getApplicationContext());
+                RecipeBook.get(getActivity()).loadRecipes();
+                RecipeBook.get(getActivity()).checkForNewRecipes();
+                //TODO reset advanced search button
+              //  startActivity(new Intent(getActivity(), AdvancedSearchActivity.class));
             }
         });
 

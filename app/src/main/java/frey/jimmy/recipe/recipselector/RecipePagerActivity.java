@@ -29,7 +29,7 @@ public class RecipePagerActivity extends FragmentActivity {
                 } else if (position == 1) {
                     return RecipeDisplayFragment.createInstance(mRecipe.getUuid());
                 } else {
-                    return RecipeDisplayStepFragment.createInstance(mRecipe.getUuid(), position + 2);
+                    return RecipeDisplayStepFragment.createInstance(mRecipe.getUuid(), position - 2);
                 }
             }
 
