@@ -1,6 +1,5 @@
 package frey.jimmy.recipe.recipselector;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -65,7 +64,7 @@ public class RecipeImageFragment extends Fragment {
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         private static final String IP_ADDRESS = "98.253.25.58";
-        private static final String IMAGE_URL = "http://"+IP_ADDRESS+"/save/image/";
+        private static final String IMAGE_URL = "http://" + IP_ADDRESS + "/save/image/";
 
         @Override
         protected Bitmap doInBackground(String... imageID) {
@@ -77,7 +76,7 @@ public class RecipeImageFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Bitmap recipeBitmap) {
-            if(recipeBitmap!=null) {
+            if (recipeBitmap != null) {
                 BitmapDrawable bitmapDrawable = new BitmapDrawable(getActivity().getResources(), recipeBitmap);
                 mRecipeImageView.setImageDrawable(bitmapDrawable);
             }
@@ -86,12 +85,12 @@ public class RecipeImageFragment extends Fragment {
 
         private Bitmap downloadImage(String url) {
             InputStream inputStream = null;
-            try{
+            try {
                 URL imageUrl = new URL(url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) imageUrl.openConnection();
                 int responseCode = httpURLConnection.getResponseCode();
                 System.out.println("Response code: " + responseCode);
-                if(responseCode != 200){
+                if (responseCode != 200) {
                     System.out.println("Bananas response code not 200");
                     return null;
                 }
@@ -104,9 +103,8 @@ public class RecipeImageFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
-            }
-            finally {
-                if(inputStream != null){
+            } finally {
+                if (inputStream != null) {
                     try {
                         inputStream.close();
                     } catch (IOException e) {

@@ -106,11 +106,11 @@
     <ImageView
         android:layout_width="285dp"
         android:layout_height="160dp"
-        android:id="@+id/imageView"
+        android:id="@+id/recipeStepImageView"
         android:layout_gravity="center"/>
 
     <TextView
-        android:id="@+id/textViewTimer"
+        android:id="@+id/textViewTimerStep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="60:00"
