@@ -76,9 +76,11 @@ public class RecipeImageFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Bitmap recipeBitmap) {
-            if (recipeBitmap != null) {
-                BitmapDrawable bitmapDrawable = new BitmapDrawable(getActivity().getResources(), recipeBitmap);
-                mRecipeImageView.setImageDrawable(bitmapDrawable);
+            if(isAdded()) {
+                if (recipeBitmap != null) {
+                    BitmapDrawable bitmapDrawable = new BitmapDrawable(getActivity().getResources(), recipeBitmap);
+                    mRecipeImageView.setImageDrawable(bitmapDrawable);
+                }
             }
             super.onPostExecute(recipeBitmap);
         }

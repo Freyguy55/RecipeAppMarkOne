@@ -118,9 +118,11 @@ public class RecipeDisplayStepFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Bitmap recipeBitmap) {
-            if (recipeBitmap != null) {
-                BitmapDrawable bitmapDrawable = new BitmapDrawable(getActivity().getResources(), recipeBitmap);
-                mRecipeStepImageView.setImageDrawable(bitmapDrawable);
+            if(isAdded()) {  //This hopefully fixes nullpointerexception on the getActivity() call below.
+                if (recipeBitmap != null) {
+                    BitmapDrawable bitmapDrawable = new BitmapDrawable(getActivity().getResources(), recipeBitmap);
+                    mRecipeStepImageView.setImageDrawable(bitmapDrawable);
+                }
             }
             super.onPostExecute(recipeBitmap);
         }
