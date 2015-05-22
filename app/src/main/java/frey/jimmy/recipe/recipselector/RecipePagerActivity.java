@@ -42,7 +42,6 @@ public class RecipePagerActivity extends FragmentActivity {
                 return mRecipe.getRecipeStepList().size() + 2; //Add two because initial page is always the main recipe page and picture page always exists.
             }
         });
-
         mViewPager.setCurrentItem(1);
     }
 
