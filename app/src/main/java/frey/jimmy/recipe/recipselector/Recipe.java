@@ -114,6 +114,50 @@ public class Recipe implements Serializable {
         return mUuid;
     }
 
+    public void setRecipeName(String recipeName) {
+        mRecipeName = recipeName;
+    }
+
+    public void setRecipeDescription(String recipeDescription) {
+        mRecipeDescription = recipeDescription;
+    }
+
+    public void setServesNumber(int servesNumber) {
+        mServesNumber = servesNumber;
+    }
+
+    public void setIsSweet(boolean isSweet) {
+        mIsSweet = isSweet;
+    }
+
+    public void setIsLight(boolean isLight) {
+        mIsLight = isLight;
+    }
+
+    public void setTotalMinutes(int totalMinutes) {
+        mTotalMinutes = totalMinutes;
+    }
+
+    public void setRegion(String region) {
+        mRegion = region;
+    }
+
+    public void setRecipeIngredientList(ArrayList<Ingredient> recipeIngredientList) {
+        mRecipeIngredientList = recipeIngredientList;
+    }
+
+    public void setRecipeImageId(int recipeImageId) {
+        mRecipeImageId = recipeImageId;
+    }
+
+    public void setInstructions(String instructions) {
+        mInstructions = instructions;
+    }
+
+    public void setUuid(UUID uuid) {
+        mUuid = uuid;
+    }
+
     @Override
     public boolean equals(Object recipe) {
         Recipe r = (Recipe) recipe;
