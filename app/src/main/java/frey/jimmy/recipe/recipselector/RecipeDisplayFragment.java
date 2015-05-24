@@ -1,9 +1,14 @@
 package frey.jimmy.recipe.recipselector;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +28,7 @@ public class RecipeDisplayFragment extends Fragment {
     private static final String KEY_INGREDIENTS_EXPANDED = "KeyIngredientsExpanded";
     private static final String KEY_INSTRUCTIONS_EXPANDED = "KeyInstructionsExpanded";
     private static final String KEY_RECIPE_ID = "keyRecipeId";
+    public static final String EXTRA_MINUTES_INT = "ExtraMinutesInt";
     private boolean mIsIngredientExpanded = true;
     private boolean mIsInstructionExpanded = true;
     private Recipe mRecipe;
@@ -66,8 +72,25 @@ public class RecipeDisplayFragment extends Fragment {
         TextView prepTimeTextView = (TextView) v.findViewById(R.id.prepTimeTextView);
         prepTimeTextView.setText(mRecipe.getTotalMinutes() + " minutes");
         //Timer
-        TextView timerTextView = (TextView) v.findViewById(R.id.textViewTimer);
+        final TextView timerTextView = (TextView) v.findViewById(R.id.textViewTimer);
         timerTextView.setText(mRecipe.getTotalMinutes() + ":00");
+        timerTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), CountDownTimerService.class);
+                i.putExtra(EXTRA_MINUTES_INT, Integer.valueOf(mRecipe.getTotalMinutes()));
+                getActivity().startService(i);
+
+            }
+        });
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String time = intent.getStringExtra(CountDownTimerService.EXTRA_TIME_LEFT);
+                timerTextView.setText(time);
+                System.out.println("Received time: " + time);
+            }
+        }, new IntentFilter(CountDownTimerService.TIMER_BROADCAST_LOCATION));
         //Serving size
         TextView servingSizeTextView = (TextView) v.findViewById(R.id.servingSizeTextView);
         servingSizeTextView.setText("Serves " + mRecipe.getServesNumber());
