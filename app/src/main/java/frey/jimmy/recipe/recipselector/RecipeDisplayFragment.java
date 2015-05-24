@@ -78,8 +78,6 @@ public class RecipeDisplayFragment extends Fragment {
         mIngredientStringList = mRecipe.getRecipeIngredientStringList();
         if (mIngredientStringList != null) {
             mIngredientsListView.setAdapter(new MyIngredientListAdapter(getActivity(),R.layout.ingredient_list_view_layout,mIngredientStringList));
-        } else {
-
         }
         //Like or dislike image
         mLikeDislikeImageView = (ImageView) v.findViewById(R.id.recipeDisplayLikeImageView);

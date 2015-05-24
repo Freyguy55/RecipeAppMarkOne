@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -33,7 +34,7 @@ public class RecipeDisplayStepFragment extends Fragment {
     private ArrayList<RecipeStep> mRecipeStepArrayList;
     private RecipeStep mRecipeStep;
     private TextView mInstructionsTextView;
-    private GridView mIngredientsGridview;
+    private ListView mIngredientsListView;
     private ArrayList<String> mIngredientStringList;
     private int mPosition;
     private ImageView mRecipeStepImageView;
@@ -78,10 +79,11 @@ public class RecipeDisplayStepFragment extends Fragment {
         TextView textViewName = (TextView) v.findViewById(R.id.recipeStepDisplayNameTextView);
         textViewName.setText(mRecipe.getRecipeName());
 
-        mIngredientsGridview = (GridView) v.findViewById(R.id.ingredientsGridView);
+        mIngredientsListView = (ListView) v.findViewById(R.id.recipeStepIngredientListView);
         mIngredientStringList = mRecipeStep.getRecipeStepIngredientStringList();
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(getActivity(), R.layout.my_simple_list_view_1, mIngredientStringList);
-        mIngredientsGridview.setAdapter(myAdapter);
+        if (mIngredientStringList != null) {
+            mIngredientsListView.setAdapter(new MyIngredientListAdapter(getActivity(),R.layout.ingredient_list_view_layout,mIngredientStringList));
+        }
 
         mInstructionsTextView = (TextView) v.findViewById(R.id.instructionsStepTextView);
         mInstructionsTextView.setText(mRecipeStep.getInstructions());
