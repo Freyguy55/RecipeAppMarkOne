@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -27,7 +29,7 @@ public class RecipeDisplayFragment extends Fragment {
     private ImageView mInstructionsExpandCollapseImageView;
     private ImageView mLikeDislikeImageView;
     private ScrollView mInstructionsScrollView;
-    private GridView mIngredientsGridview;
+    private ListView mIngredientsListView;
     private ArrayList<String> mIngredientStringList;
 
     public RecipeDisplayFragment() {
@@ -45,7 +47,7 @@ public class RecipeDisplayFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_recipe_display, container, false);
+        View v = inflater.inflate(R.layout.fragment_recipe_display_with_listview, container, false);
         UUID id = (UUID) getArguments().getSerializable(KEY_RECIPE_ID);
         mRecipe = RecipeBook.get(getActivity()).getRecipe(id);
         initializeView(v, savedInstanceState);
@@ -74,8 +76,11 @@ public class RecipeDisplayFragment extends Fragment {
         instructionsTextView.setText(mRecipe.getInstructions());
         //Ingredients
         mIngredientStringList = mRecipe.getRecipeIngredientStringList();
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(getActivity(), R.layout.my_simple_list_view_1, mIngredientStringList);
-        mIngredientsGridview.setAdapter(myAdapter);
+        if (mIngredientStringList != null) {
+            mIngredientsListView.setAdapter(new MyIngredientListAdapter(getActivity(),R.layout.ingredient_list_view_layout,mIngredientStringList));
+        } else {
+
+        }
         //Like or dislike image
         mLikeDislikeImageView = (ImageView) v.findViewById(R.id.recipeDisplayLikeImageView);
         switch (mRecipe.isGood()) {
@@ -120,7 +125,7 @@ public class RecipeDisplayFragment extends Fragment {
         //Set view fields
         mIngredientsExpandCollapseImageView = (ImageView) v.findViewById(R.id.ingredientExpandCollapseImageView);
         mInstructionsExpandCollapseImageView = (ImageView) v.findViewById(R.id.instructionsExpandCollapseImageView);
-        mIngredientsGridview = (GridView) v.findViewById(R.id.ingredientsGridView);
+        mIngredientsListView = (ListView) v.findViewById(R.id.ingredientsListView);
         mInstructionsScrollView = (ScrollView) v.findViewById(R.id.instructionsScrollView);
 
         //Initialize bundledStates
@@ -156,11 +161,11 @@ public class RecipeDisplayFragment extends Fragment {
         if (mIsIngredientExpanded) { //It is currently expanded and should collapse
             mIngredientsExpandCollapseImageView.setImageResource(R.drawable.expander_close_holo_light);
             mIsIngredientExpanded = false;
-            mIngredientsGridview.setVisibility(View.GONE);
+            mIngredientsListView.setVisibility(View.GONE);
         } else {  //It is currently collapsed and should expand
             mIngredientsExpandCollapseImageView.setImageResource(R.drawable.expander_open_holo_light);
             mIsIngredientExpanded = true;
-            mIngredientsGridview.setVisibility(View.VISIBLE);
+            mIngredientsListView.setVisibility(View.VISIBLE);
         }
 
     }
