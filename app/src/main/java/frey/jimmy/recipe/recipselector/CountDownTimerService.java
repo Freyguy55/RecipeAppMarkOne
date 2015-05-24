@@ -10,27 +10,15 @@ public class CountDownTimerService extends Service {
     public static final String TIMER_BROADCAST_LOCATION = CountDownTimerService.class.getName() + "CountDownTimerService";
     public static final String EXTRA_TIME_LEFT = "extraTimeLeft";
     private CountDownTimer mRecipeTimer;
+    private LocalBroadcastManager mLocalBroadcastManager;
     public CountDownTimerService() {
     }
 
-    private String formatTime(int millisLeft) {
-        String timeString = null;
-        int seconds = (int) (millisLeft / 1000) % 60 ;
-        int minutes = (int) ((millisLeft / (1000*60)) % 60);
-        int hours   = (int) ((millisLeft / (1000*60*60)) % 24);
-        if(hours > 0){
-            timeString = String.format("%d:%02d:%02d",hours,minutes,seconds);
-        } else{
-            timeString = String.format("%d:%02d",minutes,seconds);
-        }
-        return timeString;
-    }
 
-    private void sendUpdateTimeBroadcast(String timerFormattedString) {
+    private void sendUpdateTimeBroadcast(long l) {
         Intent i = new Intent(TIMER_BROADCAST_LOCATION);
-        i.putExtra(EXTRA_TIME_LEFT, timerFormattedString);
-        System.out.println("Sending time: " + timerFormattedString);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(i);
+        i.putExtra(EXTRA_TIME_LEFT, l);
+        mLocalBroadcastManager.sendBroadcast(i);
     }
 
 
@@ -43,20 +31,23 @@ public class CountDownTimerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         System.out.println("BANANAS started service");
-        int timeInMillis = intent.getIntExtra(RecipeDisplayFragment.EXTRA_MINUTES_INT,0);
-        mRecipeTimer = new CountDownTimer(5000, 1000) {
-            @Override
-            public void onTick(long l) {
-                String timerFormattedString = formatTime((int)l);
-                sendUpdateTimeBroadcast(timerFormattedString);
-            }
+        if(mRecipeTimer == null) {
+            int recipeTotalMinutes = intent.getIntExtra(EXTRA_TIME_LEFT,0);
+            mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
+            mRecipeTimer = new CountDownTimer(5000, 100) {
+                @Override
+                public void onTick(long l) {
+                    sendUpdateTimeBroadcast(l);
+                }
 
-            @Override
-            public void onFinish() {
-
-            }
-        };
-        mRecipeTimer.start();
+                @Override
+                public void onFinish() {
+                    sendUpdateTimeBroadcast(0);
+                    mRecipeTimer = null;
+                }
+            };
+            mRecipeTimer.start();
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 }

@@ -38,6 +38,7 @@ public class RecipeDisplayFragment extends Fragment {
     private ScrollView mInstructionsScrollView;
     private ListView mIngredientsListView;
     private ArrayList<String> mIngredientStringList;
+    private TextView mTimerTextView;
 
     public RecipeDisplayFragment() {
     }
@@ -72,9 +73,9 @@ public class RecipeDisplayFragment extends Fragment {
         TextView prepTimeTextView = (TextView) v.findViewById(R.id.prepTimeTextView);
         prepTimeTextView.setText(mRecipe.getTotalMinutes() + " minutes");
         //Timer
-        final TextView timerTextView = (TextView) v.findViewById(R.id.textViewTimer);
-        timerTextView.setText(mRecipe.getTotalMinutes() + ":00");
-        timerTextView.setOnClickListener(new View.OnClickListener() {
+        mTimerTextView = (TextView) v.findViewById(R.id.textViewTimer);
+        mTimerTextView.setText(mRecipe.getTotalMinutes() + ":00");
+        mTimerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), CountDownTimerService.class);
@@ -86,9 +87,8 @@ public class RecipeDisplayFragment extends Fragment {
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String time = intent.getStringExtra(CountDownTimerService.EXTRA_TIME_LEFT);
-                timerTextView.setText(time);
-                System.out.println("Received time: " + time);
+                long time = intent.getLongExtra(CountDownTimerService.EXTRA_TIME_LEFT, 0);
+                mTimerTextView.setText(formatTime(time));
             }
         }, new IntentFilter(CountDownTimerService.TIMER_BROADCAST_LOCATION));
         //Serving size
@@ -159,6 +159,7 @@ public class RecipeDisplayFragment extends Fragment {
             }
         }
 
+
         //Wire Ingredients open/close button
         mIngredientsExpandCollapseImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,6 +178,18 @@ public class RecipeDisplayFragment extends Fragment {
 
     }
 
+    private String formatTime(long millisLeft) {
+        String timeString = null;
+        int seconds = (int) (millisLeft / ((double) 1000)) % 60 ;
+        int minutes = (int) ((millisLeft / ((double)1000*60)) % 60);
+        int hours   = (int) ((millisLeft / ((double)1000*60*60)) % 24);
+        if(hours > 0){
+            timeString = String.format("%d:%02d:%02d",hours,minutes,seconds);
+        } else{
+            timeString = String.format("%d:%02d",minutes,seconds);
+        }
+        return timeString;
+    }
 
     private void toggleIngredientOpenClose() {
         if (mIsIngredientExpanded) { //It is currently expanded and should collapse
