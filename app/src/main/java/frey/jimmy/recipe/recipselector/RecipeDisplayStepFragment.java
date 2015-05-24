@@ -10,8 +10,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -30,10 +28,13 @@ import java.util.UUID;
  * Displays recipe steps
  */
 public class RecipeDisplayStepFragment extends Fragment {
+    private static final String KEY_INGREDIENTS_EXPANDED = "keyIngredientsExpanded";
+    private static final String KEY_INSTRUCTIONS_EXPANDED = "keyInstructionsExpanded";
     private Recipe mRecipe;
     private ArrayList<RecipeStep> mRecipeStepArrayList;
     private RecipeStep mRecipeStep;
     private TextView mInstructionsTextView;
+    private ScrollView mInstructionsScrollView;
     private ListView mIngredientsListView;
     private ArrayList<String> mIngredientStringList;
     private int mPosition;
@@ -41,6 +42,10 @@ public class RecipeDisplayStepFragment extends Fragment {
     private static final String KEY_POSITION = "KeyPosition";
     private static final String KEY_UUID = "keyUuid";
     private TextView mTextViewTimer;
+    private boolean mIsIngredientsExpanded = true;
+    private boolean mIsInstructionsExpanded = true;
+    private ImageView mToggleIngredientsImageView;
+    private ImageView mToggleInstructionsImageView;
 
     public RecipeDisplayStepFragment() {
         // Required empty public constructor
@@ -71,7 +76,61 @@ public class RecipeDisplayStepFragment extends Fragment {
         mRecipeStep = mRecipeStepArrayList.get(mPosition);
         
         setRecipeData(v);
+        setToggleVisibilityButtons(v, savedInstanceState);
         return v;
+    }
+
+    private void setToggleVisibilityButtons(View v, Bundle savedInstanceState) {
+        mToggleIngredientsImageView = (ImageView) v.findViewById(R.id.ingredientExpandCollapseImageView);
+        mToggleIngredientsImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleIngredientOpenClose();
+            }
+        });
+
+        mInstructionsScrollView = (ScrollView) v.findViewById(R.id.instructionsStepScrollView);
+        mToggleInstructionsImageView = (ImageView) v.findViewById(R.id.instructionsExpandCollapseImageView);
+        mToggleInstructionsImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleInstructionOpenClose();
+            }
+        });
+
+        //Initialize bundledStates
+        if (savedInstanceState != null) {
+            if (!savedInstanceState.getBoolean(KEY_INGREDIENTS_EXPANDED)) { //If ingredients should be collapsed
+                toggleIngredientOpenClose(); //Collapse ingredients (initial state is always expanded)
+            }
+            if (!savedInstanceState.getBoolean(KEY_INSTRUCTIONS_EXPANDED)) {
+                toggleInstructionOpenClose(); //Collapse instructions (initial state is always expanded)
+            }
+        }
+    }
+
+    private void toggleIngredientOpenClose() {
+        if (mIsIngredientsExpanded) { //It is currently expanded and should collapse
+            mToggleIngredientsImageView.setImageResource(R.drawable.expander_close_holo_light);
+            mIsIngredientsExpanded = false;
+            mIngredientsListView.setVisibility(View.GONE);
+        } else {  //It is currently collapsed and should expand
+            mToggleIngredientsImageView.setImageResource(R.drawable.expander_open_holo_light);
+            mIsIngredientsExpanded = true;
+            mIngredientsListView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void toggleInstructionOpenClose() {
+        if (mIsInstructionsExpanded) { //It is currently expanded and should collapse
+            mToggleInstructionsImageView.setImageResource(R.drawable.expander_close_holo_light);
+            mIsInstructionsExpanded = false;
+            mInstructionsScrollView.setVisibility(View.GONE);
+        } else {  //It is currently collapsed and should expand
+            mToggleInstructionsImageView.setImageResource(R.drawable.expander_open_holo_light);
+            mIsInstructionsExpanded = true;
+            mInstructionsScrollView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setRecipeData(View v) {
@@ -161,5 +220,10 @@ public class RecipeDisplayStepFragment extends Fragment {
         }
     }
 
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(KEY_INGREDIENTS_EXPANDED, mIsIngredientsExpanded);
+        outState.putBoolean(KEY_INSTRUCTIONS_EXPANDED, mIsInstructionsExpanded);
+        super.onSaveInstanceState(outState);
+    }
 }

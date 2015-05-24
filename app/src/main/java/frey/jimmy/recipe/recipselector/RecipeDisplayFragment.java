@@ -22,8 +22,8 @@ public class RecipeDisplayFragment extends Fragment {
     private static final String KEY_INGREDIENTS_EXPANDED = "KeyIngredientsExpanded";
     private static final String KEY_INSTRUCTIONS_EXPANDED = "KeyInstructionsExpanded";
     private static final String KEY_RECIPE_ID = "keyRecipeId";
-    boolean mIsIngredientExpanded = true;
-    boolean mIsInstructionExpanded = true;
+    private boolean mIsIngredientExpanded = true;
+    private boolean mIsInstructionExpanded = true;
     private Recipe mRecipe;
     private ImageView mIngredientsExpandCollapseImageView;
     private ImageView mInstructionsExpandCollapseImageView;
@@ -165,7 +165,6 @@ public class RecipeDisplayFragment extends Fragment {
             mIsIngredientExpanded = true;
             mIngredientsListView.setVisibility(View.VISIBLE);
         }
-
     }
 
     private void toggleInstructionOpenClose() {
