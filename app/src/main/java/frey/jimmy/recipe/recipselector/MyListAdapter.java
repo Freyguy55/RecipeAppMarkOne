@@ -32,9 +32,6 @@ public class MyListAdapter extends ArrayAdapter<Recipe> {
         }
         //Get recipe for this row
         Recipe recipe = mRecipeBook.get(position);
-        //Set image
-        ImageView recipeImage = (ImageView) v.findViewById(R.id.listImageView);
-        recipeImage.setImageResource(recipe.getRecipeImageId());
         //Set name
         TextView textView = (TextView) v.findViewById((R.id.listTextView));
         textView.setText(recipe.getRecipeName());
