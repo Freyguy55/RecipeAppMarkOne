@@ -48,6 +48,11 @@
             android:enabled="true"
             android:exported="true" >
         </service>
+
+        <activity
+            android:name=".TimerFinishedActivity"
+            android:label="@string/title_activity_timer_finished" >
+        </activity>
     </application>
 
 </manifest>

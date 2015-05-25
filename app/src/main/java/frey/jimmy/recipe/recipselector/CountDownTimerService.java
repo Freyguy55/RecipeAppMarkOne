@@ -2,6 +2,7 @@ package frey.jimmy.recipe.recipselector;
 
 import android.app.Service;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
@@ -24,13 +25,15 @@ public class CountDownTimerService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+        return null;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         System.out.println("BANANAS started service");
+        if(intent==null){
+            return super.onStartCommand(intent, flags, startId);
+        }
         if(mRecipeTimer == null) {
             int recipeTotalMinutes = intent.getIntExtra(EXTRA_TIME_LEFT,0);
             mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
@@ -44,6 +47,9 @@ public class CountDownTimerService extends Service {
                 public void onFinish() {
                     sendUpdateTimeBroadcast(0);
                     mRecipeTimer = null;
+                    Intent i = new Intent(CountDownTimerService.this, TimerFinishedActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
                 }
             };
             mRecipeTimer.start();
