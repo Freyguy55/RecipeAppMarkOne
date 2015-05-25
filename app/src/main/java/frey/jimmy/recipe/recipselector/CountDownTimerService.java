@@ -39,7 +39,7 @@ public class CountDownTimerService extends Service {
             mRecipeName = intent.getStringExtra(TimerFinishedActivity.EXTRA_RECIPE_NAME);
             int recipeTotalMinutes = intent.getIntExtra(EXTRA_TIME_LEFT,0);
             mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
-            mRecipeTimer = new CountDownTimer(5000, 100) {
+            mRecipeTimer = new CountDownTimer(10000, 100) {
                 @Override
                 public void onTick(long l) {
                     sendUpdateTimeBroadcast(l);
