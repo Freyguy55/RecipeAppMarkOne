@@ -12,6 +12,7 @@ public class CountDownTimerService extends Service {
     public static final String EXTRA_TIME_LEFT = "extraTimeLeft";
     private CountDownTimer mRecipeTimer;
     private LocalBroadcastManager mLocalBroadcastManager;
+    private String mRecipeName;
     public CountDownTimerService() {
     }
 
@@ -35,6 +36,7 @@ public class CountDownTimerService extends Service {
             return super.onStartCommand(intent, flags, startId);
         }
         if(mRecipeTimer == null) {
+            mRecipeName = intent.getStringExtra(TimerFinishedActivity.EXTRA_RECIPE_NAME);
             int recipeTotalMinutes = intent.getIntExtra(EXTRA_TIME_LEFT,0);
             mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
             mRecipeTimer = new CountDownTimer(5000, 100) {
@@ -48,6 +50,7 @@ public class CountDownTimerService extends Service {
                     sendUpdateTimeBroadcast(0);
                     mRecipeTimer = null;
                     Intent i = new Intent(CountDownTimerService.this, TimerFinishedActivity.class);
+                    i.putExtra(TimerFinishedActivity.EXTRA_RECIPE_NAME,mRecipeName);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(i);
                 }

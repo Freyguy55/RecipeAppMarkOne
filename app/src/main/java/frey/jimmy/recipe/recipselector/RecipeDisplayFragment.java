@@ -80,6 +80,7 @@ public class RecipeDisplayFragment extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), CountDownTimerService.class);
                 i.putExtra(EXTRA_MINUTES_INT, Integer.valueOf(mRecipe.getTotalMinutes()));
+                i.putExtra(TimerFinishedActivity.EXTRA_RECIPE_NAME,mRecipe.getRecipeName());
                 getActivity().startService(i);
 
             }
