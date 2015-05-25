@@ -45,7 +45,7 @@ public class CountDownTimerService extends Service {
             return super.onStartCommand(intent, flags, startId);
         }
         mRecipeName = intent.getStringExtra(TimerFinishedActivity.EXTRA_RECIPE_NAME);
-        int recipeTotalMinutes = intent.getIntExtra(EXTRA_TIME_LEFT, 0) * 60 * 1000;
+        int recipeTotalMinutes = intent.getIntExtra(RecipeDisplayFragment.EXTRA_MINUTES_INT, 0) * 60 * 1000;
         int command = intent.getIntExtra(EXTRA_COMMAND, 0);
         switch (command) {
             case TIMER_START: {
@@ -73,7 +73,7 @@ public class CountDownTimerService extends Service {
 
     private void startTimer(int recipeTotalMinutes) {
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
-        mRecipeTimer = new CountDownTimer(10000, 100) {
+        mRecipeTimer = new CountDownTimer(recipeTotalMinutes, 100) {
             @Override
             public void onTick(long l) {
                 mSavedTimeRemaining = l;

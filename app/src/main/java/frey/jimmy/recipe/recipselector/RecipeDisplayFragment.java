@@ -251,7 +251,7 @@ public class RecipeDisplayFragment extends Fragment {
 
     private void startTimerServer(int command) {
         Intent i = new Intent(getActivity(), CountDownTimerService.class);
-        i.putExtra(EXTRA_MINUTES_INT, Integer.valueOf(mRecipe.getTotalMinutes()));
+        i.putExtra(EXTRA_MINUTES_INT, mRecipe.getTotalMinutes());
         i.putExtra(TimerFinishedActivity.EXTRA_RECIPE_NAME, mRecipe.getRecipeName());
         i.putExtra(CountDownTimerService.EXTRA_COMMAND, command);
         getActivity().startService(i);
