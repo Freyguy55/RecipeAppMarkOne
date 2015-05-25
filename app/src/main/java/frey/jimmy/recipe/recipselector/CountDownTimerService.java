@@ -2,6 +2,7 @@ package frey.jimmy.recipe.recipselector;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
@@ -13,10 +14,12 @@ public class CountDownTimerService extends Service {
     public static final int TIMER_START = 0;
     public static final int TIMER_PAUSE = 1;
     public static final int TIMER_RESUME = 2;
+    private static final String SHARED_PREF_NAME = "CountdownTimerServicesSharedPref";
+    private static final String PREF_LONG_TIME_REMAINING = "prefLongTimeRemaining";
     private CountDownTimer mRecipeTimer;
     private LocalBroadcastManager mLocalBroadcastManager;
     private String mRecipeName;
-    private long savedTimeRemaining;
+    private long mSavedTimeRemaining;
 
     public CountDownTimerService() {
     }
@@ -38,6 +41,7 @@ public class CountDownTimerService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         System.out.println("BANANAS started service");
         if (intent == null) {
+            stopSelf();
             return super.onStartCommand(intent, flags, startId);
         }
         mRecipeName = intent.getStringExtra(TimerFinishedActivity.EXTRA_RECIPE_NAME);
@@ -45,18 +49,22 @@ public class CountDownTimerService extends Service {
         int command = intent.getIntExtra(EXTRA_COMMAND, 0);
         switch (command) {
             case TIMER_START: {
-                    startTimer(recipeTotalMinutes);
+                startTimer(recipeTotalMinutes);
                 break;
             }
             case TIMER_PAUSE: {
                 if (mRecipeTimer != null) {
-                    savedTimeRemaining = recipeTotalMinutes;
                     mRecipeTimer.cancel();
                 }
+                stopSelf();
                 break;
             }
             case TIMER_RESUME: {
-                startTimer((int) savedTimeRemaining);
+                SharedPreferences preferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+                mSavedTimeRemaining = preferences.getLong(PREF_LONG_TIME_REMAINING, 0);
+                if (mSavedTimeRemaining != 0) {
+                    startTimer((int) mSavedTimeRemaining);
+                }
                 break;
             }
         }
@@ -68,7 +76,7 @@ public class CountDownTimerService extends Service {
         mRecipeTimer = new CountDownTimer(10000, 100) {
             @Override
             public void onTick(long l) {
-                savedTimeRemaining = l;
+                mSavedTimeRemaining = l;
                 sendUpdateTimeBroadcast(l);
             }
 
@@ -80,9 +88,19 @@ public class CountDownTimerService extends Service {
                 i.putExtra(TimerFinishedActivity.EXTRA_RECIPE_NAME, mRecipeName);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
+                stopSelf();
             }
         };
         mRecipeTimer.start();
+    }
 
+    @Override
+    public void onDestroy() {
+        SharedPreferences preferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong(PREF_LONG_TIME_REMAINING, mSavedTimeRemaining);
+        System.out.println("BananasDestroy" + mSavedTimeRemaining);
+
+        super.onDestroy();
     }
 }
