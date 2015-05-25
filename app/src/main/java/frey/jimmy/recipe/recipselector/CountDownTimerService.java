@@ -13,15 +13,18 @@ public class CountDownTimerService extends Service {
     public static final String EXTRA_COMMAND = "extraCommand";
     public static final int TIMER_START = 0;
     public static final int TIMER_PAUSE = 1;
-    public static final int TIMER_RESUME = 2;
+    public static final int TIMER_RESET = 5;
     private static final String SHARED_PREF_NAME = "CountdownTimerServicesSharedPref";
     private static final String PREF_LONG_TIME_REMAINING = "prefLongTimeRemaining";
+    public static boolean sIsRunning;
+
     private CountDownTimer mRecipeTimer;
     private LocalBroadcastManager mLocalBroadcastManager;
     private String mRecipeName;
     private long mSavedTimeRemaining;
 
     public CountDownTimerService() {
+        sIsRunning = false;
     }
 
 
@@ -49,22 +52,36 @@ public class CountDownTimerService extends Service {
         int command = intent.getIntExtra(EXTRA_COMMAND, 0);
         switch (command) {
             case TIMER_START: {
-                startTimer(recipeTotalMinutes);
+                if (mRecipeTimer == null) {
+                    SharedPreferences preferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+                    if (preferences != null) {
+                        mSavedTimeRemaining = preferences.getLong(PREF_LONG_TIME_REMAINING, -1);
+                        if (mSavedTimeRemaining > 0) {
+                            startTimer((int) mSavedTimeRemaining);
+                        } else {
+                            startTimer(recipeTotalMinutes);
+                        }
+                    }
+                }
                 break;
             }
             case TIMER_PAUSE: {
                 if (mRecipeTimer != null) {
                     mRecipeTimer.cancel();
+                    mRecipeTimer = null;
                 }
+                sIsRunning = false;
                 stopSelf();
                 break;
             }
-            case TIMER_RESUME: {
-                SharedPreferences preferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
-                mSavedTimeRemaining = preferences.getLong(PREF_LONG_TIME_REMAINING, 0);
-                if (mSavedTimeRemaining != 0) {
-                    startTimer((int) mSavedTimeRemaining);
+            case TIMER_RESET: {
+                if (mRecipeTimer != null) {
+                    mRecipeTimer.cancel();
+                    mRecipeTimer = null;
                 }
+                mSavedTimeRemaining = -1;
+                sIsRunning = false;
+                stopSelf();
                 break;
             }
         }
@@ -83,15 +100,21 @@ public class CountDownTimerService extends Service {
             @Override
             public void onFinish() {
                 sendUpdateTimeBroadcast(0);
+                if (mRecipeTimer != null) {
+                    mRecipeTimer.cancel();
+                }
+                mSavedTimeRemaining = -1;
                 mRecipeTimer = null;
                 Intent i = new Intent(CountDownTimerService.this, TimerFinishedActivity.class);
                 i.putExtra(TimerFinishedActivity.EXTRA_RECIPE_NAME, mRecipeName);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
+                sIsRunning = false;
                 stopSelf();
             }
         };
         mRecipeTimer.start();
+        sIsRunning = true;
     }
 
     @Override
@@ -99,8 +122,8 @@ public class CountDownTimerService extends Service {
         SharedPreferences preferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putLong(PREF_LONG_TIME_REMAINING, mSavedTimeRemaining).commit();
+        sIsRunning = false;
         System.out.println("BananasDestroy" + mSavedTimeRemaining);
-
         super.onDestroy();
     }
 }
