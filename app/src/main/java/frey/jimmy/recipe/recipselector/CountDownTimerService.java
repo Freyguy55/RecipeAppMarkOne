@@ -98,7 +98,7 @@ public class CountDownTimerService extends Service {
     public void onDestroy() {
         SharedPreferences preferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putLong(PREF_LONG_TIME_REMAINING, mSavedTimeRemaining);
+        editor.putLong(PREF_LONG_TIME_REMAINING, mSavedTimeRemaining).commit();
         System.out.println("BananasDestroy" + mSavedTimeRemaining);
 
         super.onDestroy();
