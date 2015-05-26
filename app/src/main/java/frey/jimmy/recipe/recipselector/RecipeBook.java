@@ -108,6 +108,20 @@ public class RecipeBook {
         return list;
     }
 
+    //Returns a list of all units in recipes currently
+    public ArrayList<String> getAllIngredientUnits() {
+        ArrayList<String> listOfAllUnits = new ArrayList<>();
+        listOfAllUnits.add("cups");
+        for (Recipe r : mRecipes) {
+            for (Ingredient i : r.getRecipeIngredientList()) {
+                if (!listOfAllUnits.contains(i.getUnit())) {
+                    listOfAllUnits.add(i.getUnit());
+                }
+            }
+        }
+        return listOfAllUnits;
+    }
+
     //Checks if there are any new recipes to add to the saved list.
     public void checkForNewRecipes() {
         ObjectInputStream inputStream = null;
