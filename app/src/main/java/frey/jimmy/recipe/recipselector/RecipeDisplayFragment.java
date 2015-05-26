@@ -36,7 +36,7 @@ public class RecipeDisplayFragment extends Fragment {
     private ImageView mLikeDislikeImageView;
     private ScrollView mInstructionsScrollView;
     private ListView mIngredientsListView;
-    private ArrayList<String> mIngredientStringList;
+    private ArrayList<Ingredient> mIngredientList;
     private TextView mTimerTextView;
     private boolean mTimerIsPaused = true;
     private Button mTimerStartButton;
@@ -123,9 +123,9 @@ public class RecipeDisplayFragment extends Fragment {
         TextView instructionsTextView = (TextView) v.findViewById(R.id.instructionsTextView);
         instructionsTextView.setText(mRecipe.getInstructions());
         //Ingredients
-        mIngredientStringList = mRecipe.getRecipeIngredientStringList();
-        if (mIngredientStringList != null) {
-            mIngredientsListView.setAdapter(new MyIngredientListAdapter(getActivity(), R.layout.ingredient_list_view_layout, mIngredientStringList));
+        mIngredientList = mRecipe.getRecipeIngredientList();
+        if (mIngredientList != null) {
+            mIngredientsListView.setAdapter(new MyIngredientListAdapter(getActivity(), R.layout.ingredient_list_view_layout, mIngredientList));
         }
         //Like or dislike image
         mLikeDislikeImageView = (ImageView) v.findViewById(R.id.recipeDisplayLikeImageView);

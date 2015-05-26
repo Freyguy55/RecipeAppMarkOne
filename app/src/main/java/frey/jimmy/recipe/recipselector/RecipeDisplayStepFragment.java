@@ -36,7 +36,7 @@ public class RecipeDisplayStepFragment extends Fragment {
     private TextView mInstructionsTextView;
     private ScrollView mInstructionsScrollView;
     private ListView mIngredientsListView;
-    private ArrayList<String> mIngredientStringList;
+    private ArrayList<Ingredient> mIngredientList;
     private int mPosition;
     private ImageView mRecipeStepImageView;
     private static final String KEY_POSITION = "KeyPosition";
@@ -139,9 +139,9 @@ public class RecipeDisplayStepFragment extends Fragment {
         textViewName.setText(mRecipe.getRecipeName());
 
         mIngredientsListView = (ListView) v.findViewById(R.id.recipeStepIngredientListView);
-        mIngredientStringList = mRecipeStep.getRecipeStepIngredientStringList();
-        if (mIngredientStringList != null) {
-            mIngredientsListView.setAdapter(new MyIngredientListAdapter(getActivity(),R.layout.ingredient_list_view_layout,mIngredientStringList));
+        mIngredientList = mRecipeStep.getRecipeStepIngredientList();
+        if (mIngredientList != null) {
+            mIngredientsListView.setAdapter(new MyIngredientListAdapter(getActivity(),R.layout.ingredient_list_view_layout, mIngredientList));
         }
 
         mInstructionsTextView = (TextView) v.findViewById(R.id.instructionsStepTextView);

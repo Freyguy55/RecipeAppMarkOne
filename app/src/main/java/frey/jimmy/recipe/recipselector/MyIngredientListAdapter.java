@@ -17,12 +17,12 @@ import java.util.ArrayList;
 /**
  * Created by James on 5/14/2015.
  */
-public class MyIngredientListAdapter extends ArrayAdapter<String> {
+public class MyIngredientListAdapter extends ArrayAdapter<Ingredient> {
 
-    private ArrayList<String> mIngredientList;
+    private ArrayList<Ingredient> mIngredientList;
     private Context mContext;
 
-    public MyIngredientListAdapter(Context context, int resource, ArrayList<String> ingredientList) {
+    public MyIngredientListAdapter(Context context, int resource, ArrayList<Ingredient> ingredientList) {
         super(context, resource, ingredientList);
         mContext = context;
         mIngredientList = ingredientList;
@@ -46,10 +46,10 @@ public class MyIngredientListAdapter extends ArrayAdapter<String> {
         //Get ingredients for this row
         final int ingredientLeftPosition = position * 2;
         final int ingredientRightPosition = ingredientLeftPosition + 1;
-        final String ingredientLeft = mIngredientList.get(ingredientLeftPosition);
+        final String ingredientLeft = mIngredientList.get(ingredientLeftPosition).toString();
         String ingredientRight = null;
         if (ingredientRightPosition < mIngredientList.size()) {
-            ingredientRight = mIngredientList.get(ingredientRightPosition);
+            ingredientRight = mIngredientList.get(ingredientRightPosition).toString();
         }
         //Left ingredient
         final TextView textViewIngredientLeft = (TextView) v.findViewById(R.id.textViewIngredientLeft);
