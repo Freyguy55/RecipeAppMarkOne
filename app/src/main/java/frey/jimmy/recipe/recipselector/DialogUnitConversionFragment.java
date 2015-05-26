@@ -35,8 +35,8 @@ public class DialogUnitConversionFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle("Select a unit");
         mIngredient = (Ingredient) getArguments().getSerializable(KEY_INGREDIENT);
+        getDialog().setTitle(mIngredient.getName());
         View v = inflater.inflate(R.layout.dialog_fragment_unit_conversion, container, false);
 
         ingredientQuantityTextView = (TextView) v.findViewById(R.id.textViewIngredientQuantity);
@@ -45,8 +45,6 @@ public class DialogUnitConversionFragment extends DialogFragment {
         unitSpinner = (Spinner) v.findViewById(R.id.dialogUnitSpinner);
         configureSpinner();
 
-        TextView ingredientName = (TextView) v.findViewById(R.id.textViewIngredientName);
-        ingredientName.setText(mIngredient.getName());
         return v;
     }
 

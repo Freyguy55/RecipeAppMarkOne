@@ -114,7 +114,7 @@ public class RecipeBook {
         listOfAllUnits.add("cups");
         for (Recipe r : mRecipes) {
             for (Ingredient i : r.getRecipeIngredientList()) {
-                if (!listOfAllUnits.contains(i.getUnit())) {
+                if (!listOfAllUnits.contains(i.getUnit()) && i.getUnit()!=null) {
                     listOfAllUnits.add(i.getUnit());
                 }
             }

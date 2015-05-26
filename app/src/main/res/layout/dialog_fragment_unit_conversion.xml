@@ -3,24 +3,21 @@
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-    >
+              android:gravity="center_vertical|center_horizontal">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/textViewIngredientQuantity"/>
+        android:id="@+id/textViewIngredientQuantity"
+        />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dialogUnitSpinner"/>
+        android:id="@+id/dialogUnitSpinner"
+        android:layout_marginLeft="8dp"
+        />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/textViewIngredientName"/>
 </LinearLayout>
