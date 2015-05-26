@@ -1,6 +1,10 @@
 package frey.jimmy.recipe.recipselector;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +20,11 @@ import java.util.ArrayList;
 public class MyIngredientListAdapter extends ArrayAdapter<String> {
 
     private ArrayList<String> mIngredientList;
+    private Context mContext;
 
     public MyIngredientListAdapter(Context context, int resource, ArrayList<String> ingredientList) {
         super(context, resource, ingredientList);
+        mContext = context;
         mIngredientList = ingredientList;
     }
 
@@ -40,7 +46,7 @@ public class MyIngredientListAdapter extends ArrayAdapter<String> {
         //Get ingredients for this row
         final int ingredientLeftPosition = position * 2;
         final int ingredientRightPosition = ingredientLeftPosition + 1;
-        String ingredientLeft = mIngredientList.get(ingredientLeftPosition);
+        final String ingredientLeft = mIngredientList.get(ingredientLeftPosition);
         String ingredientRight = null;
         if (ingredientRightPosition < mIngredientList.size()) {
             ingredientRight = mIngredientList.get(ingredientRightPosition);
@@ -51,7 +57,8 @@ public class MyIngredientListAdapter extends ArrayAdapter<String> {
         textViewIngredientLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "You clicked " + textViewIngredientLeft.getText() + " position: " + ingredientLeftPosition + " " + position, Toast.LENGTH_SHORT).show();
+                FragmentManager fm = ((FragmentActivity)mContext).getSupportFragmentManager();
+                DialogUnitConversionFragment.createInstance(new Ingredient(1.0,"ounce",ingredientLeft)).show(fm,"IngredientTag");
             }
         });
         //Right ingredient
