@@ -27,7 +27,6 @@ public class RecipeDisplayFragment extends Fragment {
     private static final String KEY_INSTRUCTIONS_EXPANDED = "KeyInstructionsExpanded";
     private static final String KEY_RECIPE_ID = "keyRecipeId";
     private static final String KEY_TIMER_PAUSED = "keyTimerIsPaused";
-    private static final String KEY_TIMER_SHOULD_START = "keyTimerShouldStart";
     private static final String KEY_TIME_REMAINING = "keyTimeRemaining";
     private boolean mIsIngredientExpanded = true;
     private boolean mIsInstructionExpanded = true;
