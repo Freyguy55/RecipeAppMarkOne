@@ -26,9 +26,9 @@ import java.util.UUID;
 public class RecipeImageFragment extends Fragment {
 
     private static final String KEY_RECIPE_ID = "keyRecipeId";
-    private static final String ENDPOINT = "frey.jimmy.testbucket.s3-website-us-west-1.amazonaws.com";
-    private static final String IMAGE_URL = "http://" + ENDPOINT + "/image/";
-    private static final String IMAGE_EXTENSION = ".jpg";
+    public static final String ENDPOINT = "frey.jimmy.testbucket.s3-website-us-west-1.amazonaws.com";
+    public static final String IMAGE_URL = "http://" + ENDPOINT + "/image/";
+    public static final String IMAGE_EXTENSION = ".jpg";
     private ImageView mRecipeImageView;
     private Recipe mRecipe;
 

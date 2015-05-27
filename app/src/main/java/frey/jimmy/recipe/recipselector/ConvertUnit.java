@@ -14,17 +14,25 @@ public class ConvertUnit {
     }
 
     private void addAllUnits() {
-        mUnits.add(new Unit("Ounce",1));
+        mUnits.add(new Unit("fl oz",1));
         mUnits.add(new Unit("oz",1));
+        mUnits.add(new Unit("lb",1));
         mUnits.add(new Unit("cup",1));
+        mUnits.add(new Unit("ml",1));
+        mUnits.add(new Unit("liter",1));
         mUnits.add(new Unit("tsp",1));
         mUnits.add(new Unit("tbsp",1));
-        mUnits.add(new Unit("Tablespoon",1));
-        mUnits.add(new Unit("tsp",1));
+        mUnits.add(new Unit("pinch",1,false));
+        mUnits.add(new Unit("bunch",1,false));
+        mUnits.add(new Unit("g",1));
+        mUnits.add(new Unit("medium",1,false));
+        mUnits.add(new Unit("large",1,false));
+
+        mUnits.add(new Unit("Ounce",1));
         mUnits.add(new Unit("Pound",16));
         mUnits.add(new Unit("Pounds",16));
         mUnits.add(new Unit("Kilogram",35.274));
-        mUnits.add(new Unit("package",35.274));
+        mUnits.add(new Unit("package",35.274,false));
     }
 
     public ArrayList<String> getUnitsStringList() {
@@ -64,10 +72,18 @@ public class ConvertUnit {
     public class Unit {
         private String mName;
         private double mOunceConversion;
+        private boolean mIsConvertible;
 
         public Unit(String name, double ounceConversion) {
             mName = name;
             mOunceConversion = ounceConversion;
+            mIsConvertible = true;
+        }
+
+        public Unit(String name, double ounceConversion, boolean isConvertible) {
+            mName = name;
+            mOunceConversion = ounceConversion;
+            mIsConvertible = isConvertible;
         }
 
         public String getName() {

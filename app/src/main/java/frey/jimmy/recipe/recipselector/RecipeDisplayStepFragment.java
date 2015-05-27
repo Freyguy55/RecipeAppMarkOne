@@ -167,12 +167,10 @@ public class RecipeDisplayStepFragment extends Fragment {
 
     //Inner class for downloading image
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        private static final String IP_ADDRESS = "98.253.25.58";
-        private static final String IMAGE_URL = "http://" + IP_ADDRESS + "/save/image/";
 
         @Override
         protected Bitmap doInBackground(String... imageID) {
-            String url = IMAGE_URL + imageID[0];
+            String url = RecipeImageFragment.IMAGE_URL + imageID[0] + RecipeImageFragment.IMAGE_EXTENSION;
             System.out.println("Url truing to connect to: " + url.toString());
             Bitmap recipeBitmap = downloadImage(url);
             return recipeBitmap;
