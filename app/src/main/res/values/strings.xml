@@ -25,5 +25,6 @@
     <string name="delete_local_file_button_text">Delete local recipe book file</string>
     <string name="title_activity_timer_finished">TimerFinishedActivity</string>
     <string name="stop_alarm_button_text">Stop Alarm</string>
+    <string name="title_activity_shopping_list">ShoppingListActivity</string>
 
 </resources>
