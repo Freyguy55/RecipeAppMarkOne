@@ -16,17 +16,18 @@ public class ConvertUnit {
     private void addAllUnits() {
         mUnits.add(new Unit("fl oz",1));
         mUnits.add(new Unit("oz",1));
-        mUnits.add(new Unit("lb",1));
-        mUnits.add(new Unit("cup",1));
-        mUnits.add(new Unit("ml",1));
-        mUnits.add(new Unit("liter",1));
-        mUnits.add(new Unit("tsp",1));
-        mUnits.add(new Unit("tbsp",1));
-        mUnits.add(new Unit("pinch",1,false));
-        mUnits.add(new Unit("bunch",1,false));
-        mUnits.add(new Unit("g",1));
-        mUnits.add(new Unit("medium",1,false));
-        mUnits.add(new Unit("large",1,false));
+        mUnits.add(new Unit("lb",16));
+        mUnits.add(new Unit("cup",8));
+        mUnits.add(new Unit("ml",0.033814));
+        mUnits.add(new Unit("liter",33.814));
+        mUnits.add(new Unit("tsp",0.166667));
+        mUnits.add(new Unit("tbsp",0.5));
+        mUnits.add(new Unit("pinch",0.01,false));
+        mUnits.add(new Unit("bunch",2.5,false));
+        mUnits.add(new Unit("g",0.035274));
+        mUnits.add(new Unit("medium",1.75,false));
+        mUnits.add(new Unit("large",2,false));
+        mUnits.add(new Unit("kg",35.274));
 
         mUnits.add(new Unit("Ounce",1));
         mUnits.add(new Unit("Pound",16));
