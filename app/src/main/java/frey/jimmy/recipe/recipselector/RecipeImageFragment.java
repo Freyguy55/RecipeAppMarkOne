@@ -27,6 +27,9 @@ public class RecipeImageFragment extends Fragment {
     private static final String KEY_RECIPE_ID = "keyRecipeId";
     private ImageView mRecipeImageView;
     private Recipe mRecipe;
+    private static final String ENDPOINT = "frey.jimmy.testbucket.s3-website-us-west-1.amazonaws.com";
+    private static final String IMAGE_URL = "http://" + ENDPOINT + "/image/";
+    private static final String IMAGE_EXTENSION = ".jpg";
 
     public RecipeImageFragment() {
         // Required empty public constructor
@@ -63,13 +66,11 @@ public class RecipeImageFragment extends Fragment {
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        private static final String IP_ADDRESS = "98.253.25.58";
-        private static final String IMAGE_URL = "http://" + IP_ADDRESS + "/save/image/";
 
         @Override
         protected Bitmap doInBackground(String... imageID) {
-            String url = IMAGE_URL + imageID[0];
-            System.out.println("Url truing to connect to: " + url.toString());
+            String url = IMAGE_URL + imageID[0] + IMAGE_EXTENSION;
+            System.out.println("Url trying to connect to: " + url.toString());
             Bitmap recipeBitmap = downloadImage(url);
             return recipeBitmap;
         }

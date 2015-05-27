@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -183,6 +184,8 @@ public class RecipeDisplayStepFragment extends Fragment {
                 if (recipeBitmap != null) {
                     BitmapDrawable bitmapDrawable = new BitmapDrawable(getActivity().getResources(), recipeBitmap);
                     mRecipeStepImageView.setImageDrawable(bitmapDrawable);
+                } else {
+                    mRecipeStepImageView.setImageResource(R.drawable.error_image);
                 }
             }
             super.onPostExecute(recipeBitmap);
@@ -193,6 +196,7 @@ public class RecipeDisplayStepFragment extends Fragment {
             try {
                 URL imageUrl = new URL(url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) imageUrl.openConnection();
+                httpURLConnection.setConnectTimeout(5000);
                 int responseCode = httpURLConnection.getResponseCode();
                 System.out.println("Response code: " + responseCode);
                 if (responseCode != 200) {
@@ -202,7 +206,11 @@ public class RecipeDisplayStepFragment extends Fragment {
                 inputStream = httpURLConnection.getInputStream();
                 Bitmap bitMap = BitmapFactory.decodeStream(inputStream);
                 return bitMap;
-            } catch (MalformedURLException e) {
+            } catch (SocketTimeoutException e){
+                e.printStackTrace();
+                return null;
+            }
+            catch (MalformedURLException e) {
                 e.printStackTrace();
                 return null;
             } catch (IOException e) {
