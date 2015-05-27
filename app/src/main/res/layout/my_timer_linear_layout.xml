@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:text="Start"
         android:id="@+id/timerStartButton"
-        style="?android:attr/buttonStyleSmall"/>
+        style="?android:attr/buttonStyleSmall"
+        android:textSize="10sp"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -26,7 +27,7 @@
         android:text="Pause"
         android:id="@+id/timerPauseButton"
         style="?android:attr/buttonStyleSmall"
-        android:textSize="8sp"/>
+        android:textSize="10sp"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -34,7 +35,7 @@
         android:text="+2 MIN."
         android:id="@+id/timerAddTwoMinButton"
         style="?android:attr/buttonStyleSmall"
-        android:textSize="8sp"/>
+        android:textSize="10sp"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -42,6 +43,6 @@
         android:text="Reset"
         android:id="@+id/timerResetButton"
         style="?android:attr/buttonStyleSmall"
-        android:textSize="8sp"/>
+        android:textSize="10sp"/>
 
 </LinearLayout>
