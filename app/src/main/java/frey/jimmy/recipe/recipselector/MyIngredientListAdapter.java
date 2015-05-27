@@ -57,8 +57,11 @@ public class MyIngredientListAdapter extends ArrayAdapter<Ingredient> {
         textViewIngredientLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fm = ((FragmentActivity)mContext).getSupportFragmentManager();
-                DialogUnitConversionFragment.createInstance(mIngredientList.get(ingredientLeftPosition)).show(fm,"IngredientTag");
+                Ingredient ingredientSelected = mIngredientList.get(ingredientLeftPosition);
+                if(ingredientSelected.getUnit()!=null) {
+                    FragmentManager fm = ((FragmentActivity) mContext).getSupportFragmentManager();
+                    DialogUnitConversionFragment.createInstance(ingredientSelected).show(fm, "IngredientTag");
+                }
             }
         });
         //Right ingredient
@@ -68,8 +71,11 @@ public class MyIngredientListAdapter extends ArrayAdapter<Ingredient> {
             textViewIngredientRight.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    FragmentManager fm = ((FragmentActivity)mContext).getSupportFragmentManager();
-                    DialogUnitConversionFragment.createInstance(mIngredientList.get(ingredientLeftPosition)).show(fm,"IngredientTag");
+                    Ingredient ingredientSelected = mIngredientList.get(ingredientRightPosition);
+                    if(ingredientSelected.getUnit()!=null) {
+                        FragmentManager fm = ((FragmentActivity) mContext).getSupportFragmentManager();
+                        DialogUnitConversionFragment.createInstance(ingredientSelected).show(fm, "IngredientTag");
+                    }
                 }
             });
         }

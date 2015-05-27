@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -15,13 +16,15 @@ import android.widget.TextView;
 /**
  * Created by James on 5/26/2015.
  */
-public class DialogUnitConversionFragment extends DialogFragment {
+public class DialogUnitConversionFragment extends DialogFragment implements AdapterView.OnItemSelectedListener{
     private static final String KEY_INGREDIENT = "keyIngredient";
     private Ingredient mIngredient;
-    private Spinner unitSpinner;
-    private TextView ingredientQuantityTextView;
+    private Spinner mUnitSpinner;
+    private TextView mIngredientQuantityTextView;
+    private ConvertUnit mConvertUnit;
 
     public DialogUnitConversionFragment(){
+        mConvertUnit = new ConvertUnit();
     }
 
     public static DialogUnitConversionFragment createInstance(Ingredient i){
@@ -36,25 +39,40 @@ public class DialogUnitConversionFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mIngredient = (Ingredient) getArguments().getSerializable(KEY_INGREDIENT);
-        getDialog().setTitle(mIngredient.getName());
-        View v = inflater.inflate(R.layout.dialog_fragment_unit_conversion, container, false);
+            getDialog().setTitle(mIngredient.getName());
+            View v = inflater.inflate(R.layout.dialog_fragment_unit_conversion, container, false);
 
-        ingredientQuantityTextView = (TextView) v.findViewById(R.id.textViewIngredientQuantity);
-        ingredientQuantityTextView.setText(String.valueOf(mIngredient.getQuantity()));
+            mIngredientQuantityTextView = (TextView) v.findViewById(R.id.textViewIngredientQuantity);
+            mIngredientQuantityTextView.setText(String.valueOf(mIngredient.getQuantity()));
 
-        unitSpinner = (Spinner) v.findViewById(R.id.dialogUnitSpinner);
-        configureSpinner();
+            mUnitSpinner = (Spinner) v.findViewById(R.id.dialogUnitSpinner);
+            mUnitSpinner.setOnItemSelectedListener(this);
+            configureSpinner();
 
-        return v;
+            return v;
     }
 
     private void configureSpinner() {
-        unitSpinner.setAdapter(new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,RecipeBook.get(getActivity()).getAllIngredientUnits()));
+        mUnitSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mConvertUnit.getUnitsStringList()));
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return super.onCreateDialog(savedInstanceState);
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String fromUnit = mIngredient.getUnit();
+        String toUnit = (String)adapterView.getItemAtPosition(i);
+        double newQuantity = ConvertUnit.convertToUnit(mIngredient.getQuantity(),fromUnit,toUnit);
+        mIngredientQuantityTextView.setText(String.valueOf((double)Math.round(newQuantity*100)/100));
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
