@@ -38,7 +38,6 @@ public class RecipeDisplayStepFragment extends Fragment {
     public static final String EXTRA_MINUTES_INT = "ExtraMinutesInt";
     private static final String KEY_INGREDIENTS_EXPANDED = "keyIngredientsExpanded";
     private static final String KEY_INSTRUCTIONS_EXPANDED = "keyInstructionsExpanded";
-    private static final String KEY_TIMER_PAUSED = "keyTimerIsPaused";
     private static final String KEY_TIME_REMAINING = "keyTimeRemaining";
     private static final String KEY_POSITION = "KeyPosition";
     private static final String KEY_UUID = "keyUuid";
@@ -52,7 +51,6 @@ public class RecipeDisplayStepFragment extends Fragment {
     private int mPosition;
     private ImageView mRecipeStepImageView;
     private TextView mTimerTextView;
-    private boolean mTimerIsPaused = true;
     private Button mTimerStartButton;
     private Button mTimerPauseButton;
     private long mTimeRemaining;
@@ -123,12 +121,8 @@ public class RecipeDisplayStepFragment extends Fragment {
             if (!savedInstanceState.getBoolean(KEY_INSTRUCTIONS_EXPANDED)) {
                 toggleInstructionOpenClose(); //Collapse instructions (initial state is always expanded)
             }
-            mTimerIsPaused = savedInstanceState.getBoolean(KEY_TIMER_PAUSED);
             mTimeRemaining = savedInstanceState.getLong(KEY_TIME_REMAINING);
         } else {
-            if (CountDownTimerService.sIsRunning) {  //If the timer is running and this is a new activity
-                mTimerIsPaused = false;
-            }
             mTimeRemaining = mRecipe.getTotalMinutes() * 60 * 1000;
         }
         mTimerTextView.setText(formatTime(mTimeRemaining));
@@ -202,7 +196,6 @@ public class RecipeDisplayStepFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startTimerServer(CountDownTimerService.TIMER_START);
-                mTimerIsPaused = false;
             }
         });
         //Timer pause button
@@ -210,18 +203,22 @@ public class RecipeDisplayStepFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startTimerServer((CountDownTimerService.TIMER_PAUSE));
-                mTimerIsPaused = true;
             }
         });
         //Timer +2 Min Button
         Button addTwoMinButton = (Button) v.findViewById(R.id.timerAddTwoMinButton);
+        addTwoMinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startTimerServer(CountDownTimerService.TIMER_ADD_TWO_MIN);
+            }
+        });
         //Timer reset button
         Button timerResetButton = (Button) v.findViewById(R.id.timerResetButton);
         timerResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startTimerServer(CountDownTimerService.TIMER_RESET);
-                mTimerIsPaused = true;
                 mTimeRemaining = mRecipe.getTotalMinutes() * 60 * 1000;
                 mTimerTextView.setText(formatTime(mTimeRemaining));
             }
@@ -253,7 +250,6 @@ public class RecipeDisplayStepFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(KEY_INGREDIENTS_EXPANDED, mIsIngredientsExpanded);
         outState.putBoolean(KEY_INSTRUCTIONS_EXPANDED, mIsInstructionsExpanded);
-        outState.putBoolean(KEY_TIMER_PAUSED, mTimerIsPaused);
         outState.putLong(KEY_TIME_REMAINING, mTimeRemaining);
         super.onSaveInstanceState(outState);
     }

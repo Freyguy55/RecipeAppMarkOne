@@ -26,7 +26,6 @@ public class RecipeDisplayFragment extends Fragment {
     private static final String KEY_INGREDIENTS_EXPANDED = "KeyIngredientsExpanded";
     private static final String KEY_INSTRUCTIONS_EXPANDED = "KeyInstructionsExpanded";
     private static final String KEY_RECIPE_ID = "keyRecipeId";
-    private static final String KEY_TIMER_PAUSED = "keyTimerIsPaused";
     private static final String KEY_TIME_REMAINING = "keyTimeRemaining";
     private boolean mIsIngredientExpanded = true;
     private boolean mIsInstructionExpanded = true;
@@ -90,6 +89,12 @@ public class RecipeDisplayFragment extends Fragment {
         });
         //Timer +2 Min Button
         Button addTwoMinButton = (Button) v.findViewById(R.id.timerAddTwoMinButton);
+        addTwoMinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startTimerServer(CountDownTimerService.TIMER_ADD_TWO_MIN);
+            }
+        });
         //Timer reset button
         Button timerResetButton = (Button) v.findViewById(R.id.timerResetButton);
         timerResetButton.setOnClickListener(new View.OnClickListener() {

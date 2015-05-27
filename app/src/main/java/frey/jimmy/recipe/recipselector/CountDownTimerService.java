@@ -15,17 +15,18 @@ public class CountDownTimerService extends Service {
     public static final int TIMER_PAUSE = 1;
     public static final int TIMER_RESET = 5;
     public static final int TIMER_GET_TIME = 9;
+    public static final int TIMER_ADD_TWO_MIN = 2;
     private static final String SHARED_PREF_NAME = "CountdownTimerServicesSharedPref";
     private static final String PREF_LONG_TIME_REMAINING = "prefLongTimeRemaining";
-    public static boolean sIsRunning;
+
+
 
     private static CountDownTimer mRecipeTimer;
     private LocalBroadcastManager mLocalBroadcastManager;
     private String mRecipeName;
-    private long mSavedTimeRemaining;
+    private static long mSavedTimeRemaining;
 
     public CountDownTimerService() {
-        sIsRunning = false;
     }
 
 
@@ -72,11 +73,16 @@ public class CountDownTimerService extends Service {
             }
 
             case TIMER_PAUSE: {
+                SharedPreferences preferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
                 if (mRecipeTimer != null) {
                     mRecipeTimer.cancel();
                     mRecipeTimer = null;
+                    editor.putLong(PREF_LONG_TIME_REMAINING, mSavedTimeRemaining).commit();
+                } else {
+                    mSavedTimeRemaining = preferences.getLong(PREF_LONG_TIME_REMAINING, -1);
+                    editor.putLong(PREF_LONG_TIME_REMAINING, mSavedTimeRemaining).commit();
                 }
-                sIsRunning = false;
                 stopSelf();
                 break;
             }
@@ -87,9 +93,34 @@ public class CountDownTimerService extends Service {
                     mRecipeTimer = null;
                 }
                 mSavedTimeRemaining = -1;
-                sIsRunning = false;
+                SharedPreferences preferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putLong(PREF_LONG_TIME_REMAINING, mSavedTimeRemaining).commit();
                 sendUpdateTimeBroadcast(mSavedTimeRemaining);
                 stopSelf();
+                break;
+            }
+
+            case TIMER_ADD_TWO_MIN: {
+                if (mRecipeTimer != null) {
+                    mRecipeTimer.cancel();
+                    mRecipeTimer = null;
+                    startTimer((int) mSavedTimeRemaining + 120 * 1000);
+                } else {
+                    SharedPreferences preferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+                    mSavedTimeRemaining = preferences.getLong(PREF_LONG_TIME_REMAINING, -1);
+                    if (mSavedTimeRemaining <= 0) {
+                        mSavedTimeRemaining = recipeTotalMinutes + 120 * 1000;
+                    } else {
+                        mSavedTimeRemaining = mSavedTimeRemaining + 120 * 1000;
+                    }
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putLong(PREF_LONG_TIME_REMAINING, mSavedTimeRemaining).commit();
+                    sendUpdateTimeBroadcast(mSavedTimeRemaining);
+
+                    stopSelf();
+                }
+
                 break;
             }
 
@@ -126,12 +157,10 @@ public class CountDownTimerService extends Service {
                 i.putExtra(TimerFinishedActivity.EXTRA_RECIPE_NAME, mRecipeName);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
-                sIsRunning = false;
                 stopSelf();
             }
         };
         mRecipeTimer.start();
-        sIsRunning = true;
     }
 
     @Override
@@ -139,7 +168,6 @@ public class CountDownTimerService extends Service {
         SharedPreferences preferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putLong(PREF_LONG_TIME_REMAINING, mSavedTimeRemaining).commit();
-        sIsRunning = false;
         System.out.println("BananasDestroy" + mSavedTimeRemaining);
         super.onDestroy();
     }
