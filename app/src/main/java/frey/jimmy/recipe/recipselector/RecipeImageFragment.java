@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.UUID;
 
@@ -25,11 +26,11 @@ import java.util.UUID;
 public class RecipeImageFragment extends Fragment {
 
     private static final String KEY_RECIPE_ID = "keyRecipeId";
-    private ImageView mRecipeImageView;
-    private Recipe mRecipe;
     private static final String ENDPOINT = "frey.jimmy.testbucket.s3-website-us-west-1.amazonaws.com";
     private static final String IMAGE_URL = "http://" + ENDPOINT + "/image/";
     private static final String IMAGE_EXTENSION = ".jpg";
+    private ImageView mRecipeImageView;
+    private Recipe mRecipe;
 
     public RecipeImageFragment() {
         // Required empty public constructor
@@ -77,11 +78,14 @@ public class RecipeImageFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Bitmap recipeBitmap) {
-            if(isAdded()) {
+            if (isAdded()) {
                 if (recipeBitmap != null) {
                     BitmapDrawable bitmapDrawable = new BitmapDrawable(getActivity().getResources(), recipeBitmap);
                     mRecipeImageView.setImageDrawable(bitmapDrawable);
+                } else {
+                    mRecipeImageView.setImageResource(R.drawable.error_image);
                 }
+
             }
             super.onPostExecute(recipeBitmap);
         }
@@ -91,6 +95,7 @@ public class RecipeImageFragment extends Fragment {
             try {
                 URL imageUrl = new URL(url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) imageUrl.openConnection();
+                httpURLConnection.setConnectTimeout(5000);
                 int responseCode = httpURLConnection.getResponseCode();
                 System.out.println("Response code: " + responseCode);
                 if (responseCode != 200) {
@@ -100,6 +105,9 @@ public class RecipeImageFragment extends Fragment {
                 inputStream = httpURLConnection.getInputStream();
                 Bitmap bitMap = BitmapFactory.decodeStream(inputStream);
                 return bitMap;
+            } catch (SocketTimeoutException e){
+                e.printStackTrace();
+                return null;
             } catch (MalformedURLException e) {
                 e.printStackTrace();
                 return null;
