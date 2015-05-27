@@ -2,11 +2,12 @@ package frey.jimmy.recipe.recipselector;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 
 
-public class ShoppingListActivity extends ActionBarActivity {
+public class ShoppingListActivity extends FragmentActivity implements IngredientFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,5 +20,10 @@ public class ShoppingListActivity extends ActionBarActivity {
             ingredientFragment = IngredientFragment.newInstance();
             fm.beginTransaction().add(R.id.shoppingListFragmentContainer, ingredientFragment).commit();
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(String id) {
+
     }
 }

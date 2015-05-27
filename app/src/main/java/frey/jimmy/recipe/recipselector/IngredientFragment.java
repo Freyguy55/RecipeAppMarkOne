@@ -61,14 +61,14 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
         super.onCreate(savedInstanceState);
 
         // TODO: Change Adapter to display your content
-        ArrayList<String> shoppingList = new ArrayList<>();
+        ArrayList<Ingredient> shoppingList = new ArrayList<>();
         for(Recipe r: RecipeBook.get(getActivity()).getRecipes()){
-            for(String s : r.getRecipeIngredientStringList()){
-                shoppingList.add(s);
+            for(Ingredient i : r.getRecipeIngredientList()){
+                shoppingList.add(i);
             }
         }
-        mAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, shoppingList);
+        mAdapter = new MyIngredientListAdapter(getActivity(),
+                android.R.layout.simple_list_item_1, shoppingList);
     }
 
     @Override

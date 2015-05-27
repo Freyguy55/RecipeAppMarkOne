@@ -119,6 +119,15 @@
             android:layout_alignParentTop="false"
             android:layout_toRightOf="@+id/textView"
             android:layout_toEndOf="@+id/textView"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonStyleSmall"
+            android:text="View List"
+            android:id="@+id/buttonShoppingList"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/buttonAddToShopList"/>
     </RelativeLayout>
 
     <ScrollView
