@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="frey.jimmy.recipe.recipselector.IngredientFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="frey.jimmy.recipe.recipselector.IngredientFragment">
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-    <TextView
-        android:id="@android:id/empty"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical|center_horizontal">
 
-</FrameLayout>
+        <Button
+            android:id="@+id/buttonShoppingListRemoveSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove Selected"
+            android:gravity="center"/>
+
+        <Button
+            android:id="@+id/buttonShoppingListRemoveAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear List"
+            android:gravity="center"/>
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

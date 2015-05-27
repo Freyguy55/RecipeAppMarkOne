@@ -39,6 +39,8 @@ public class RecipeDisplayFragment extends Fragment {
     private TextView mTimerTextView;
     private Button mTimerStartButton;
     private Button mTimerPauseButton;
+    private Button mButtonAddToList;
+    private Button mButtonViewList;
     private long mTimeRemaining;
 
     public RecipeDisplayFragment() {
@@ -166,6 +168,21 @@ public class RecipeDisplayFragment extends Fragment {
                 RecipeBook.get(getActivity()).saveRecipes();
             }
         });
+
+        mButtonAddToList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        mButtonViewList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(),ShoppingListActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     private void initializeView(View v, Bundle savedInstanceState) {
@@ -176,6 +193,8 @@ public class RecipeDisplayFragment extends Fragment {
         mInstructionsScrollView = (ScrollView) v.findViewById(R.id.instructionsScrollView);
         mTimerStartButton = (Button) v.findViewById(R.id.timerStartButton);
         mTimerPauseButton = (Button) v.findViewById(R.id.timerPauseButton);
+        mButtonAddToList = (Button) v.findViewById(R.id.buttonAddToShopList);
+        mButtonViewList = (Button) v.findViewById(R.id.buttonViewShoppingList);
         mTimerTextView = (TextView) v.findViewById(R.id.textViewTimer);
 
         //Initialize bundledStates

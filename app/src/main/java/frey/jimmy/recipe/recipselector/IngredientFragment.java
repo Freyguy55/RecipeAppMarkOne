@@ -8,15 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
-
-import frey.jimmy.recipe.recipselector.dummy.DummyContent;
 
 /**
  * A fragment representing a list of Items.
@@ -30,6 +26,7 @@ import frey.jimmy.recipe.recipselector.dummy.DummyContent;
 public class IngredientFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     private OnFragmentInteractionListener mListener;
+    private ArrayList<Ingredient> mIngredientArrayList;
 
     /**
      * The fragment's ListView/GridView.
@@ -61,14 +58,13 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
         super.onCreate(savedInstanceState);
 
         // TODO: Change Adapter to display your content
-        ArrayList<Ingredient> shoppingList = new ArrayList<>();
+        mIngredientArrayList = new ArrayList<>();
         for(Recipe r: RecipeBook.get(getActivity()).getRecipes()){
             for(Ingredient i : r.getRecipeIngredientList()){
-                shoppingList.add(i);
+                mIngredientArrayList.add(i);
             }
         }
-        mAdapter = new MyIngredientListAdapter(getActivity(),
-                android.R.layout.simple_list_item_1, shoppingList);
+        mAdapter = new ShoppingListArrayAdapter(getActivity(),R.layout.shopping_list_view_row_layout,mIngredientArrayList);
     }
 
     @Override
@@ -108,7 +104,7 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            mListener.onFragmentInteraction(mIngredientArrayList.get(position).toString());
         }
     }
 

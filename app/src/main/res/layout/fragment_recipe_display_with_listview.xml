@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             style="?android:attr/buttonStyleSmall"
             android:text="View List"
-            android:id="@+id/buttonShoppingList"
+            android:id="@+id/buttonViewShoppingList"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/buttonAddToShopList"/>
     </RelativeLayout>
