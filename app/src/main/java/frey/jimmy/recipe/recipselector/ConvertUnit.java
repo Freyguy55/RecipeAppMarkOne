@@ -66,6 +66,9 @@ public class ConvertUnit {
                 toUnit = u;
             }
         }
+        if(fromUnit == null || toUnit == null){
+            return 0.0;
+        }
         return convertFromOunce(convertToOunce(quantity, fromUnit),toUnit);
     }
 

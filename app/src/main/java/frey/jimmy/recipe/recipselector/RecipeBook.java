@@ -1,8 +1,7 @@
 package frey.jimmy.recipe.recipselector;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.widget.Toast;
+import android.os.AsyncTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +11,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.StreamCorruptedException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -42,6 +45,30 @@ public class RecipeBook {
             sRecipeBook = new RecipeBook(context.getApplicationContext());
         }
         return sRecipeBook;
+    }
+
+    public static void deleteLocalFile(Context context) {
+        ArrayList<Recipe> emptyRecipeList = new ArrayList<>();
+        ObjectOutputStream objectOutputStream = null;
+        try {
+            OutputStream outputStream = context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE);
+            objectOutputStream = new ObjectOutputStream(outputStream);
+            objectOutputStream.writeObject(emptyRecipeList);
+            objectOutputStream.flush();
+            objectOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (objectOutputStream != null) {
+                try {
+                    objectOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public ArrayList<Recipe> getRecipes() {
@@ -114,7 +141,7 @@ public class RecipeBook {
         listOfAllUnits.add("cups");
         for (Recipe r : mRecipes) {
             for (Ingredient i : r.getRecipeIngredientList()) {
-                if (!listOfAllUnits.contains(i.getUnit()) && i.getUnit()!=null) {
+                if (!listOfAllUnits.contains(i.getUnit()) && i.getUnit() != null) {
                     listOfAllUnits.add(i.getUnit());
                 }
             }
@@ -124,31 +151,7 @@ public class RecipeBook {
 
     //Checks if there are any new recipes to add to the saved list.
     public void checkForNewRecipes() {
-        ObjectInputStream inputStream = null;
-        try {
-            Resources resources = mAppContext.getResources();
-            inputStream = new ObjectInputStream(resources.openRawResource(R.raw.recipes));
-            ArrayList<Recipe> defaultRecipes = (ArrayList<Recipe>) (inputStream.readObject());
-            for (Recipe defaultRecipe : defaultRecipes) {
-                if (!mRecipes.contains(defaultRecipe)) {  //If the local saved list does not have this recipe
-                    mRecipes.add(defaultRecipe);  //Add this recipe because it is new.
-                }
-            }
-            inputStream.close();
-            saveRecipes();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        new DownloadRecipeTask().execute();
     }
 
     public void saveRecipes() {
@@ -205,28 +208,65 @@ public class RecipeBook {
         }
     }
 
-    public static void deleteLocalFile(Context context){
-        ArrayList<Recipe> emptyRecipeList = new ArrayList<>();
-        ObjectOutputStream objectOutputStream = null;
-        try {
-            OutputStream outputStream = context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE);
-            objectOutputStream = new ObjectOutputStream(outputStream);
-            objectOutputStream.writeObject(emptyRecipeList);
-            objectOutputStream.flush();
-            objectOutputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (objectOutputStream != null) {
-                try {
-                    objectOutputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+    //Download recipes from web
+    private class DownloadRecipeTask extends AsyncTask<String, Void, ArrayList<Recipe>> {
+        private static final String RECIPE_URL = "http://s3-us-west-1.amazonaws.com/frey.jimmy.testbucket/recipes/recipes.dat";
+        @Override
+        protected ArrayList<Recipe> doInBackground(String... imageID) {
+            System.out.println("Url trying to connect to: " + RECIPE_URL);
+            return downloadRecipe(RECIPE_URL);
+
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Recipe> defaultRecipeList) {
+            if (defaultRecipeList != null) {
+                for (Recipe defaultRecipe : defaultRecipeList) {
+                    if (!mRecipes.contains(defaultRecipe)) {  //If the local saved list does not have this recipe
+                        mRecipes.add(defaultRecipe);  //Add this recipe because it is new.
+                    }
+                }
+            }
+            super.onPostExecute(defaultRecipeList);
+        }
+
+        private ArrayList<Recipe> downloadRecipe(String url) {
+            InputStream inputStream = null;
+            ArrayList<Recipe> defaultRecipeList = null;
+            try {
+                URL imageUrl = new URL(url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) imageUrl.openConnection();
+                httpURLConnection.setConnectTimeout(5000);
+                int responseCode = httpURLConnection.getResponseCode();
+                System.out.println("Response code: " + responseCode);
+                if (responseCode != 200) {
+                    System.out.println("Bananas response code not 200");
+                    return null;
+                }
+                ObjectInputStream objectInputStream = new ObjectInputStream(httpURLConnection.getInputStream());
+                defaultRecipeList = (ArrayList<Recipe>) objectInputStream.readObject();
+                return defaultRecipeList;
+            } catch (SocketTimeoutException e) {
+                e.printStackTrace();
+                return null;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                return null;
+            } finally {
+                if (inputStream != null) {
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
     }
-
 }
