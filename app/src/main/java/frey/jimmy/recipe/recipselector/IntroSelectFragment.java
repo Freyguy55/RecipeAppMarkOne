@@ -13,9 +13,11 @@ import android.widget.Button;
  */
 public class IntroSelectFragment extends android.support.v4.app.Fragment {
     public static final String EXTRA_SWEET_SELECTED = "EXTRA_SWEET_SELECTED";
-    private Button buttonSweet;
-    private Button buttonSavory;
-    private Button buttonAdvancedSearch;
+    private Button mButtonSweet;
+    private Button mButtonSavory;
+    private Button mButtonAdvancedSearch;
+    private Button mButtonGetRecipes;
+    private Button mButtonDeleteRecipes;
 
     public static IntroSelectFragment createInstance() {
         IntroSelectFragment fragment = new IntroSelectFragment();
@@ -32,31 +34,44 @@ public class IntroSelectFragment extends android.support.v4.app.Fragment {
 
 
     private void initialize(View v) {
-        buttonSweet = (Button) v.findViewById(R.id.buttonSweet);
-        buttonSweet.setOnClickListener(new View.OnClickListener() {
+        mButtonSweet = (Button) v.findViewById(R.id.buttonSweet);
+        mButtonSweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 nextActivity(true);
             }
         });
 
-        buttonSavory = (Button) v.findViewById(R.id.buttonSavory);
-        buttonSavory.setOnClickListener(new View.OnClickListener() {
+        mButtonSavory = (Button) v.findViewById(R.id.buttonSavory);
+        mButtonSavory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 nextActivity(false);
             }
         });
 
-        buttonAdvancedSearch = (Button) v.findViewById(R.id.buttonAdvanced);
-        buttonAdvancedSearch.setOnClickListener(new View.OnClickListener() {
+        mButtonAdvancedSearch = (Button) v.findViewById(R.id.buttonAdvanced);
+        mButtonAdvancedSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), AdvancedSearchActivity.class));
+            }
+        });
+
+        mButtonGetRecipes = (Button) v.findViewById(R.id.buttonCheckForRecipes);
+        mButtonGetRecipes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RecipeBook.get(getActivity()).checkForNewRecipes();
+            }
+        });
+
+        mButtonDeleteRecipes = (Button) v.findViewById(R.id.buttonDeleteRecipes);
+        mButtonDeleteRecipes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 RecipeBook.deleteLocalFile(getActivity().getApplicationContext());
                 RecipeBook.get(getActivity()).loadRecipes();
-                RecipeBook.get(getActivity()).checkForNewRecipes();
-                //TODO reset advanced search button
-              //  startActivity(new Intent(getActivity(), AdvancedSearchActivity.class));
             }
         });
 

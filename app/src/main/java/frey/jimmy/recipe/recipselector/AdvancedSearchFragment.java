@@ -77,16 +77,5 @@ public class AdvancedSearchFragment extends Fragment {
                 }
             }
         });
-
-        //Delete button
-        Button buttonDelete = (Button)v.findViewById(R.id.buttonClearLocalData);
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RecipeBook.deleteLocalFile(getActivity().getApplicationContext());
-                RecipeBook.get(getActivity()).loadRecipes();
-                RecipeBook.get(getActivity()).checkForNewRecipes();
-            }
-        });
     }
 }
