@@ -14,11 +14,12 @@ public class CountDownTimerService extends Service {
     public static final int TIMER_START = 0;
     public static final int TIMER_PAUSE = 1;
     public static final int TIMER_RESET = 5;
+    public static final int TIMER_GET_TIME = 9;
     private static final String SHARED_PREF_NAME = "CountdownTimerServicesSharedPref";
     private static final String PREF_LONG_TIME_REMAINING = "prefLongTimeRemaining";
     public static boolean sIsRunning;
 
-    private CountDownTimer mRecipeTimer;
+    private static CountDownTimer mRecipeTimer;
     private LocalBroadcastManager mLocalBroadcastManager;
     private String mRecipeName;
     private long mSavedTimeRemaining;
@@ -43,13 +44,17 @@ public class CountDownTimerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         System.out.println("BANANAS started service");
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
+        //Handle random null intent that can be resent.
         if (intent == null) {
             stopSelf();
             return super.onStartCommand(intent, flags, startId);
         }
+
         mRecipeName = intent.getStringExtra(TimerFinishedActivity.EXTRA_RECIPE_NAME);
         int recipeTotalMinutes = intent.getIntExtra(RecipeDisplayFragment.EXTRA_MINUTES_INT, 0) * 60 * 1000;
         int command = intent.getIntExtra(EXTRA_COMMAND, 0);
+
         switch (command) {
             case TIMER_START: {
                 if (mRecipeTimer == null) {
@@ -65,6 +70,7 @@ public class CountDownTimerService extends Service {
                 }
                 break;
             }
+
             case TIMER_PAUSE: {
                 if (mRecipeTimer != null) {
                     mRecipeTimer.cancel();
@@ -74,6 +80,7 @@ public class CountDownTimerService extends Service {
                 stopSelf();
                 break;
             }
+
             case TIMER_RESET: {
                 if (mRecipeTimer != null) {
                     mRecipeTimer.cancel();
@@ -81,6 +88,17 @@ public class CountDownTimerService extends Service {
                 }
                 mSavedTimeRemaining = -1;
                 sIsRunning = false;
+                sendUpdateTimeBroadcast(mSavedTimeRemaining);
+                stopSelf();
+                break;
+            }
+
+            case TIMER_GET_TIME: {
+                SharedPreferences preferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+                if (preferences != null) {
+                    mSavedTimeRemaining = preferences.getLong(PREF_LONG_TIME_REMAINING, -1);
+                    sendUpdateTimeBroadcast(mSavedTimeRemaining);
+                }
                 stopSelf();
                 break;
             }
@@ -89,7 +107,6 @@ public class CountDownTimerService extends Service {
     }
 
     private void startTimer(int recipeTotalMinutes) {
-        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
         mRecipeTimer = new CountDownTimer(recipeTotalMinutes, 100) {
             @Override
             public void onTick(long l) {

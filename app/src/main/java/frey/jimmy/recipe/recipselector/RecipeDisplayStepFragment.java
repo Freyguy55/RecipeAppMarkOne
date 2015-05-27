@@ -90,7 +90,7 @@ public class RecipeDisplayStepFragment extends Fragment {
         mRecipeStep = mRecipeStepArrayList.get(mPosition);
         setToggleVisibilityButtons(v, savedInstanceState);
         setRecipeData(v);
-
+        startTimerServer(CountDownTimerService.TIMER_GET_TIME);  //Get time if paused
         return v;
     }
 
@@ -230,11 +230,10 @@ public class RecipeDisplayStepFragment extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 mTimeRemaining = intent.getLongExtra(CountDownTimerService.EXTRA_TIME_LEFT, 0);
-                mTimerTextView.setText(formatTime(mTimeRemaining));
-                if (mTimeRemaining == 0) {
-                    mTimerIsPaused = true;
-                    mTimerStartButton.setText("Start");
+                if (mTimeRemaining <= 0) {
                     mTimeRemaining = mRecipe.getTotalMinutes() * 60 * 1000;
+                    mTimerTextView.setText(formatTime(mTimeRemaining));
+                } else{
                     mTimerTextView.setText(formatTime(mTimeRemaining));
                 }
             }

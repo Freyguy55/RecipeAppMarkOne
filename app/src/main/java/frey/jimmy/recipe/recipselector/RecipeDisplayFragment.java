@@ -38,8 +38,8 @@ public class RecipeDisplayFragment extends Fragment {
     private ListView mIngredientsListView;
     private ArrayList<Ingredient> mIngredientList;
     private TextView mTimerTextView;
-    private boolean mTimerIsPaused = true;
     private Button mTimerStartButton;
+    private Button mTimerPauseButton;
     private long mTimeRemaining;
 
     public RecipeDisplayFragment() {
@@ -62,7 +62,7 @@ public class RecipeDisplayFragment extends Fragment {
         mRecipe = RecipeBook.get(getActivity()).getRecipe(id);
         initializeView(v, savedInstanceState);
         setRecipeData(v);
-
+        startTimerServer(CountDownTimerService.TIMER_GET_TIME);  //Get time if paused
         return v;
     }
 
@@ -78,15 +78,14 @@ public class RecipeDisplayFragment extends Fragment {
         mTimerStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mTimerIsPaused) {
-                    startTimerServer(CountDownTimerService.TIMER_START);
-                    mTimerIsPaused = false;
-                    mTimerStartButton.setText("Pause");
-                } else {
-                    startTimerServer((CountDownTimerService.TIMER_PAUSE));
-                    mTimerIsPaused = true;
-                    mTimerStartButton.setText("Start");
-                }
+                startTimerServer(CountDownTimerService.TIMER_START);
+
+            }
+        });
+        mTimerPauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startTimerServer((CountDownTimerService.TIMER_PAUSE));
             }
         });
         //Timer +2 Min Button
@@ -97,8 +96,6 @@ public class RecipeDisplayFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startTimerServer(CountDownTimerService.TIMER_RESET);
-                mTimerIsPaused = true;
-                mTimerStartButton.setText("Start");
                 mTimeRemaining = mRecipe.getTotalMinutes() * 60 * 1000;
                 mTimerTextView.setText(formatTime(mTimeRemaining));
             }
@@ -107,11 +104,10 @@ public class RecipeDisplayFragment extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 mTimeRemaining = intent.getLongExtra(CountDownTimerService.EXTRA_TIME_LEFT, 0);
-                mTimerTextView.setText(formatTime(mTimeRemaining));
-                if(mTimeRemaining == 0){
-                    mTimerIsPaused = true;
-                    mTimerStartButton.setText("Start");
+                if (mTimeRemaining <= 0) {
                     mTimeRemaining = mRecipe.getTotalMinutes() * 60 * 1000;
+                    mTimerTextView.setText(formatTime(mTimeRemaining));
+                } else{
                     mTimerTextView.setText(formatTime(mTimeRemaining));
                 }
             }
@@ -174,6 +170,7 @@ public class RecipeDisplayFragment extends Fragment {
         mIngredientsListView = (ListView) v.findViewById(R.id.ingredientsListView);
         mInstructionsScrollView = (ScrollView) v.findViewById(R.id.instructionsScrollView);
         mTimerStartButton = (Button) v.findViewById(R.id.timerStartButton);
+        mTimerPauseButton = (Button) v.findViewById(R.id.timerPauseButton);
         mTimerTextView = (TextView) v.findViewById(R.id.textViewTimer);
 
         //Initialize bundledStates
@@ -184,18 +181,8 @@ public class RecipeDisplayFragment extends Fragment {
             if (!savedInstanceState.getBoolean(KEY_INSTRUCTIONS_EXPANDED)) {
                 toggleInstructionOpenClose(); //Collapse instructions (initial state is always expanded)
             }
-            mTimerIsPaused = savedInstanceState.getBoolean(KEY_TIMER_PAUSED);
-            if (mTimerIsPaused) {
-                mTimerStartButton.setText("Start"); //If the timer is paused set the button to say start
-            } else {
-                mTimerStartButton.setText("Pause");
-            }
             mTimeRemaining = savedInstanceState.getLong(KEY_TIME_REMAINING);
         } else {
-            if (CountDownTimerService.sIsRunning) {  //If the timer is running and this is a new activity
-                mTimerStartButton.setText("Pause");
-                mTimerIsPaused = false;
-            }
             mTimeRemaining = mRecipe.getTotalMinutes() * 60 * 1000;
         }
         mTimerTextView.setText(formatTime(mTimeRemaining));
@@ -268,7 +255,6 @@ public class RecipeDisplayFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(KEY_INGREDIENTS_EXPANDED, mIsIngredientExpanded);
         outState.putBoolean(KEY_INSTRUCTIONS_EXPANDED, mIsInstructionExpanded);
-        outState.putBoolean(KEY_TIMER_PAUSED, mTimerIsPaused);
         outState.putLong(KEY_TIME_REMAINING, mTimeRemaining);
         super.onSaveInstanceState(outState);
     }
