@@ -1,15 +1,21 @@
 package frey.jimmy.recipe.recipselector;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -29,8 +35,13 @@ import java.util.UUID;
  * Displays recipe steps
  */
 public class RecipeDisplayStepFragment extends Fragment {
+    public static final String EXTRA_MINUTES_INT = "ExtraMinutesInt";
     private static final String KEY_INGREDIENTS_EXPANDED = "keyIngredientsExpanded";
     private static final String KEY_INSTRUCTIONS_EXPANDED = "keyInstructionsExpanded";
+    private static final String KEY_TIMER_PAUSED = "keyTimerIsPaused";
+    private static final String KEY_TIME_REMAINING = "keyTimeRemaining";
+    private static final String KEY_POSITION = "KeyPosition";
+    private static final String KEY_UUID = "keyUuid";
     private Recipe mRecipe;
     private ArrayList<RecipeStep> mRecipeStepArrayList;
     private RecipeStep mRecipeStep;
@@ -40,9 +51,11 @@ public class RecipeDisplayStepFragment extends Fragment {
     private ArrayList<Ingredient> mIngredientList;
     private int mPosition;
     private ImageView mRecipeStepImageView;
-    private static final String KEY_POSITION = "KeyPosition";
-    private static final String KEY_UUID = "keyUuid";
-    private TextView mTextViewTimer;
+    private TextView mTimerTextView;
+    private boolean mTimerIsPaused = true;
+    private Button mTimerStartButton;
+    private Button mTimerPauseButton;
+    private long mTimeRemaining;
     private boolean mIsIngredientsExpanded = true;
     private boolean mIsInstructionsExpanded = true;
     private ImageView mToggleIngredientsImageView;
@@ -52,7 +65,7 @@ public class RecipeDisplayStepFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static RecipeDisplayStepFragment createInstance(UUID uuid, int position){
+    public static RecipeDisplayStepFragment createInstance(UUID uuid, int position) {
         RecipeDisplayStepFragment fragment = new RecipeDisplayStepFragment();
         Bundle args = new Bundle();
         args.putInt(KEY_POSITION, position);
@@ -70,18 +83,21 @@ public class RecipeDisplayStepFragment extends Fragment {
         UUID recipeId = (UUID) getArguments().getSerializable(KEY_UUID);
         mPosition = getArguments().getInt(KEY_POSITION);
         mRecipe = RecipeBook.get(getActivity()).getRecipe(recipeId);
-        if(null==mRecipe){
+        if (null == mRecipe) {
             return v;
         }
         mRecipeStepArrayList = mRecipe.getRecipeStepList();
         mRecipeStep = mRecipeStepArrayList.get(mPosition);
-        
-        setRecipeData(v);
         setToggleVisibilityButtons(v, savedInstanceState);
+        setRecipeData(v);
+
         return v;
     }
 
     private void setToggleVisibilityButtons(View v, Bundle savedInstanceState) {
+        mTimerStartButton = (Button) v.findViewById(R.id.timerStartButton);
+        mTimerPauseButton = (Button) v.findViewById(R.id.timerPauseButton);
+        mTimerTextView = (TextView) v.findViewById(R.id.textViewTimer);
         mToggleIngredientsImageView = (ImageView) v.findViewById(R.id.ingredientExpandCollapseImageView);
         mToggleIngredientsImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +123,28 @@ public class RecipeDisplayStepFragment extends Fragment {
             if (!savedInstanceState.getBoolean(KEY_INSTRUCTIONS_EXPANDED)) {
                 toggleInstructionOpenClose(); //Collapse instructions (initial state is always expanded)
             }
+            mTimerIsPaused = savedInstanceState.getBoolean(KEY_TIMER_PAUSED);
+            mTimeRemaining = savedInstanceState.getLong(KEY_TIME_REMAINING);
+        } else {
+            if (CountDownTimerService.sIsRunning) {  //If the timer is running and this is a new activity
+                mTimerIsPaused = false;
+            }
+            mTimeRemaining = mRecipe.getTotalMinutes() * 60 * 1000;
         }
+        mTimerTextView.setText(formatTime(mTimeRemaining));
+    }
+
+    private String formatTime(long millisLeft) {
+        String timeString = null;
+        int seconds = (int) (millisLeft / ((double) 1000)) % 60;
+        int minutes = (int) ((millisLeft / ((double) 1000 * 60)) % 60);
+        int hours = (int) ((millisLeft / ((double) 1000 * 60 * 60)) % 24);
+        if (hours > 0) {
+            timeString = String.format("%d:%02d:%02d", hours, minutes, seconds);
+        } else {
+            timeString = String.format("%d:%02d", minutes, seconds);
+        }
+        return timeString;
     }
 
     private void toggleIngredientOpenClose() {
@@ -142,7 +179,7 @@ public class RecipeDisplayStepFragment extends Fragment {
         mIngredientsListView = (ListView) v.findViewById(R.id.recipeStepIngredientListView);
         mIngredientList = mRecipeStep.getRecipeStepIngredientList();
         if (mIngredientList != null) {
-            mIngredientsListView.setAdapter(new MyIngredientListAdapter(getActivity(),R.layout.ingredient_list_view_layout, mIngredientList));
+            mIngredientsListView.setAdapter(new MyIngredientListAdapter(getActivity(), R.layout.ingredient_list_view_layout, mIngredientList));
         }
 
         mInstructionsTextView = (TextView) v.findViewById(R.id.instructionsStepTextView);
@@ -152,18 +189,76 @@ public class RecipeDisplayStepFragment extends Fragment {
         int page = mPosition + 1;
         pageNumberTextView.setText("Step " + page + " of " + mRecipeStepArrayList.size());
 
-        mTextViewTimer = (TextView) v.findViewById(R.id.textViewTimerStep);
-        mTextViewTimer.setText(String.valueOf(mRecipe.getTotalMinutes())+":00");
-
         mRecipeStepImageView = (ImageView) v.findViewById(R.id.recipeStepImageView);
         int imageId = mRecipeStep.getImageId();
-        if(imageId<0){
+        if (imageId < 0) {
             mRecipeStepImageView.setVisibility(View.GONE);
-        } else{
+        } else {
             mRecipeStepImageView.setImageResource(R.drawable.loading_image);
             new DownloadImageTask().execute(String.valueOf(imageId));
         }
+        //Timer start button
+        mTimerStartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startTimerServer(CountDownTimerService.TIMER_START);
+                mTimerIsPaused = false;
+            }
+        });
+        //Timer pause button
+        mTimerPauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startTimerServer((CountDownTimerService.TIMER_PAUSE));
+                mTimerIsPaused = true;
+            }
+        });
+        //Timer +2 Min Button
+        Button addTwoMinButton = (Button) v.findViewById(R.id.timerAddTwoMinButton);
+        //Timer reset button
+        Button timerResetButton = (Button) v.findViewById(R.id.timerResetButton);
+        timerResetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startTimerServer(CountDownTimerService.TIMER_RESET);
+                mTimerIsPaused = true;
+                mTimeRemaining = mRecipe.getTotalMinutes() * 60 * 1000;
+                mTimerTextView.setText(formatTime(mTimeRemaining));
+            }
+        });
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                mTimeRemaining = intent.getLongExtra(CountDownTimerService.EXTRA_TIME_LEFT, 0);
+                mTimerTextView.setText(formatTime(mTimeRemaining));
+                if (mTimeRemaining == 0) {
+                    mTimerIsPaused = true;
+                    mTimerStartButton.setText("Start");
+                    mTimeRemaining = mRecipe.getTotalMinutes() * 60 * 1000;
+                    mTimerTextView.setText(formatTime(mTimeRemaining));
+                }
+            }
+        }, new IntentFilter(CountDownTimerService.TIMER_BROADCAST_LOCATION));
+
     }
+
+    private void startTimerServer(int command) {
+        Intent i = new Intent(getActivity(), CountDownTimerService.class);
+        i.putExtra(EXTRA_MINUTES_INT, mRecipe.getTotalMinutes());
+        i.putExtra(TimerFinishedActivity.EXTRA_RECIPE_NAME, mRecipe.getRecipeName());
+        i.putExtra(CountDownTimerService.EXTRA_COMMAND, command);
+        getActivity().startService(i);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(KEY_INGREDIENTS_EXPANDED, mIsIngredientsExpanded);
+        outState.putBoolean(KEY_INSTRUCTIONS_EXPANDED, mIsInstructionsExpanded);
+        outState.putBoolean(KEY_TIMER_PAUSED, mTimerIsPaused);
+        outState.putLong(KEY_TIME_REMAINING, mTimeRemaining);
+        super.onSaveInstanceState(outState);
+    }
+
 
     //Inner class for downloading image
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -178,7 +273,7 @@ public class RecipeDisplayStepFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Bitmap recipeBitmap) {
-            if(isAdded()) {  //This hopefully fixes nullpointerexception on the getActivity() call below.
+            if (isAdded()) {  //This hopefully fixes nullpointerexception on the getActivity() call below.
                 if (recipeBitmap != null) {
                     BitmapDrawable bitmapDrawable = new BitmapDrawable(getActivity().getResources(), recipeBitmap);
                     mRecipeStepImageView.setImageDrawable(bitmapDrawable);
@@ -204,11 +299,10 @@ public class RecipeDisplayStepFragment extends Fragment {
                 inputStream = httpURLConnection.getInputStream();
                 Bitmap bitMap = BitmapFactory.decodeStream(inputStream);
                 return bitMap;
-            } catch (SocketTimeoutException e){
+            } catch (SocketTimeoutException e) {
                 e.printStackTrace();
                 return null;
-            }
-            catch (MalformedURLException e) {
+            } catch (MalformedURLException e) {
                 e.printStackTrace();
                 return null;
             } catch (IOException e) {
@@ -224,12 +318,5 @@ public class RecipeDisplayStepFragment extends Fragment {
                 }
             }
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(KEY_INGREDIENTS_EXPANDED, mIsIngredientsExpanded);
-        outState.putBoolean(KEY_INSTRUCTIONS_EXPANDED, mIsInstructionsExpanded);
-        super.onSaveInstanceState(outState);
     }
 }

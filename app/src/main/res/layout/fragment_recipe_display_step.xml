@@ -120,13 +120,8 @@
         android:id="@+id/recipeStepImageView"
         android:layout_gravity="center"/>
 
-    <TextView
-        android:id="@+id/textViewTimerStep"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="60:00"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:focusable="false"
-        android:focusableInTouchMode="false"/>
+    <include
+        android:id="@+id/timerLinearLayout"
+        layout="@layout/my_timer_linear_layout"/>
 
 </LinearLayout>
