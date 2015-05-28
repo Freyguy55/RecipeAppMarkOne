@@ -161,7 +161,8 @@
             android:id="@+id/recipeImageView"
             android:layout_gravity="center"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"/>
     </RelativeLayout>
 
     <include

@@ -114,17 +114,26 @@
             android:textAppearance="?android:attr/textAppearanceSmall"/>
     </ScrollView>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/recipeImageViewExpandCollapse"
-        android:src="@drawable/expander_open_holo_light"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="224dp"
-        android:layout_height="126dp"
-        android:id="@+id/recipeImageView"
-        android:layout_gravity="center"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/recipeImageViewExpandCollapse"
+            android:src="@drawable/expander_open_holo_light"
+            android:layout_alignParentStart="true"/>
+
+        <ImageView
+            android:layout_width="224dp"
+            android:layout_height="126dp"
+            android:id="@+id/recipeImageView"
+            android:layout_gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"/>
+    </RelativeLayout>
 
     <include
         android:id="@+id/timerLinearLayout"
