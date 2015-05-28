@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ public class ShoppingListArrayAdapter extends ArrayAdapter<Ingredient> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View v = convertView;
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -48,13 +49,17 @@ public class ShoppingListArrayAdapter extends ArrayAdapter<Ingredient> {
         });
 
 
-        final CheckBox ingredientCheckBox = (CheckBox) v.findViewById(R.id.checkBoxShoppingList);
-        ingredientCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        final Button buttonRemoveIngredient = (Button) v.findViewById(R.id.buttonDeleteShoppingItem);
+        buttonRemoveIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View view) {
+                remove(getItem(position));
+                RecipeBook.get(getContext()).saveShoppingList();
             }
         });
         return v;
     }
+
+
 
 }

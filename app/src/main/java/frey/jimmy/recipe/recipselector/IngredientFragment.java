@@ -111,11 +111,6 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBoxShoppingList);
-        if (checkBox == null) {
-            return;
-        }
-        System.out.println("Checkbox" + checkBox.isChecked());
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
@@ -165,5 +160,7 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
         // TODO: Update argument type and name
         public void onFragmentInteraction(String id);
     }
+
+
 
 }
