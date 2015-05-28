@@ -5,6 +5,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -17,6 +21,12 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -218,6 +228,15 @@ public class RecipeDisplayFragment extends Fragment {
         } else {
             mTimeRemaining = mRecipe.getTotalMinutes() * 60 * 1000;
         }
+
+        int imageId = mRecipe.getRecipeStepImageId();
+        if (imageId < 0) {
+            v.findViewById(R.id.recipeImageViewSection).setVisibility(View.GONE);
+        } else {
+            mRecipeImageView.setImageResource(R.drawable.loading_image);
+            new DownloadImageTask().execute(String.valueOf(imageId));
+        }
+
         mTimerTextView.setText(formatTime(mTimeRemaining));
 
         //Wire Ingredients open/close button
@@ -283,6 +302,9 @@ public class RecipeDisplayFragment extends Fragment {
     }
 
     private void toggleImageViewOpenClose() {
+        if(mRecipe.getRecipeStepImageId() < 0){
+            return;
+        }
         if (mIsImageViewExpanded) { //It is currently expanded and should collapse
             mRecipeImageExpandCollapseImageView.setImageResource(R.drawable.expander_close_holo_light);
             mIsImageViewExpanded = false;
@@ -310,5 +332,65 @@ public class RecipeDisplayFragment extends Fragment {
         outState.putBoolean(KEY_IMAGE_EXPANDED, mIsImageViewExpanded);
         outState.putLong(KEY_TIME_REMAINING, mTimeRemaining);
         super.onSaveInstanceState(outState);
+    }
+
+    //Inner class for downloading image
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+
+        @Override
+        protected Bitmap doInBackground(String... imageID) {
+            String url = RecipeImageFragment.IMAGE_URL + imageID[0] + RecipeImageFragment.IMAGE_EXTENSION;
+            System.out.println("Url truing to connect to: " + url.toString());
+            Bitmap recipeBitmap = downloadImage(url);
+            return recipeBitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap recipeBitmap) {
+            if (isAdded()) {  //This hopefully fixes nullpointerexception on the getActivity() call below.
+                if (recipeBitmap != null) {
+                    BitmapDrawable bitmapDrawable = new BitmapDrawable(getActivity().getResources(), recipeBitmap);
+                    mRecipeImageView.setImageDrawable(bitmapDrawable);
+                } else {
+                    mRecipeImageView.setImageResource(R.drawable.error_image);
+                }
+            }
+            super.onPostExecute(recipeBitmap);
+        }
+
+        private Bitmap downloadImage(String url) {
+            InputStream inputStream = null;
+            try {
+                URL imageUrl = new URL(url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) imageUrl.openConnection();
+                httpURLConnection.setConnectTimeout(5000);
+                int responseCode = httpURLConnection.getResponseCode();
+                System.out.println("Response code: " + responseCode);
+                if (responseCode != 200) {
+                    System.out.println("Bananas response code not 200");
+                    return null;
+                }
+                inputStream = httpURLConnection.getInputStream();
+                Bitmap bitMap = BitmapFactory.decodeStream(inputStream);
+                return bitMap;
+            } catch (SocketTimeoutException e) {
+                e.printStackTrace();
+                return null;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } finally {
+                if (inputStream != null) {
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 }

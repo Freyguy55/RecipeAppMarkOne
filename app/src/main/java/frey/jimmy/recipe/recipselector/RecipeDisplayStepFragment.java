@@ -128,13 +128,14 @@ public class RecipeDisplayStepFragment extends Fragment {
         });
 
         mRecipeImageView = (ImageView) v.findViewById(R.id.recipeImageView);
-        int imageId = mRecipeStep.getImageId();
+        int imageId = mRecipe.getRecipeStepImageId();
         if (imageId < 0) {
-            mRecipeImageView.setVisibility(View.GONE);
+            v.findViewById(R.id.recipeImageViewSection).setVisibility(View.GONE);
         } else {
             mRecipeImageView.setImageResource(R.drawable.loading_image);
             new DownloadImageTask().execute(String.valueOf(imageId));
         }
+
 
         //Initialize bundledStates
         if (savedInstanceState != null) {

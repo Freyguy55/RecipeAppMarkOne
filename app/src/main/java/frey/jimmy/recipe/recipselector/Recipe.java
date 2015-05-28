@@ -21,11 +21,12 @@ public class Recipe implements Serializable {
     private ArrayList<RecipeStep> mRecipeStepList;
     private ArrayList<Ingredient> mRecipeIngredientList;
     private int mRecipeImageId;
+    private int mRecipeStepImageId;
     private int mIsGood;
     private String mInstructions;
     private UUID mUuid;
 
-    public Recipe(String recipeName, String recipeDescription, int servesNumber, boolean isSweet, boolean isLight, int totalMinutes, String region, ArrayList<RecipeStep> recipeStepList, ArrayList<Ingredient> recipeIngredientList, int recipeImageId, int isGood, String instructions) {
+    public Recipe(String recipeName, String recipeDescription, int servesNumber, boolean isSweet, boolean isLight, int totalMinutes, String region, ArrayList<RecipeStep> recipeStepList, ArrayList<Ingredient> recipeIngredientList, int recipeImageId, int recipeStepImageId, int isGood, String instructions) {
         mRecipeName = recipeName;
         mRecipeDescription = recipeDescription;
         mServesNumber = servesNumber;
@@ -36,6 +37,7 @@ public class Recipe implements Serializable {
         mRecipeStepList = recipeStepList;
         mRecipeIngredientList = recipeIngredientList;
         mRecipeImageId = recipeImageId;
+        mRecipeStepImageId = recipeStepImageId;
         mIsGood = isGood;
         mInstructions = instructions;
         mUuid = UUID.randomUUID();
@@ -156,6 +158,14 @@ public class Recipe implements Serializable {
 
     public void setUuid(UUID uuid) {
         mUuid = uuid;
+    }
+
+    public int getRecipeStepImageId() {
+        return mRecipeStepImageId;
+    }
+
+    public void setRecipeStepImageId(int recipeStepImageId) {
+        mRecipeStepImageId = recipeStepImageId;
     }
 
     @Override
