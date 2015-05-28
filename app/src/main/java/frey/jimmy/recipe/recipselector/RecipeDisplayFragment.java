@@ -27,11 +27,15 @@ public class RecipeDisplayFragment extends Fragment {
     private static final String KEY_INSTRUCTIONS_EXPANDED = "KeyInstructionsExpanded";
     private static final String KEY_RECIPE_ID = "keyRecipeId";
     private static final String KEY_TIME_REMAINING = "keyTimeRemaining";
+    private static final String KEY_IMAGE_EXPANDED = "keyImageExpanded";
     private boolean mIsIngredientExpanded = true;
     private boolean mIsInstructionExpanded = true;
+    private boolean mIsImageViewExpanded = true;
     private Recipe mRecipe;
     private ImageView mIngredientsExpandCollapseImageView;
     private ImageView mInstructionsExpandCollapseImageView;
+    private ImageView mRecipeImageExpandCollapseImageView;
+    private ImageView mRecipeImageView;
     private ImageView mLikeDislikeImageView;
     private ScrollView mInstructionsScrollView;
     private ListView mIngredientsListView;
@@ -189,6 +193,7 @@ public class RecipeDisplayFragment extends Fragment {
         //Set view fields
         mIngredientsExpandCollapseImageView = (ImageView) v.findViewById(R.id.ingredientExpandCollapseImageView);
         mInstructionsExpandCollapseImageView = (ImageView) v.findViewById(R.id.instructionsExpandCollapseImageView);
+        mRecipeImageExpandCollapseImageView = (ImageView) v.findViewById(R.id.recipeImageViewExpandCollapse);
         mIngredientsListView = (ListView) v.findViewById(R.id.ingredientsListView);
         mInstructionsScrollView = (ScrollView) v.findViewById(R.id.instructionsScrollView);
         mTimerStartButton = (Button) v.findViewById(R.id.timerStartButton);
@@ -196,6 +201,7 @@ public class RecipeDisplayFragment extends Fragment {
         mButtonAddToList = (Button) v.findViewById(R.id.buttonAddToShopList);
         mButtonViewList = (Button) v.findViewById(R.id.buttonViewShoppingList);
         mTimerTextView = (TextView) v.findViewById(R.id.textViewTimer);
+        mRecipeImageView = (ImageView) v.findViewById(R.id.recipeImageView);
 
         //Initialize bundledStates
         if (savedInstanceState != null) {
@@ -204,6 +210,9 @@ public class RecipeDisplayFragment extends Fragment {
             }
             if (!savedInstanceState.getBoolean(KEY_INSTRUCTIONS_EXPANDED)) {
                 toggleInstructionOpenClose(); //Collapse instructions (initial state is always expanded)
+            }
+            if(!savedInstanceState.getBoolean(KEY_IMAGE_EXPANDED)){
+                toggleImageViewOpenClose();
             }
             mTimeRemaining = savedInstanceState.getLong(KEY_TIME_REMAINING);
         } else {
@@ -224,6 +233,13 @@ public class RecipeDisplayFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 toggleInstructionOpenClose();
+            }
+        });
+
+        mRecipeImageExpandCollapseImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleImageViewOpenClose();
             }
         });
 
@@ -266,6 +282,18 @@ public class RecipeDisplayFragment extends Fragment {
         }
     }
 
+    private void toggleImageViewOpenClose() {
+        if (mIsImageViewExpanded) { //It is currently expanded and should collapse
+            mRecipeImageExpandCollapseImageView.setImageResource(R.drawable.expander_close_holo_light);
+            mIsImageViewExpanded = false;
+            mRecipeImageView.setVisibility(View.GONE);
+        } else {  //It is currently collapsed and should expand
+            mRecipeImageExpandCollapseImageView.setImageResource(R.drawable.expander_open_holo_light);
+            mIsImageViewExpanded = true;
+            mRecipeImageView.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void startTimerServer(int command) {
         Intent i = new Intent(getActivity(), CountDownTimerService.class);
         i.putExtra(EXTRA_MINUTES_INT, mRecipe.getTotalMinutes());
@@ -279,6 +307,7 @@ public class RecipeDisplayFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(KEY_INGREDIENTS_EXPANDED, mIsIngredientExpanded);
         outState.putBoolean(KEY_INSTRUCTIONS_EXPANDED, mIsInstructionExpanded);
+        outState.putBoolean(KEY_IMAGE_EXPANDED, mIsImageViewExpanded);
         outState.putLong(KEY_TIME_REMAINING, mTimeRemaining);
         super.onSaveInstanceState(outState);
     }

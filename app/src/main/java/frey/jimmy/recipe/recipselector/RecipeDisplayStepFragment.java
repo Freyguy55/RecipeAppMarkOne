@@ -38,6 +38,7 @@ public class RecipeDisplayStepFragment extends Fragment {
     public static final String EXTRA_MINUTES_INT = "ExtraMinutesInt";
     private static final String KEY_INGREDIENTS_EXPANDED = "keyIngredientsExpanded";
     private static final String KEY_INSTRUCTIONS_EXPANDED = "keyInstructionsExpanded";
+    private static final String KEY_IMAGE_EXPANDED = "keyImageExpanded";
     private static final String KEY_TIME_REMAINING = "keyTimeRemaining";
     private static final String KEY_POSITION = "KeyPosition";
     private static final String KEY_UUID = "keyUuid";
@@ -49,15 +50,17 @@ public class RecipeDisplayStepFragment extends Fragment {
     private ListView mIngredientsListView;
     private ArrayList<Ingredient> mIngredientList;
     private int mPosition;
-    private ImageView mRecipeStepImageView;
+    private ImageView mRecipeImageView;
     private TextView mTimerTextView;
     private Button mTimerStartButton;
     private Button mTimerPauseButton;
     private long mTimeRemaining;
     private boolean mIsIngredientsExpanded = true;
     private boolean mIsInstructionsExpanded = true;
+    private boolean mIsImageViewExpanded = true;
     private ImageView mToggleIngredientsImageView;
     private ImageView mToggleInstructionsImageView;
+    private ImageView mRecipeImageExpandCollapseImageView;
 
     public RecipeDisplayStepFragment() {
         // Required empty public constructor
@@ -96,6 +99,7 @@ public class RecipeDisplayStepFragment extends Fragment {
         mTimerStartButton = (Button) v.findViewById(R.id.timerStartButton);
         mTimerPauseButton = (Button) v.findViewById(R.id.timerPauseButton);
         mTimerTextView = (TextView) v.findViewById(R.id.textViewTimer);
+
         mToggleIngredientsImageView = (ImageView) v.findViewById(R.id.ingredientExpandCollapseImageView);
         mToggleIngredientsImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +117,25 @@ public class RecipeDisplayStepFragment extends Fragment {
             }
         });
 
+
+
+        mRecipeImageExpandCollapseImageView = (ImageView) v.findViewById(R.id.recipeImageViewExpandCollapse);
+        mRecipeImageExpandCollapseImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleImageViewOpenClose();
+            }
+        });
+
+        mRecipeImageView = (ImageView) v.findViewById(R.id.recipeImageView);
+        int imageId = mRecipeStep.getImageId();
+        if (imageId < 0) {
+            mRecipeImageView.setVisibility(View.GONE);
+        } else {
+            mRecipeImageView.setImageResource(R.drawable.loading_image);
+            new DownloadImageTask().execute(String.valueOf(imageId));
+        }
+
         //Initialize bundledStates
         if (savedInstanceState != null) {
             if (!savedInstanceState.getBoolean(KEY_INGREDIENTS_EXPANDED)) { //If ingredients should be collapsed
@@ -120,6 +143,9 @@ public class RecipeDisplayStepFragment extends Fragment {
             }
             if (!savedInstanceState.getBoolean(KEY_INSTRUCTIONS_EXPANDED)) {
                 toggleInstructionOpenClose(); //Collapse instructions (initial state is always expanded)
+            }
+            if(!savedInstanceState.getBoolean(KEY_IMAGE_EXPANDED)){
+                toggleImageViewOpenClose();
             }
             mTimeRemaining = savedInstanceState.getLong(KEY_TIME_REMAINING);
         } else {
@@ -165,6 +191,18 @@ public class RecipeDisplayStepFragment extends Fragment {
         }
     }
 
+    private void toggleImageViewOpenClose() {
+        if (mIsImageViewExpanded) { //It is currently expanded and should collapse
+            mRecipeImageExpandCollapseImageView.setImageResource(R.drawable.expander_close_holo_light);
+            mIsImageViewExpanded = false;
+            mRecipeImageView.setVisibility(View.GONE);
+        } else {  //It is currently collapsed and should expand
+            mRecipeImageExpandCollapseImageView.setImageResource(R.drawable.expander_open_holo_light);
+            mIsImageViewExpanded = true;
+            mRecipeImageView.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void setRecipeData(View v) {
         //set member views
         TextView textViewName = (TextView) v.findViewById(R.id.recipeStepDisplayNameTextView);
@@ -183,14 +221,6 @@ public class RecipeDisplayStepFragment extends Fragment {
         int page = mPosition + 1;
         pageNumberTextView.setText("Step " + page + " of " + mRecipeStepArrayList.size());
 
-        mRecipeStepImageView = (ImageView) v.findViewById(R.id.recipeStepImageView);
-        int imageId = mRecipeStep.getImageId();
-        if (imageId < 0) {
-            mRecipeStepImageView.setVisibility(View.GONE);
-        } else {
-            mRecipeStepImageView.setImageResource(R.drawable.loading_image);
-            new DownloadImageTask().execute(String.valueOf(imageId));
-        }
         //Timer start button
         mTimerStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -250,6 +280,7 @@ public class RecipeDisplayStepFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(KEY_INGREDIENTS_EXPANDED, mIsIngredientsExpanded);
         outState.putBoolean(KEY_INSTRUCTIONS_EXPANDED, mIsInstructionsExpanded);
+        outState.putBoolean(KEY_IMAGE_EXPANDED, mIsImageViewExpanded);
         outState.putLong(KEY_TIME_REMAINING, mTimeRemaining);
         super.onSaveInstanceState(outState);
     }
@@ -271,9 +302,9 @@ public class RecipeDisplayStepFragment extends Fragment {
             if (isAdded()) {  //This hopefully fixes nullpointerexception on the getActivity() call below.
                 if (recipeBitmap != null) {
                     BitmapDrawable bitmapDrawable = new BitmapDrawable(getActivity().getResources(), recipeBitmap);
-                    mRecipeStepImageView.setImageDrawable(bitmapDrawable);
+                    mRecipeImageView.setImageDrawable(bitmapDrawable);
                 } else {
-                    mRecipeStepImageView.setImageResource(R.drawable.error_image);
+                    mRecipeImageView.setImageResource(R.drawable.error_image);
                 }
             }
             super.onPostExecute(recipeBitmap);
