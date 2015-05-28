@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -48,6 +49,11 @@ public class ShoppingListArrayAdapter extends ArrayAdapter<Ingredient> {
 
 
         final CheckBox ingredientCheckBox = (CheckBox) v.findViewById(R.id.checkBoxShoppingList);
+        ingredientCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            }
+        });
         return v;
     }
 

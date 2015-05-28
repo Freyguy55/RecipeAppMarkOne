@@ -17,6 +17,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -180,6 +181,7 @@ public class RecipeBook {
         mShoppingList.remove(pos);
         saveShoppingList();
     }
+
 
     public void saveShoppingList(){
         ObjectOutputStream objectOutputStream = null;
@@ -353,6 +355,13 @@ public class RecipeBook {
                     }
                 }
             }
+        }
+    }
+
+    public static class IngredientComparator implements Comparator<Ingredient>{
+        @Override
+        public int compare(Ingredient ingredient1, Ingredient ingredient2) {
+            return ingredient1.getName().compareTo(ingredient2.getName());
         }
     }
 }

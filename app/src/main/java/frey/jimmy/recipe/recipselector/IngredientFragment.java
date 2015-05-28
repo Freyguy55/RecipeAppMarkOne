@@ -10,12 +10,13 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * A fragment representing a list of Items.
@@ -35,13 +36,6 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
     private Button mButtonClearList;
     private Button mButtonRemoveSelected;
 
-    public static IngredientFragment newInstance() {
-        IngredientFragment fragment = new IngredientFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -49,14 +43,21 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
     public IngredientFragment() {
     }
 
+    public static IngredientFragment newInstance() {
+        IngredientFragment fragment = new IngredientFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO: Change Adapter to display your content
         mIngredientArrayList = RecipeBook.get(getActivity()).getShoppingList();
+        Collections.sort(mIngredientArrayList, new RecipeBook.IngredientComparator());
 
-        mAdapter = new ShoppingListArrayAdapter(getActivity(),R.layout.shopping_list_view_row_layout,mIngredientArrayList);
+        mAdapter = new ShoppingListArrayAdapter(getActivity(), R.layout.shopping_list_view_row_layout, mIngredientArrayList);
     }
 
     @Override
@@ -110,9 +111,15 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBoxShoppingList);
+        if (checkBox == null) {
+            return;
+        }
+        System.out.println("Checkbox" + checkBox.isChecked());
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
+
             mListener.onFragmentInteraction(mIngredientArrayList.get(position).toString());
         }
     }
@@ -130,16 +137,17 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
         }
     }
 
-    public void updateUi(){
+    public void updateUi() {
+        Collections.sort(mIngredientArrayList, new RecipeBook.IngredientComparator());
         ((ArrayAdapter<Ingredient>) mAdapter).notifyDataSetChanged();
     }
 
-    public void setList(ArrayList<Ingredient> ingredientsToAdd){
+    public void setList(ArrayList<Ingredient> ingredientsToAdd) {
         mIngredientArrayList = ingredientsToAdd;
         updateUi();
     }
 
-    public void removeIngredient(int position){
+    public void removeIngredient(int position) {
         mIngredientArrayList.remove(position);
     }
 
