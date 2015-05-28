@@ -34,7 +34,6 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
     private ListView mListView;
     private ListAdapter mAdapter;
     private Button mButtonClearList;
-    private Button mButtonRemoveSelected;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -79,13 +78,6 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
                 mIngredientArrayList.clear();
                 updateUi();
                 RecipeBook.get(getActivity()).clearShoppingList();
-            }
-        });
-        mButtonRemoveSelected = (Button) view.findViewById(R.id.buttonShoppingListRemoveSelected);
-        mButtonRemoveSelected.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
             }
         });
 
