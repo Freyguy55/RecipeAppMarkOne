@@ -27,12 +27,6 @@ public class ConvertUnit {
         mUnits.add(new Unit("g",0.035274));
         mUnits.add(new Unit("medium",1.75,false));
         mUnits.add(new Unit("large",2,false));
-
-        mUnits.add(new Unit("Ounce",1));
-        mUnits.add(new Unit("Pound",16));
-        mUnits.add(new Unit("Pounds",16));
-        mUnits.add(new Unit("Kilogram",35.274));
-        mUnits.add(new Unit("package",35.274,false));
     }
 
     public ArrayList<String> getUnitsStringList() {
