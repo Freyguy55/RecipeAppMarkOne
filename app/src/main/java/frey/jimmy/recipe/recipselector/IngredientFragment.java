@@ -8,7 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 
@@ -27,17 +30,10 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
 
     private OnFragmentInteractionListener mListener;
     private ArrayList<Ingredient> mIngredientArrayList;
-
-    /**
-     * The fragment's ListView/GridView.
-     */
-    private AbsListView mListView;
-
-    /**
-     * The Adapter which will be used to populate the ListView/GridView with
-     * Views.
-     */
+    private ListView mListView;
     private ListAdapter mAdapter;
+    private Button mButtonClearList;
+    private Button mButtonRemoveSelected;
 
     public static IngredientFragment newInstance() {
         IngredientFragment fragment = new IngredientFragment();
@@ -58,12 +54,8 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
         super.onCreate(savedInstanceState);
 
         // TODO: Change Adapter to display your content
-        mIngredientArrayList = new ArrayList<>();
-        for(Recipe r: RecipeBook.get(getActivity()).getRecipes()){
-            for(Ingredient i : r.getRecipeIngredientList()){
-                mIngredientArrayList.add(i);
-            }
-        }
+        mIngredientArrayList = RecipeBook.get(getActivity()).getShoppingList();
+
         mAdapter = new ShoppingListArrayAdapter(getActivity(),R.layout.shopping_list_view_row_layout,mIngredientArrayList);
     }
 
@@ -73,11 +65,28 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
         View view = inflater.inflate(R.layout.fragment_ingredient, container, false);
 
         // Set the adapter
-        mListView = (AbsListView) view.findViewById(android.R.id.list);
+        mListView = (ListView) view.findViewById(android.R.id.list);
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
+
+        mButtonClearList = (Button) view.findViewById(R.id.buttonShoppingListRemoveAll);
+        mButtonClearList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIngredientArrayList.clear();
+                updateUi();
+                RecipeBook.get(getActivity()).clearShoppingList();
+            }
+        });
+        mButtonRemoveSelected = (Button) view.findViewById(R.id.buttonShoppingListRemoveSelected);
+        mButtonRemoveSelected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         return view;
     }
@@ -119,6 +128,19 @@ public class IngredientFragment extends Fragment implements AbsListView.OnItemCl
         if (emptyView instanceof TextView) {
             ((TextView) emptyView).setText(emptyText);
         }
+    }
+
+    public void updateUi(){
+        ((ArrayAdapter<Ingredient>) mAdapter).notifyDataSetChanged();
+    }
+
+    public void setList(ArrayList<Ingredient> ingredientsToAdd){
+        mIngredientArrayList = ingredientsToAdd;
+        updateUi();
+    }
+
+    public void removeIngredient(int position){
+        mIngredientArrayList.remove(position);
     }
 
     /**

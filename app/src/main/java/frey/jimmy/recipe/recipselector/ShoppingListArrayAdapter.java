@@ -1,6 +1,8 @@
 package frey.jimmy.recipe.recipselector;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +32,23 @@ public class ShoppingListArrayAdapter extends ArrayAdapter<Ingredient> {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(R.layout.shopping_list_view_row_layout, parent, false);
         }
-
+        final int finalPosition = position;
         final TextView ingredientTextView = (TextView) v.findViewById(R.id.textViewShoppingListIngredient);
         ingredientTextView.setText(mIngredientList.get(position).toString());
+        ingredientTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Ingredient ingredientSelected = mIngredientList.get(finalPosition);
+                if(ingredientSelected.getUnit()!=null) {
+                    FragmentManager fm = ((FragmentActivity) mContext).getSupportFragmentManager();
+                    DialogUnitConversionFragment.createInstance(ingredientSelected).show(fm, "IngredientTag");
+                }
+            }
+        });
+
 
         final CheckBox ingredientCheckBox = (CheckBox) v.findViewById(R.id.checkBoxShoppingList);
         return v;
     }
+
 }

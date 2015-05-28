@@ -25,17 +25,20 @@ import java.util.UUID;
  * Created by James on 5/17/2015.
  */
 public class RecipeBook {
-    public static final String SAVE_FILE = "recipes.dat";
+    public static final String SAVE_FILE_RECIPE = "recipes.dat";
+    public static final String SAVE_FILE_SHOPPING_LIST = "shoppinglist.dat";
     private static final int CATEGORY_SWEET_SAVORY = 0;
     private static final int CATEGORY_LIGHT_HEAVY = 1;
     private static final int CATEGORY_REGION = 2;
     private static RecipeBook sRecipeBook;
     private ArrayList<Recipe> mRecipes;
     private Context mAppContext;
+    private ArrayList<Ingredient> mShoppingList;
 
     private RecipeBook(Context context) {
         mAppContext = context;
         loadRecipes();
+        loadShoppingList();
         checkForNewRecipes();
 
     }
@@ -51,7 +54,7 @@ public class RecipeBook {
         ArrayList<Recipe> emptyRecipeList = new ArrayList<>();
         ObjectOutputStream objectOutputStream = null;
         try {
-            OutputStream outputStream = context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE);
+            OutputStream outputStream = context.openFileOutput(SAVE_FILE_RECIPE, Context.MODE_PRIVATE);
             objectOutputStream = new ObjectOutputStream(outputStream);
             objectOutputStream.writeObject(emptyRecipeList);
             objectOutputStream.flush();
@@ -149,6 +152,89 @@ public class RecipeBook {
         return listOfAllUnits;
     }
 
+    public ArrayList<Ingredient> getShoppingList() {
+        return mShoppingList;
+    }
+
+    public void setShoppingList(ArrayList<Ingredient> shoppingList) {
+        mShoppingList = shoppingList;
+        saveShoppingList();
+    }
+
+    public void addListToShoppingList(ArrayList<Ingredient> shoppingList){
+        mShoppingList.addAll(shoppingList);
+        saveShoppingList();
+    }
+
+    public void addIngredientToShoppingList(Ingredient i){
+        mShoppingList.add(i);
+        saveShoppingList();
+    }
+
+    public void clearShoppingList(){
+        mShoppingList.clear();
+        saveShoppingList();
+    }
+
+    public void removeIngredientFromShoppingList(int pos){
+        mShoppingList.remove(pos);
+        saveShoppingList();
+    }
+
+    public void saveShoppingList(){
+        ObjectOutputStream objectOutputStream = null;
+        try {
+            OutputStream outputStream = mAppContext.openFileOutput(SAVE_FILE_SHOPPING_LIST, Context.MODE_PRIVATE);
+            objectOutputStream = new ObjectOutputStream(outputStream);
+            objectOutputStream.writeObject(mShoppingList);
+            objectOutputStream.flush();
+            objectOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (objectOutputStream != null) {
+                try {
+                    objectOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void loadShoppingList(){
+        // Check if the save file exists.
+        File saveFile = mAppContext.getFileStreamPath(SAVE_FILE_SHOPPING_LIST);
+        if (!saveFile.exists()) {
+            mShoppingList = new ArrayList<>();  //If the file does not exist this is the first time
+            saveShoppingList();                 //loading and a blank arraylist needs to be saved.
+        }
+        ObjectInputStream objectInputStream = null;
+        try {
+            InputStream inputStream = mAppContext.openFileInput(SAVE_FILE_SHOPPING_LIST);
+            objectInputStream = new ObjectInputStream(inputStream);
+            mShoppingList = (ArrayList<Ingredient>) objectInputStream.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (objectInputStream != null) {
+                try {
+                    objectInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     //Checks if there are any new recipes to add to the saved list.
     public void checkForNewRecipes() {
         new DownloadRecipeTask().execute();
@@ -157,7 +243,7 @@ public class RecipeBook {
     public void saveRecipes() {
         ObjectOutputStream objectOutputStream = null;
         try {
-            OutputStream outputStream = mAppContext.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE);
+            OutputStream outputStream = mAppContext.openFileOutput(SAVE_FILE_RECIPE, Context.MODE_PRIVATE);
             objectOutputStream = new ObjectOutputStream(outputStream);
             objectOutputStream.writeObject(mRecipes);
             objectOutputStream.flush();
@@ -179,14 +265,14 @@ public class RecipeBook {
 
     public void loadRecipes() {
         // Check if the save file exists.
-        File saveFile = mAppContext.getFileStreamPath(SAVE_FILE);
+        File saveFile = mAppContext.getFileStreamPath(SAVE_FILE_RECIPE);
         if (!saveFile.exists()) {
             mRecipes = new ArrayList<>();  //If the file does not exist this is the first time
             saveRecipes();                 //loading and a blank arraylist needs to be saved.
         }
         ObjectInputStream objectInputStream = null;
         try {
-            InputStream inputStream = mAppContext.openFileInput(SAVE_FILE);
+            InputStream inputStream = mAppContext.openFileInput(SAVE_FILE_RECIPE);
             objectInputStream = new ObjectInputStream(inputStream);
             mRecipes = (ArrayList<Recipe>) objectInputStream.readObject();
         } catch (FileNotFoundException e) {

@@ -172,7 +172,7 @@ public class RecipeDisplayFragment extends Fragment {
         mButtonAddToList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                RecipeBook.get(getActivity()).addListToShoppingList(mRecipe.getRecipeIngredientList());
             }
         });
 
