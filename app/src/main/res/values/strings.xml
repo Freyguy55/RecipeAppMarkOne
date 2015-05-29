@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RecipeSelector</string>
+    <string name="app_name">Hanna\'s Recipe Book</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_intro_select">IntroSelectActivity</string>
