@@ -8,8 +8,8 @@ android {
         applicationId "frey.jimmy.recipe.recipselector"
         minSdkVersion 8
         targetSdkVersion 22
-        versionCode 3
-        versionName "0.92"
+        versionCode 4
+        versionName "0.93"
     }
     buildTypes {
         release {
