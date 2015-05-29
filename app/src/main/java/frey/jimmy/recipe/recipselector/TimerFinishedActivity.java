@@ -15,14 +15,19 @@ import java.io.IOException;
 
 public class TimerFinishedActivity extends Activity implements MediaPlayer.OnPreparedListener {
     public static final String EXTRA_RECIPE_NAME = "extraRecipeName";
+    private static final java.lang.String KEY_PLAY_ALARM = "keyPlayAlarm";
     private MediaPlayer mMediaPlayer = null;
     private AudioManager mAudioManager;
     private int mOriginalVolume;
+    private boolean playAlarm = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer_finished);
+        if (savedInstanceState != null) {
+            playAlarm = savedInstanceState.getBoolean(KEY_PLAY_ALARM);
+        }
         TextView activityAlarmRecipeNameTextView = (TextView) findViewById(R.id.alarmActivityRecipeNameTextView);
         String recipeName = getIntent().getStringExtra(EXTRA_RECIPE_NAME);
         activityAlarmRecipeNameTextView.setText(recipeName);
@@ -32,10 +37,21 @@ public class TimerFinishedActivity extends Activity implements MediaPlayer.OnPre
         stopAlarmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                playAlarm = false;
                 stopAlarm();
             }
         });
-        playAlarm();
+        Button backButton = (Button) findViewById(R.id.buttonAlarmBack);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+        if (playAlarm) {
+            playAlarm();
+        }
+
     }
 
     private void playAlarm() {
@@ -57,7 +73,6 @@ public class TimerFinishedActivity extends Activity implements MediaPlayer.OnPre
 
 
     private void stopAlarm() {
-
         if (mMediaPlayer != null) {
             mAudioManager.setStreamVolume(AudioManager.STREAM_ALARM, mOriginalVolume, AudioManager.FLAG_PLAY_SOUND);
             mMediaPlayer.stop();
@@ -76,5 +91,11 @@ public class TimerFinishedActivity extends Activity implements MediaPlayer.OnPre
     protected void onDestroy() {
         stopAlarm();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(KEY_PLAY_ALARM, playAlarm);
+        super.onSaveInstanceState(outState);
     }
 }
