@@ -1,27 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
-    android:id="@+id/advancedSearchTableLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/background_color"
+              android:orientation="vertical">
 
-    <include
-        android:id="@+id/flavorRow"
-        layout="@layout/my_table_row"/>
+    <TableLayout
+        android:id="@+id/advancedSearchTableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:layout_weight="1">
 
-    <include
-        android:id="@+id/fillingRow"
-        layout="@layout/my_table_row"/>
+        <include
+            android:id="@+id/flavorRow"
+            layout="@layout/my_table_row"/>
 
-    <include
-        android:id="@+id/categoryRow"
-        layout="@layout/my_table_row"/>
+        <include
+            android:id="@+id/fillingRow"
+            layout="@layout/my_table_row"/>
+
+        <include
+            android:id="@+id/categoryRow"
+            layout="@layout/my_table_row"/>
+
+
+    </TableLayout>
+
+    <EditText
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextSearchName"
+        android:layout_gravity="center_horizontal"
+        android:hint="&lt;Recipe Name>"/>
 
     <Button
         android:id="@+id/buttonAdvancedSearchGo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/advanced_search_button_text_go"/>
+        android:text="@string/advanced_search_button_text_go"
+        android:layout_gravity="center_horizontal"/>
 
-</TableLayout>
+</LinearLayout>

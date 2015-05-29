@@ -92,6 +92,14 @@ public class RecipeBook {
         return null;
     }
 
+    public ArrayList<UUID> getRecipeIds() {
+        ArrayList<UUID> idList = new ArrayList<>();
+        for (Recipe r : mRecipes) {
+            idList.add(r.getUuid());
+        }
+        return idList;
+    }
+
     public ArrayList<UUID> getFilteredRecipeIds(boolean isSweet, boolean isLight) {
         ArrayList<UUID> filteredList = new ArrayList<>();
         for (Recipe r : mRecipes) {
@@ -101,6 +109,54 @@ public class RecipeBook {
         }
         return filteredList;
     }
+
+
+    public ArrayList<UUID> getFilteredRecipeIdsByName(ArrayList<UUID> list, String name) {
+        if (name == null) return list;
+        ArrayList<UUID> filteredList = new ArrayList<>();
+        //Parse name query.
+        name = name.toLowerCase();
+        String[] parsedQuery = name.split(" ");
+        for (UUID id : list) {
+            for (String s : parsedQuery) {
+                if (getRecipe(id).getRecipeName().toLowerCase().contains(s)) {
+                    filteredList.add(id);
+                }
+            }
+        }
+        return filteredList;
+    }
+
+    public ArrayList<UUID> getFilteredRecipeIdsBySweet(ArrayList<UUID> list, boolean isSweet) {
+        ArrayList<UUID> filteredList = new ArrayList<>();
+        for (UUID id : list) {
+            if (getRecipe(id).isSweet() == isSweet) {
+                filteredList.add(id);
+            }
+        }
+        return filteredList;
+    }
+
+    public ArrayList<UUID> getFilteredRecipeIdsByLight(ArrayList<UUID> list, boolean isLight) {
+        ArrayList<UUID> filteredList = new ArrayList<>();
+        for (UUID id : list) {
+            if (getRecipe(id).isLight() == isLight) {
+                filteredList.add(id);
+            }
+        }
+        return filteredList;
+    }
+
+    public ArrayList<UUID> getFilteredRecipeIdsByRegion(ArrayList<UUID> list, String region) {
+        ArrayList<UUID> filteredList = new ArrayList<>();
+        for (UUID id : list) {
+            if (getRecipe(id).getRegion().equals(region)) {
+                filteredList.add(id);
+            }
+        }
+        return filteredList;
+    }
+
 
     public ArrayList<Recipe> getFilteredRecipeList(ArrayList<UUID> ids) {
         ArrayList<Recipe> filteredList = new ArrayList<>();
@@ -162,28 +218,28 @@ public class RecipeBook {
         saveShoppingList();
     }
 
-    public void addListToShoppingList(ArrayList<Ingredient> shoppingList){
+    public void addListToShoppingList(ArrayList<Ingredient> shoppingList) {
         mShoppingList.addAll(shoppingList);
         saveShoppingList();
     }
 
-    public void addIngredientToShoppingList(Ingredient i){
+    public void addIngredientToShoppingList(Ingredient i) {
         mShoppingList.add(i);
         saveShoppingList();
     }
 
-    public void clearShoppingList(){
+    public void clearShoppingList() {
         mShoppingList.clear();
         saveShoppingList();
     }
 
-    public void removeIngredientFromShoppingList(int pos){
+    public void removeIngredientFromShoppingList(int pos) {
         mShoppingList.remove(pos);
         saveShoppingList();
     }
 
 
-    public void saveShoppingList(){
+    public void saveShoppingList() {
         ObjectOutputStream objectOutputStream = null;
         try {
             OutputStream outputStream = mAppContext.openFileOutput(SAVE_FILE_SHOPPING_LIST, Context.MODE_PRIVATE);
@@ -206,7 +262,7 @@ public class RecipeBook {
         }
     }
 
-    public void loadShoppingList(){
+    public void loadShoppingList() {
         // Check if the save file exists.
         File saveFile = mAppContext.getFileStreamPath(SAVE_FILE_SHOPPING_LIST);
         if (!saveFile.exists()) {
@@ -296,9 +352,17 @@ public class RecipeBook {
         }
     }
 
+    public static class IngredientComparator implements Comparator<Ingredient> {
+        @Override
+        public int compare(Ingredient ingredient1, Ingredient ingredient2) {
+            return ingredient1.getName().compareTo(ingredient2.getName());
+        }
+    }
+
     //Download recipes from web
     private class DownloadRecipeTask extends AsyncTask<String, Void, ArrayList<Recipe>> {
         private static final String RECIPE_URL = "http://s3-us-west-1.amazonaws.com/frey.jimmy.testbucket/recipes/recipes.dat";
+
         @Override
         protected ArrayList<Recipe> doInBackground(String... imageID) {
             System.out.println("Url trying to connect to: " + RECIPE_URL);
@@ -355,13 +419,6 @@ public class RecipeBook {
                     }
                 }
             }
-        }
-    }
-
-    public static class IngredientComparator implements Comparator<Ingredient>{
-        @Override
-        public int compare(Ingredient ingredient1, Ingredient ingredient2) {
-            return ingredient1.getName().compareTo(ingredient2.getName());
         }
     }
 }
