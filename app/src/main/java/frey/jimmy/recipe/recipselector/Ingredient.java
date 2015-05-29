@@ -40,7 +40,7 @@ public class Ingredient implements Serializable{
     }
 
     public String toString(){
-        DecimalFormat decimalFormat = new DecimalFormat("#");
+        DecimalFormat decimalFormat = new DecimalFormat("####.##");
         if(null == mUnit){
             return mQuantity + " " + mName;
         }

@@ -41,7 +41,7 @@ public class ShoppingListArrayAdapter extends ArrayAdapter<Ingredient> {
             @Override
             public void onClick(View view) {
                 Ingredient ingredientSelected = mIngredientList.get(finalPosition);
-                if(ingredientSelected.getUnit()!=null) {
+                if(ingredientSelected.getUnit()!=null && ingredientSelected.getUnit().length()!=0) {
                     FragmentManager fm = ((FragmentActivity) mContext).getSupportFragmentManager();
                     DialogUnitConversionFragment.createInstance(ingredientSelected).show(fm, "IngredientTag");
                 }

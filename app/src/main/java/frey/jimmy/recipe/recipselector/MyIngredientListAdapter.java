@@ -58,7 +58,9 @@ public class MyIngredientListAdapter extends ArrayAdapter<Ingredient> {
             @Override
             public void onClick(View view) {
                 Ingredient ingredientSelected = mIngredientList.get(ingredientLeftPosition);
-                if(ingredientSelected.getUnit()!=null) {
+                System.out.println("Outside null checkBananas");
+                if(ingredientSelected.getUnit()!=null && ingredientSelected.getUnit().length()!=0) {
+                    System.out.println("Bananasinside null check");
                     FragmentManager fm = ((FragmentActivity) mContext).getSupportFragmentManager();
                     DialogUnitConversionFragment.createInstance(ingredientSelected).show(fm, "IngredientTag");
                 }
@@ -72,7 +74,7 @@ public class MyIngredientListAdapter extends ArrayAdapter<Ingredient> {
                 @Override
                 public void onClick(View view) {
                     Ingredient ingredientSelected = mIngredientList.get(ingredientRightPosition);
-                    if(ingredientSelected.getUnit()!=null) {
+                    if(ingredientSelected.getUnit()!=null && ingredientSelected.getUnit().length()!=0) {
                         FragmentManager fm = ((FragmentActivity) mContext).getSupportFragmentManager();
                         DialogUnitConversionFragment.createInstance(ingredientSelected).show(fm, "IngredientTag");
                     }
