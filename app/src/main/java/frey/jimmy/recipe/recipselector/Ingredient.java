@@ -1,6 +1,7 @@
 package frey.jimmy.recipe.recipselector;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 /**
  * Ingredient class for use in Recipe class.  The recipe class contains an array of ingredients.
@@ -39,10 +40,11 @@ public class Ingredient implements Serializable{
     }
 
     public String toString(){
+        DecimalFormat decimalFormat = new DecimalFormat("#");
         if(null == mUnit){
             return mQuantity + " " + mName;
         }
-        return mQuantity + " " + mUnit + " " + mName;
+        return decimalFormat.format(mQuantity) + " " + mUnit + " " + mName;
     }
 
 }
